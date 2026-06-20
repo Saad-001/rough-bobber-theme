@@ -1,0 +1,368 @@
+/* ============================================================
+   Rough Bobber — Hero Slideshow (sections/rb-slideshow.liquid)
+   Static styles only. Per-section dynamic values (height, overlay,
+   colour overrides, content width, padding) are emitted as CSS vars in
+   the section's {% style %} block, scoped to #rb-slideshow-{id}.
+   ============================================================ */
+
+.rb-slideshow {
+  --rb-ss-heading: rgb(var(--color-foreground));
+  --rb-ss-text: rgb(var(--color-foreground));
+  --rb-ss-btn-bg: rgb(var(--color-button));
+  --rb-ss-btn-text: rgb(var(--color-button-text));
+  --rb-ss-btn2-bg: rgb(var(--color-button));
+  --rb-ss-btn2-text: rgb(var(--color-button-text));
+  --rb-ss-overlay: rgba(0, 0, 0, 0.3);
+  --rb-ss-gradient: rgba(0, 0, 0, 0.35);
+  --rb-ss-h: 100svh;
+  --rb-ss-content-width: 680px;
+  --rb-ss-offset: 0px;
+
+  position: relative;
+  width: 100%;
+  min-height: 100vh; /* fallback for browsers without svh */
+  min-height: var(--rb-ss-h);
+  display: flex;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Fit inside the visible area below the announcement bar + header.
+   --rb-ss-offset is measured by JS (sum of everything above this section). */
+.rb-slideshow[data-subtract='true'] {
+  min-height: calc(100vh - var(--rb-ss-offset));
+  min-height: calc(var(--rb-ss-h) - var(--rb-ss-offset));
+}
+
+/* ---- Slides track ---- */
+.rb-slideshow__track {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+/* Drag affordance — class added by JS only when there is more than one slide. */
+.rb-slideshow--draggable {
+  cursor: grab;
+  touch-action: pan-y;
+}
+.rb-slideshow--draggable.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.rb-slideshow__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  /* Hold visibility until the fade completes so the outgoing slide stays
+     present through the crossfade (otherwise it vanishes instantly = flash). */
+  transition: opacity 1s ease-in-out, visibility 0s linear 1s;
+  z-index: 0;
+}
+.rb-slideshow__slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 1;
+  transition: opacity 1s ease-in-out, visibility 0s linear 0s;
+}
+/* When there is only one slide, keep it visible even without JS */
+.rb-slideshow[data-count='1'] .rb-slideshow__slide {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ---- Media ---- */
+.rb-slideshow__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.rb-slideshow__img,
+.rb-slideshow__media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Dark overlay for legibility (flat + bottom gradient) */
+.rb-slideshow__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, var(--rb-ss-gradient) 0%, rgba(0, 0, 0, 0) 55%),
+    var(--rb-ss-overlay);
+  z-index: 1;
+}
+
+/* Whole-slide clickable link — sits above media, below content/controls */
+.rb-slideshow__slide-link {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+}
+
+/* ---- Content ---- */
+.rb-slideshow__inner {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none; /* let the slide-link receive background clicks */
+}
+.rb-slideshow[data-valign='top'] .rb-slideshow__inner {
+  justify-content: flex-start;
+}
+.rb-slideshow[data-valign='center'] .rb-slideshow__inner {
+  justify-content: center;
+}
+.rb-slideshow[data-valign='bottom'] .rb-slideshow__inner {
+  justify-content: flex-end;
+}
+
+.rb-slideshow__content {
+  display: flex;
+  flex-direction: column;
+  max-width: var(--rb-ss-content-width);
+}
+.rb-slideshow[data-align='left'] .rb-slideshow__content {
+  align-items: flex-start;
+  text-align: left;
+  margin-right: auto;
+}
+.rb-slideshow[data-align='center'] .rb-slideshow__content {
+  align-items: center;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.rb-slideshow[data-align='right'] .rb-slideshow__content {
+  align-items: flex-end;
+  text-align: right;
+  margin-left: auto;
+}
+
+/* Reveal animation — only runs for the active slide */
+.rb-slideshow__slide.is-active .rb-slideshow__content > * {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: rb-ss-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.rb-slideshow__slide.is-active .rb-slideshow__content > *:nth-child(1) {
+  animation-delay: 0.15s;
+}
+.rb-slideshow__slide.is-active .rb-slideshow__content > *:nth-child(2) {
+  animation-delay: 0.28s;
+}
+.rb-slideshow__slide.is-active .rb-slideshow__content > *:nth-child(3) {
+  animation-delay: 0.41s;
+}
+.rb-slideshow__slide.is-active .rb-slideshow__content > *:nth-child(4) {
+  animation-delay: 0.54s;
+}
+@keyframes rb-ss-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rb-slideshow__slide.is-active .rb-slideshow__content > * {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
+
+.rb-slideshow__eyebrow {
+  margin: 0;
+  font-family: var(--rb-font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--rb-ss-text);
+  opacity: 0.9;
+  margin-bottom: 0.7rem;
+}
+.rb-slideshow__heading {
+  margin: 0;
+  font-family: var(--rb-font-display);
+  font-weight: 400;
+  color: var(--rb-ss-heading);
+  font-size: clamp(2.6rem, 6.5vw, 5.5rem);
+  line-height: 1.02;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.25);
+}
+.rb-slideshow__body {
+  margin: 0;
+  font-family: var(--rb-font-body);
+  color: var(--rb-ss-text);
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  line-height: 1.6;
+  max-width: 52ch;
+  margin-top: 0.85rem;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.2);
+}
+/* Button row — holds one or both CTAs */
+.rb-slideshow__actions {
+  pointer-events: auto; /* re-enable clicks inside the no-pointer inner */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.rb-slideshow__cta {
+  /* Generic per-button colour vars — set per button below so the --outline
+     modifier works for either button. */
+  --rb-cta-bg: var(--rb-ss-btn-bg);
+  --rb-cta-text: var(--rb-ss-btn-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--rb-font-body);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1.05rem 2.5rem;
+  background: var(--rb-cta-bg);
+  color: var(--rb-cta-text);
+  border: 1.5px solid var(--rb-cta-bg);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.45);
+}
+/* Second button pulls from its own colour vars */
+.rb-slideshow__cta--2 {
+  --rb-cta-bg: var(--rb-ss-btn2-bg);
+  --rb-cta-text: var(--rb-ss-btn2-text);
+}
+.rb-slideshow__cta svg {
+  width: 1.05em;
+  height: 1.05em;
+  transition: transform 0.25s ease;
+}
+.rb-slideshow__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.5);
+}
+.rb-slideshow__cta:hover svg {
+  transform: translateX(4px);
+}
+
+.rb-slideshow__cta--outline {
+  background: transparent;
+  color: var(--rb-cta-text);
+  border-color: var(--rb-cta-text);
+}
+.rb-slideshow__cta--outline:hover {
+  background: var(--rb-cta-text);
+  color: var(--rb-cta-bg);
+}
+
+/* ---- Navigation arrows ---- */
+.rb-slideshow__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  border: none;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  opacity: 0.92;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.45));
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.rb-slideshow__arrow:hover {
+  opacity: 1;
+}
+.rb-slideshow__arrow svg {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.rb-slideshow__arrow--prev {
+  left: 1.5rem;
+}
+.rb-slideshow__arrow--next {
+  right: 1.5rem;
+}
+.rb-slideshow__arrow--prev:hover {
+  transform: translateY(-50%) translateX(-3px);
+}
+.rb-slideshow__arrow--next:hover {
+  transform: translateY(-50%) translateX(3px);
+}
+
+/* ---- Dots ---- */
+.rb-slideshow__dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 3.25rem;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.rb-slideshow__dot {
+  width: 8px;
+  height: 5px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1), background 0.35s ease;
+}
+.rb-slideshow__dot:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
+.rb-slideshow__dot.is-active {
+  width: 32px;
+  background: #fff;
+}
+
+/* ---- Mobile ---- */
+@media screen and (max-width: 749px) {
+  .rb-slideshow__content {
+    max-width: 100%;
+  }
+  .rb-slideshow__inner {
+    padding-bottom: 2.5rem; /* clear the dots */
+  }
+  .rb-slideshow[data-btn-fullwidth='true'] .rb-slideshow__actions {
+    width: 100%;
+    flex-direction: column;
+  }
+  .rb-slideshow[data-btn-fullwidth='true'] .rb-slideshow__cta {
+    width: 100%;
+    justify-content: center;
+  }
+  .rb-slideshow__arrow {
+    padding: 0.3rem;
+  }
+  .rb-slideshow__arrow svg {
+    width: 1.9rem;
+    height: 1.9rem;
+  }
+  .rb-slideshow__arrow--prev {
+    left: 0.25rem;
+  }
+  .rb-slideshow__arrow--next {
+    right: 0.25rem;
+  }
+}

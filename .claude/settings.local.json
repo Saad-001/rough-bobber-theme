@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"C:/Users/Dell/.claude/projects/E--cracktab-agency-works-stores-project-rough-bobber-theme/memory\")",
+      "Bash(ls -la)",
+      "Bash(cat MEMORY.md)"
+    ]
+  }
+}

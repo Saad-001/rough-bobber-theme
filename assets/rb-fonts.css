@@ -1,0 +1,69 @@
+/* ============================================================
+   Rough Bobber — Brand fonts + design tokens
+   Single source of truth for custom @font-face + brand CSS vars.
+   Loaded globally from layout/theme.liquid (in <head>).
+
+   FONT LOADING STRATEGY
+   ---------------------
+   CURRENT (no font files uploaded yet):
+     - Open Sans  -> loaded from Google Fonts via a <link> in theme.liquid.
+     - Amnestia   -> NOT hosted on Google Fonts (custom display face).
+                     Display text falls back through the stack below until
+                     the font file is uploaded.
+
+   LATER (when you upload the real font files to assets/):
+     1. Uncomment the @font-face block(s) below and adjust the file names
+        to match what you uploaded (e.g. Amnestia.woff2, OpenSans-*.woff2).
+     2. Remove the Google Fonts <link> + preconnects from layout/theme.liquid.
+   Nothing else needs to change — sections reference the CSS vars, not the
+   font names directly, so the switch happens entirely in this file.
+   ============================================================ */
+
+/* ---- Local @font-face (commented until font files are uploaded) ----
+
+@font-face {
+  font-family: 'Amnestia';
+  src: url('Amnestia.woff2') format('woff2'),
+       url('Amnestia.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('OpenSans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('OpenSans-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('OpenSans-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+---- end local @font-face ---- */
+
+:root {
+  /* ---- Brand colors (source of truth = Webkit; see conventions.md §2) ---- */
+  --rb-black: #121315; /* Webkit near-black.  Brandkit alt: #131416 */
+  --rb-gold: #b3916b; /* Webkit bronze.      Brandkit alt: #b17b21 (richer) */
+  --rb-sand: #c5b8a8; /* warm sand / taupe (light bg) */
+  --rb-cream: #f5f4f2; /* body / light background */
+
+  /* ---- Brand font stacks ----
+     Display: Amnestia (distressed display face) for headlines / hero / titles.
+     Body:    Open Sans for paragraphs, labels, buttons, nav. */
+  --rb-font-display: 'Amnestia', 'Bebas Neue', 'Oswald', Impact, sans-serif;
+  --rb-font-body: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}

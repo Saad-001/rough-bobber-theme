@@ -1,0 +1,493 @@
+{%- comment -%}
+  Hero Banner — Rough Bobber
+  Full-screen image banner with separate desktop / mobile artwork.
+
+  - Mobile image is optional; if omitted the desktop image is used everywhere.
+  - Banner fills the visible viewport height (svh-based, with a vh fallback).
+  - Responsive <picture> with width-based srcset for fast, optimised loads.
+  - Heading, body text and a button can be placed and aligned over the image.
+
+  Conventions (conventions.md):
+  - Static styles live in assets/rb-banner.css (loaded below); only Liquid-driven
+    values are emitted in the {% style %} block.
+  - Colours come from the section's color_scheme, with optional per-colour overrides.
+  - Top/bottom padding uses Dawn's .section-{id}-padding pattern; side padding/width
+    come from .page-width. Fonts are the brand stacks from rb-fonts.css.
+{%- endcomment -%}
+
+{{ 'rb-banner.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign uid = 'rb-banner-' | append: section.id
+
+  assign desk = s.image
+  assign mob = s.image_mobile
+  if mob == blank
+    assign mob = desk
+  endif
+
+  case s.height
+    when 'full'
+      assign h = '100svh'
+    when 'large'
+      assign h = '78svh'
+    when 'medium'
+      assign h = '60svh'
+  endcase
+
+  assign overlay_alpha = s.overlay_opacity | divided_by: 100.0
+  assign overlay_rgba = s.overlay_color | color_modify: 'alpha', overlay_alpha
+
+  assign gradient_alpha = s.gradient_opacity | divided_by: 100.0
+  assign gradient_rgba = '#000000' | color_modify: 'alpha', gradient_alpha
+-%}
+
+{%- style -%}
+  #{{ uid }} {
+    --rb-banner-h: {{ h }};
+    --rb-banner-overlay: {{ overlay_rgba }};
+    --rb-banner-gradient: {{ gradient_rgba }};
+    --rb-banner-content-width: {{ s.content_width }}px;
+    --rb-banner-focal: {{ s.focal_point }};
+    {%- if s.heading_color != blank %}--rb-banner-heading: {{ s.heading_color }};{% endif -%}
+    {%- if s.text_color != blank %}--rb-banner-text: {{ s.text_color }};{% endif -%}
+    {%- if s.button_bg != blank %}--rb-banner-btn-bg: {{ s.button_bg }};{% endif -%}
+    {%- if s.button_text_color != blank %}--rb-banner-btn-text: {{ s.button_text_color }};{% endif -%}
+    {%- if s.button_2_bg != blank %}--rb-banner-btn2-bg: {{ s.button_2_bg }};{% endif -%}
+    {%- if s.button_2_text_color != blank %}--rb-banner-btn2-text: {{ s.button_2_text_color }};{% endif -%}
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ s.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ s.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ s.padding_top }}px;
+      padding-bottom: {{ s.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div
+  id="{{ uid }}"
+  class="rb-banner color-{{ s.color_scheme }} gradient"
+  data-valign="{{ s.content_vertical }}"
+  data-align="{{ s.text_align }}"
+  data-subtract="{% if s.subtract_header %}true{% else %}false{% endif %}"
+  data-btn-fullwidth="{% if s.button_full_width_mobile %}true{% else %}false{% endif %}"
+>
+  <div class="rb-banner__media">
+    {%- if desk != blank -%}
+      {%- assign d_alt = desk.alt | default: s.heading | escape -%}
+      <picture>
+        {%- if mob != blank -%}
+          <source
+            media="(max-width: 749px)"
+            srcset="
+              {{ mob | image_url: width: 450 }} 450w,
+              {{ mob | image_url: width: 600 }} 600w,
+              {{ mob | image_url: width: 750 }} 750w,
+              {{ mob | image_url: width: 900 }} 900w,
+              {{ mob | image_url: width: 1100 }} 1100w,
+              {{ mob | image_url: width: 1400 }} 1400w"
+            sizes="100vw"
+          >
+        {%- endif -%}
+        <img
+          class="rb-banner__img"
+          src="{{ desk | image_url: width: 1500 }}"
+          srcset="
+            {{ desk | image_url: width: 750 }} 750w,
+            {{ desk | image_url: width: 1100 }} 1100w,
+            {{ desk | image_url: width: 1500 }} 1500w,
+            {{ desk | image_url: width: 1800 }} 1800w,
+            {{ desk | image_url: width: 2200 }} 2200w,
+            {{ desk | image_url: width: 2800 }} 2800w,
+            {{ desk | image_url: width: 3500 }} 3500w"
+          sizes="100vw"
+          width="{{ desk.width }}"
+          height="{{ desk.height }}"
+          alt="{{ d_alt }}"
+          {% if s.priority_loading %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+        >
+      </picture>
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'rb-banner__img rb-banner__img--placeholder' }}
+    {%- endif -%}
+  </div>
+
+  <div class="rb-banner__inner page-width section-{{ section.id }}-padding">
+    <div class="rb-banner__content">
+      {%- if s.eyebrow != blank -%}
+        <p class="rb-banner__eyebrow">{{ s.eyebrow }}</p>
+      {%- endif -%}
+
+      {%- if s.heading != blank -%}
+        <h2 class="rb-banner__heading">{{ s.heading }}</h2>
+      {%- endif -%}
+
+      {%- if s.body != blank -%}
+        <div class="rb-banner__body">{{ s.body }}</div>
+      {%- endif -%}
+
+      {%- if s.button_label != blank or s.button_2_label != blank -%}
+        <div class="rb-banner__actions">
+          {%- if s.button_label != blank -%}
+            <a
+              href="{{ s.button_link | default: '#' }}"
+              class="rb-banner__cta{% if s.button_style == 'outline' %} rb-banner__cta--outline{% endif %}"
+            >
+              {{ s.button_label }}
+              {%- if s.button_arrow -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              {%- endif -%}
+            </a>
+          {%- endif -%}
+
+          {%- if s.button_2_label != blank -%}
+            <a
+              href="{{ s.button_2_link | default: '#' }}"
+              class="rb-banner__cta rb-banner__cta--2{% if s.button_2_style == 'outline' %} rb-banner__cta--outline{% endif %}"
+            >
+              {{ s.button_2_label }}
+              {%- if s.button_2_arrow -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              {%- endif -%}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var el = document.getElementById('{{ uid }}');
+    if (!el || el.dataset.subtract !== 'true') return;
+
+    // Distance from the very top of the document to this section = the combined
+    // height of everything stacked above it (announcement bar + header). We
+    // subtract that from the viewport so the banner fills exactly the area the
+    // visitor can see on load, without spilling below the fold.
+    function setOffset() {
+      var top = el.getBoundingClientRect().top + window.pageYOffset;
+      el.style.setProperty('--rb-banner-offset', Math.max(0, Math.round(top)) + 'px');
+    }
+
+    setOffset();
+    window.addEventListener('resize', setOffset, { passive: true });
+    window.addEventListener('load', setOffset);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(setOffset);
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.rb_banner.name",
+  "tag": "section",
+  "class": "section-rb-banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.rb_banner.settings.header_image.content"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.rb_banner.settings.image_info.content"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.rb_banner.settings.image.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "t:sections.rb_banner.settings.image_mobile.label"
+    },
+    {
+      "type": "select",
+      "id": "focal_point",
+      "label": "t:sections.rb_banner.settings.focal_point.label",
+      "info": "t:sections.rb_banner.settings.focal_point.info",
+      "options": [
+        { "value": "center", "label": "t:sections.rb_banner.settings.focal_point.options__center" },
+        { "value": "top", "label": "t:sections.rb_banner.settings.focal_point.options__top" },
+        { "value": "bottom", "label": "t:sections.rb_banner.settings.focal_point.options__bottom" },
+        { "value": "left", "label": "t:sections.rb_banner.settings.focal_point.options__left" },
+        { "value": "right", "label": "t:sections.rb_banner.settings.focal_point.options__right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "priority_loading",
+      "label": "t:sections.rb_banner.settings.priority_loading.label",
+      "info": "t:sections.rb_banner.settings.priority_loading.info",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_banner.settings.header_height.content"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "t:sections.rb_banner.settings.height.label",
+      "options": [
+        { "value": "full", "label": "t:sections.rb_banner.settings.height.options__full" },
+        { "value": "large", "label": "t:sections.rb_banner.settings.height.options__large" },
+        { "value": "medium", "label": "t:sections.rb_banner.settings.height.options__medium" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "checkbox",
+      "id": "subtract_header",
+      "label": "t:sections.rb_banner.settings.subtract_header.label",
+      "info": "t:sections.rb_banner.settings.subtract_header.info",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_banner.settings.header_text.content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:sections.rb_banner.settings.eyebrow.label",
+      "default": "Rough Bobber"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.rb_banner.settings.heading.label",
+      "default": "Built by Ride. Worn for Life."
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "t:sections.rb_banner.settings.body.label",
+      "default": "<p>Raw, authentic, timeless gear for the biker lifestyle. Dirt. Speed. Glory.</p>"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_banner.settings.header_button.content"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.rb_banner.settings.button_label.label",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:sections.rb_banner.settings.button_link.label"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "t:sections.rb_banner.settings.button_style.label",
+      "options": [
+        { "value": "solid", "label": "t:sections.rb_banner.settings.button_style.options__solid" },
+        { "value": "outline", "label": "t:sections.rb_banner.settings.button_style.options__outline" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_arrow",
+      "label": "t:sections.rb_banner.settings.button_arrow.label",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_banner.settings.header_button_2.content"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.rb_banner.settings.button_2_info.content"
+    },
+    {
+      "type": "text",
+      "id": "button_2_label",
+      "label": "t:sections.rb_banner.settings.button_2_label.label"
+    },
+    {
+      "type": "url",
+      "id": "button_2_link",
+      "label": "t:sections.rb_banner.settings.button_2_link.label"
+    },
+    {
+      "type": "select",
+      "id": "button_2_style",
+      "label": "t:sections.rb_banner.settings.button_2_style.label",
+      "options": [
+        { "value": "solid", "label": "t:sections.rb_banner.settings.button_2_style.options__solid" },
+        { "value": "outline", "label": "t:sections.rb_banner.settings.button_2_style.options__outline" }
+      ],
+      "default": "outline"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_2_arrow",
+      "label": "t:sections.rb_banner.settings.button_2_arrow.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "button_full_width_mobile",
+      "label": "t:sections.rb_banner.settings.button_full_width_mobile.label",
+      "info": "t:sections.rb_banner.settings.button_full_width_mobile.info",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_banner.settings.header_layout.content"
+    },
+    {
+      "type": "select",
+      "id": "content_vertical",
+      "label": "t:sections.rb_banner.settings.content_vertical.label",
+      "options": [
+        { "value": "top", "label": "t:sections.rb_banner.settings.content_vertical.options__top" },
+        { "value": "center", "label": "t:sections.rb_banner.settings.content_vertical.options__center" },
+        { "value": "bottom", "label": "t:sections.rb_banner.settings.content_vertical.options__bottom" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "t:sections.rb_banner.settings.text_align.label",
+      "options": [
+        { "value": "left", "label": "t:sections.rb_banner.settings.text_align.options__left" },
+        { "value": "center", "label": "t:sections.rb_banner.settings.text_align.options__center" },
+        { "value": "right", "label": "t:sections.rb_banner.settings.text_align.options__right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "t:sections.rb_banner.settings.content_width.label",
+      "min": 400,
+      "max": 900,
+      "step": 20,
+      "unit": "px",
+      "default": 680
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_banner.settings.header_colors.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-4"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.rb_banner.settings.color_overrides_info.content"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "t:sections.rb_banner.settings.heading_color.label"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.rb_banner.settings.text_color.label"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "t:sections.rb_banner.settings.button_bg.label"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "t:sections.rb_banner.settings.button_text_color.label"
+    },
+    {
+      "type": "color",
+      "id": "button_2_bg",
+      "label": "t:sections.rb_banner.settings.button_2_bg.label"
+    },
+    {
+      "type": "color",
+      "id": "button_2_text_color",
+      "label": "t:sections.rb_banner.settings.button_2_text_color.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_banner.settings.header_overlay.content"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "t:sections.rb_banner.settings.overlay_color.label",
+      "default": "#121315"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "t:sections.rb_banner.settings.overlay_opacity.label",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "gradient_opacity",
+      "label": "t:sections.rb_banner.settings.gradient_opacity.label",
+      "info": "t:sections.rb_banner.settings.gradient_opacity.info",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 35
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.rb_banner.presets.name"
+    }
+  ]
+}
+{% endschema %}

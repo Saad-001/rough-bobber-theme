@@ -1,0 +1,236 @@
+/* ============================================================
+   Rough Bobber — Hero Banner (sections/rb-banner.liquid)
+   Static styles only. Per-section dynamic values (height, overlay,
+   colour overrides, content width, padding) are emitted as CSS vars in
+   the section's {% style %} block, scoped to #rb-banner-{id}.
+   ============================================================ */
+
+.rb-banner {
+  /* Defaults — fall back to the chosen Dawn colour scheme; the section's
+     {% style %} block overrides any of these when the merchant sets a
+     per-colour override. */
+  --rb-banner-heading: rgb(var(--color-foreground));
+  --rb-banner-text: rgb(var(--color-foreground));
+  --rb-banner-btn-bg: rgb(var(--color-button));
+  --rb-banner-btn-text: rgb(var(--color-button-text));
+  --rb-banner-btn2-bg: rgb(var(--color-button));
+  --rb-banner-btn2-text: rgb(var(--color-button-text));
+  --rb-banner-overlay: rgba(0, 0, 0, 0.3);
+  --rb-banner-gradient: rgba(0, 0, 0, 0.35);
+  --rb-banner-h: 100svh;
+  --rb-banner-content-width: 680px;
+  --rb-banner-offset: 0px;
+
+  position: relative;
+  width: 100%;
+  min-height: 100vh; /* fallback for browsers without svh */
+  min-height: var(--rb-banner-h);
+  display: flex;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Fit inside the visible area below the announcement bar + header.
+   --rb-banner-offset is measured by JS (sum of everything above this section). */
+.rb-banner[data-subtract='true'] {
+  min-height: calc(100vh - var(--rb-banner-offset));
+  min-height: calc(var(--rb-banner-h) - var(--rb-banner-offset));
+}
+
+/* ---- Media ---- */
+.rb-banner__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.rb-banner__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--rb-banner-focal, center);
+  display: block;
+}
+/* Dark overlay for legibility (flat + bottom gradient) */
+.rb-banner__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, var(--rb-banner-gradient) 0%, rgba(0, 0, 0, 0) 55%),
+    var(--rb-banner-overlay);
+  z-index: 1;
+}
+
+/* ---- Content ---- */
+.rb-banner__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.rb-banner[data-valign='top'] .rb-banner__inner {
+  justify-content: flex-start;
+}
+.rb-banner[data-valign='center'] .rb-banner__inner {
+  justify-content: center;
+}
+.rb-banner[data-valign='bottom'] .rb-banner__inner {
+  justify-content: flex-end;
+}
+
+.rb-banner__content {
+  display: flex;
+  flex-direction: column;
+  max-width: var(--rb-banner-content-width);
+}
+.rb-banner[data-align='left'] .rb-banner__content {
+  align-items: flex-start;
+  text-align: left;
+  margin-right: auto;
+}
+.rb-banner[data-align='center'] .rb-banner__content {
+  align-items: center;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.rb-banner[data-align='right'] .rb-banner__content {
+  align-items: flex-end;
+  text-align: right;
+  margin-left: auto;
+}
+
+/* Reveal animation */
+.rb-banner__content > * {
+  margin: 0;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: rb-banner-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.rb-banner__content > *:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.rb-banner__content > *:nth-child(2) {
+  animation-delay: 0.18s;
+}
+.rb-banner__content > *:nth-child(3) {
+  animation-delay: 0.31s;
+}
+.rb-banner__content > *:nth-child(4) {
+  animation-delay: 0.44s;
+}
+@keyframes rb-banner-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rb-banner__content > * {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
+
+.rb-banner__eyebrow {
+  font-family: var(--rb-font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--rb-banner-text);
+  opacity: 0.9;
+  margin-bottom: 1.1rem !important;
+}
+.rb-banner__heading {
+  font-family: var(--rb-font-display);
+  font-weight: 400;
+  color: var(--rb-banner-heading);
+  font-size: clamp(2.6rem, 6.5vw, 5.5rem);
+  line-height: 1.02;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.25);
+}
+.rb-banner__body {
+  font-family: var(--rb-font-body);
+  color: var(--rb-banner-text);
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  line-height: 1.6;
+  max-width: 52ch;
+  margin-top: 1.25rem !important;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.2);
+}
+/* Button row — holds one or both CTAs */
+.rb-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem !important;
+}
+
+.rb-banner__cta {
+  /* Generic per-button colour vars — set per button below so the --outline
+     modifier works for either button. */
+  --rb-cta-bg: var(--rb-banner-btn-bg);
+  --rb-cta-text: var(--rb-banner-btn-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--rb-font-body);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1.05rem 2.5rem;
+  background: var(--rb-cta-bg);
+  color: var(--rb-cta-text);
+  border: 1.5px solid var(--rb-cta-bg);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.45);
+}
+/* Second button pulls from its own colour vars */
+.rb-banner__cta--2 {
+  --rb-cta-bg: var(--rb-banner-btn2-bg);
+  --rb-cta-text: var(--rb-banner-btn2-text);
+}
+.rb-banner__cta svg {
+  width: 1.05em;
+  height: 1.05em;
+  transition: transform 0.25s ease;
+}
+.rb-banner__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.5);
+}
+.rb-banner__cta:hover svg {
+  transform: translateX(4px);
+}
+
+.rb-banner__cta--outline {
+  background: transparent;
+  color: var(--rb-cta-text);
+  border-color: var(--rb-cta-text);
+}
+.rb-banner__cta--outline:hover {
+  background: var(--rb-cta-text);
+  color: var(--rb-cta-bg);
+}
+
+/* ---- Mobile ---- */
+@media screen and (max-width: 749px) {
+  .rb-banner__content {
+    max-width: 100%;
+  }
+  .rb-banner[data-btn-fullwidth='true'] .rb-banner__actions {
+    width: 100%;
+    flex-direction: column;
+  }
+  .rb-banner[data-btn-fullwidth='true'] .rb-banner__cta {
+    width: 100%;
+    justify-content: center;
+  }
+}

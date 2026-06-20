@@ -1,0 +1,54 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "rb_banner_fCfpCK": {
+      "type": "rb-banner",
+      "name": "t:sections.rb_banner.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/Homepage_Slider_One_RB.webp",
+        "focal_point": "center",
+        "priority_loading": true,
+        "height": "full",
+        "subtract_header": true,
+        "eyebrow": "",
+        "heading": "Built by Ride. Worn for Life.",
+        "body": "<p>Raw, authentic, timeless gear for the biker lifestyle. Dirt. Speed. Glory.</p>",
+        "button_label": "SHOP T-SHIRTS",
+        "button_link": "",
+        "button_style": "solid",
+        "button_arrow": false,
+        "button_2_label": "EXPLORE COLLECTIONS",
+        "button_2_link": "",
+        "button_2_style": "outline",
+        "button_2_arrow": true,
+        "button_full_width_mobile": false,
+        "content_vertical": "center",
+        "text_align": "left",
+        "content_width": 680,
+        "color_scheme": "scheme-5",
+        "heading_color": "",
+        "text_color": "",
+        "button_bg": "#b3916b",
+        "button_text_color": "#121315",
+        "button_2_bg": "",
+        "button_2_text_color": "",
+        "overlay_color": "#c5b8a8",
+        "overlay_opacity": 10,
+        "gradient_opacity": 35,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "rb_banner_fCfpCK"
+  ]
+}
