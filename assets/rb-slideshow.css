@@ -29,7 +29,7 @@
 
 /* Fit inside the visible area below the announcement bar + header.
    --rb-ss-offset is measured by JS (sum of everything above this section). */
-.rb-slideshow[data-subtract='true'] {
+.rb-slideshow[data-subtract="true"] {
   min-height: calc(100vh - var(--rb-ss-offset));
   min-height: calc(var(--rb-ss-h) - var(--rb-ss-offset));
 }
@@ -57,17 +57,21 @@
   visibility: hidden;
   /* Hold visibility until the fade completes so the outgoing slide stays
      present through the crossfade (otherwise it vanishes instantly = flash). */
-  transition: opacity 1s ease-in-out, visibility 0s linear 1s;
+  transition:
+    opacity 1s ease-in-out,
+    visibility 0s linear 1s;
   z-index: 0;
 }
 .rb-slideshow__slide.is-active {
   opacity: 1;
   visibility: visible;
   z-index: 1;
-  transition: opacity 1s ease-in-out, visibility 0s linear 0s;
+  transition:
+    opacity 1s ease-in-out,
+    visibility 0s linear 0s;
 }
 /* When there is only one slide, keep it visible even without JS */
-.rb-slideshow[data-count='1'] .rb-slideshow__slide {
+.rb-slideshow[data-count="1"] .rb-slideshow__slide {
   opacity: 1;
   visibility: visible;
 }
@@ -87,7 +91,7 @@
 }
 /* Dark overlay for legibility (flat + bottom gradient) */
 .rb-slideshow__media::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background:
@@ -114,13 +118,13 @@
   flex-direction: column;
   pointer-events: none; /* let the slide-link receive background clicks */
 }
-.rb-slideshow[data-valign='top'] .rb-slideshow__inner {
+.rb-slideshow[data-valign="top"] .rb-slideshow__inner {
   justify-content: flex-start;
 }
-.rb-slideshow[data-valign='center'] .rb-slideshow__inner {
+.rb-slideshow[data-valign="center"] .rb-slideshow__inner {
   justify-content: center;
 }
-.rb-slideshow[data-valign='bottom'] .rb-slideshow__inner {
+.rb-slideshow[data-valign="bottom"] .rb-slideshow__inner {
   justify-content: flex-end;
 }
 
@@ -129,21 +133,35 @@
   flex-direction: column;
   max-width: var(--rb-ss-content-width);
 }
-.rb-slideshow[data-align='left'] .rb-slideshow__content {
+.rb-slideshow[data-align="left"] .rb-slideshow__content {
   align-items: flex-start;
   text-align: left;
   margin-right: auto;
 }
-.rb-slideshow[data-align='center'] .rb-slideshow__content {
+.rb-slideshow[data-align="center"] .rb-slideshow__content {
   align-items: center;
   text-align: center;
   margin-left: auto;
   margin-right: auto;
 }
-.rb-slideshow[data-align='right'] .rb-slideshow__content {
+.rb-slideshow[data-align="right"] .rb-slideshow__content {
   align-items: flex-end;
   text-align: right;
   margin-left: auto;
+}
+
+/* Keep the text/buttons clear of the side navigation arrows when they show.
+   Without this the content can sit under the arrows (overlapping on small
+   screens, near-touching on desktop). */
+.rb-slideshow[data-arrows="true"] .rb-slideshow__content {
+  padding-inline: 0.5rem;
+}
+
+/* When dots are shown, keep the content (esp. bottom-aligned buttons) clear of
+   them. Reserve at least the dots' zone at the bottom, but never less than the
+   author's own bottom padding. */
+.rb-slideshow[data-dots="true"] .rb-slideshow__inner {
+  padding-bottom: max(var(--rb-ss-pad-bottom, 48px), 5.5rem);
 }
 
 /* Reveal animation — only runs for the active slide */
@@ -200,23 +218,39 @@
   text-transform: uppercase;
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.25);
 }
+/* Each heading input renders on its own line, same tag/style */
+.rb-slideshow__heading-line {
+  display: block;
+}
 .rb-slideshow__body {
   margin: 0;
   font-family: var(--rb-font-body);
   color: var(--rb-ss-text);
-  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
   line-height: 1.6;
   max-width: 52ch;
   margin-top: 0.85rem;
   text-shadow: 0 1px 12px rgba(0, 0, 0, 0.2);
 }
-/* Button row — holds one or both CTAs */
+/* Button row — holds one or both CTAs.
+   Spans the content box and uses justify-content (driven by [data-align]
+   below) so the buttons follow the alignment setting, not just the text. */
 .rb-slideshow__actions {
   pointer-events: auto; /* re-enable clicks inside the no-pointer inner */
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
   gap: 1rem;
   margin-top: 1.5rem;
+}
+.rb-slideshow[data-align="left"] .rb-slideshow__actions {
+  justify-content: flex-start;
+}
+.rb-slideshow[data-align="center"] .rb-slideshow__actions {
+  justify-content: center;
+}
+.rb-slideshow[data-align="right"] .rb-slideshow__actions {
+  justify-content: flex-end;
 }
 
 .rb-slideshow__cta {
@@ -237,7 +271,11 @@
   background: var(--rb-cta-bg);
   color: var(--rb-cta-text);
   border: 1.5px solid var(--rb-cta-bg);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease;
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.45);
 }
 /* Second button pulls from its own colour vars */
@@ -284,7 +322,9 @@
   cursor: pointer;
   opacity: 0.92;
   filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.45));
-  transition: transform 0.25s ease, opacity 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
 }
 .rb-slideshow__arrow:hover {
   opacity: 1;
@@ -326,7 +366,9 @@
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.45);
   cursor: pointer;
-  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1), background 0.35s ease;
+  transition:
+    width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.35s ease;
 }
 .rb-slideshow__dot:hover {
   background: rgba(255, 255, 255, 0.7);
@@ -341,14 +383,16 @@
   .rb-slideshow__content {
     max-width: 100%;
   }
-  .rb-slideshow__inner {
-    padding-bottom: 2.5rem; /* clear the dots */
+  /* Mobile arrows are smaller and sit nearer the edge — a tighter gutter
+     still clears them while leaving more room for the text. */
+  .rb-slideshow[data-arrows="true"] .rb-slideshow__content {
+    padding-inline: 2rem;
   }
-  .rb-slideshow[data-btn-fullwidth='true'] .rb-slideshow__actions {
+  .rb-slideshow[data-btn-fullwidth="true"] .rb-slideshow__actions {
     width: 100%;
     flex-direction: column;
   }
-  .rb-slideshow[data-btn-fullwidth='true'] .rb-slideshow__cta {
+  .rb-slideshow[data-btn-fullwidth="true"] .rb-slideshow__cta {
     width: 100%;
     justify-content: center;
   }

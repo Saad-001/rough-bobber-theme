@@ -157,7 +157,7 @@
 .rb-banner__body {
   font-family: var(--rb-font-body);
   color: var(--rb-banner-text);
-  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
   line-height: 1.6;
   max-width: 52ch;
   margin-top: 1.25rem !important;

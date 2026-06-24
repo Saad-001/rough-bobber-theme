@@ -1,0 +1,285 @@
+{%- comment -%}
+  About — Rough Bobber
+  A brand story block: optional left image · text (heading + body + button) ·
+  optional right image. Fully responsive (text leads, images stack below).
+
+  Conventions (conventions.md): static CSS in assets/rb-about.css; only
+  Liquid-driven values in the {% style %} block; color_scheme (+ optional button
+  overrides per §3.4); Dawn .section-{id}-padding; .page-width; brand fonts.
+{%- endcomment -%}
+
+{{ 'rb-about.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign uid = 'rb-about-' | append: section.id
+
+  assign has_left = false
+  assign has_right = false
+  if s.image_left != blank
+    assign has_left = true
+  endif
+  if s.image_right != blank
+    assign has_right = true
+  endif
+
+  if has_left and has_right
+    assign cols = '1fr 1.4fr 1.6fr'
+  elsif has_left
+    assign cols = '1fr 1.6fr'
+  elsif has_right
+    assign cols = '1.6fr 1fr'
+  else
+    assign cols = '1fr'
+  endif
+
+  if s.text_align == 'left'
+    assign align_items = 'flex-start'
+  else
+    assign align_items = 'center'
+  endif
+-%}
+
+{%- style -%}
+  #{{ uid }} {
+    --rb-about-cols: {{ cols }};
+    --rb-about-media-h: {{ s.media_height }}px;
+    --rb-about-radius: {{ s.image_radius }}px;
+    --rb-about-align-items: {{ align_items }};
+    --rb-about-text-align: {{ s.text_align }};
+    {%- if s.button_bg != blank %}--rb-about-btn-bg: {{ s.button_bg }};{% endif -%}
+    {%- if s.button_text_color != blank %}--rb-about-btn-text: {{ s.button_text_color }};{% endif -%}
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ s.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ s.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ s.padding_top }}px;
+      padding-bottom: {{ s.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div
+  id="{{ uid }}"
+  class="rb-about color-{{ s.color_scheme }} gradient"
+  data-btn-fullwidth="{% if s.button_full_width_mobile %}true{% else %}false{% endif %}"
+>
+  <div class="page-width section-{{ section.id }}-padding">
+    <div class="rb-about__grid">
+      {%- if has_left -%}
+        <div class="rb-about__media">
+          <img
+            class="rb-about__img"
+            src="{{ s.image_left | image_url: width: 800 }}"
+            srcset="{{ s.image_left | image_url: width: 500 }} 500w, {{ s.image_left | image_url: width: 800 }} 800w, {{ s.image_left | image_url: width: 1100 }} 1100w"
+            sizes="(max-width: 749px) 100vw, 30vw"
+            width="{{ s.image_left.width }}"
+            height="{{ s.image_left.height }}"
+            alt="{{ s.image_left.alt | escape }}"
+            loading="lazy"
+          >
+        </div>
+      {%- endif -%}
+
+      <div class="rb-about__content">
+        {%- if s.eyebrow != blank -%}
+          <p class="rb-about__eyebrow">{{ s.eyebrow }}</p>
+        {%- endif -%}
+        {%- if s.heading != blank -%}
+          <h2 class="rb-about__heading">{{ s.heading }}</h2>
+        {%- endif -%}
+        {%- if s.body != blank -%}
+          <div class="rb-about__body">{{ s.body }}</div>
+        {%- endif -%}
+        {%- if s.button_label != blank -%}
+          <a
+            href="{{ s.button_link | default: '#' }}"
+            class="rb-about__cta{% if s.button_style == 'outline' %} rb-about__cta--outline{% endif %}"
+          >
+            {{ s.button_label }}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- if has_right -%}
+        <div class="rb-about__media">
+          <img
+            class="rb-about__img"
+            src="{{ s.image_right | image_url: width: 800 }}"
+            srcset="{{ s.image_right | image_url: width: 500 }} 500w, {{ s.image_right | image_url: width: 800 }} 800w, {{ s.image_right | image_url: width: 1100 }} 1100w"
+            sizes="(max-width: 749px) 100vw, 30vw"
+            width="{{ s.image_right.width }}"
+            height="{{ s.image_right.height }}"
+            alt="{{ s.image_right.alt | escape }}"
+            loading="lazy"
+          >
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.rb_about.name",
+  "tag": "section",
+  "class": "section-rb-about",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.rb_about.settings.header_images.content"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_left",
+      "label": "t:sections.rb_about.settings.image_left.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_right",
+      "label": "t:sections.rb_about.settings.image_right.label"
+    },
+    {
+      "type": "range",
+      "id": "media_height",
+      "label": "t:sections.rb_about.settings.media_height.label",
+      "info": "t:sections.rb_about.settings.media_height.info",
+      "min": 180,
+      "max": 420,
+      "step": 10,
+      "unit": "px",
+      "default": 260
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "t:sections.rb_about.settings.image_radius.label",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_about.settings.header_text.content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:sections.rb_about.settings.eyebrow.label"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.rb_about.settings.heading.label",
+      "default": "About Rough Bobber"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "t:sections.rb_about.settings.body.label",
+      "default": "<p>Rough Bobber is more than a brand. It's a way of life. Inspired by the people, the machines and the open road. Our tees and apparel are built to last — just like the stories you collect along the way.</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "t:sections.rb_about.settings.text_align.label",
+      "options": [
+        { "value": "left", "label": "t:sections.rb_about.settings.text_align.options__left" },
+        { "value": "center", "label": "t:sections.rb_about.settings.text_align.options__center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_about.settings.header_button.content"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.rb_about.settings.button_label.label",
+      "default": "Our story"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:sections.rb_about.settings.button_link.label"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "t:sections.rb_about.settings.button_style.label",
+      "options": [
+        { "value": "solid", "label": "t:sections.rb_about.settings.button_style.options__solid" },
+        { "value": "outline", "label": "t:sections.rb_about.settings.button_style.options__outline" }
+      ],
+      "default": "solid"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_full_width_mobile",
+      "label": "t:sections.rb_about.settings.button_full_width_mobile.label",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_about.settings.header_colors.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-4"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.rb_about.settings.color_overrides_info.content"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "t:sections.rb_about.settings.button_bg.label"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "t:sections.rb_about.settings.button_text_color.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 64
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.rb_about.presets.name"
+    }
+  ]
+}
+{% endschema %}

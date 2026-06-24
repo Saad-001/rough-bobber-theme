@@ -1,0 +1,21 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Shopify CLI
+.shopify/
+*.shopifyignore
+node_modules/
+.env
+config/settings_data.json.bak
+
+# Logs
+*.log
+npm-debug.log*

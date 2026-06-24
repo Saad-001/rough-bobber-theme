@@ -1,0 +1,168 @@
+/* ============================================================
+   Rough Bobber — Promo banner (sections/rb-promo-banner.liquid)
+   A fixed-height, full-bleed image banner with a heading + one button.
+   Static styles only; per-section values come from the {% style %} block
+   scoped to #rb-promo-banner-{id}.
+   ============================================================ */
+
+.rb-promo {
+  --rb-promo-heading: rgb(var(--color-foreground));
+  --rb-promo-text: rgb(var(--color-foreground));
+  --rb-promo-btn-bg: rgb(var(--color-button));
+  --rb-promo-btn-text: rgb(var(--color-button-text));
+  --rb-promo-overlay: rgba(0, 0, 0, 0.3);
+  --rb-promo-gradient: rgba(0, 0, 0, 0.45);
+  --rb-promo-h: 480px;
+  --rb-promo-content-width: 620px;
+
+  position: relative;
+  width: 100%;
+  min-height: var(--rb-promo-h);
+  display: flex;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ---- Media ---- */
+.rb-promo__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.rb-promo__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--rb-promo-focal, center);
+  display: block;
+}
+.rb-promo__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, var(--rb-promo-gradient) 0%, rgba(0, 0, 0, 0) 60%),
+    var(--rb-promo-overlay);
+  z-index: 1;
+}
+
+/* ---- Content ---- */
+.rb-promo__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.rb-promo[data-valign='top'] .rb-promo__inner {
+  justify-content: flex-start;
+}
+.rb-promo[data-valign='center'] .rb-promo__inner {
+  justify-content: center;
+}
+.rb-promo[data-valign='bottom'] .rb-promo__inner {
+  justify-content: flex-end;
+}
+
+.rb-promo__content {
+  display: flex;
+  flex-direction: column;
+  max-width: var(--rb-promo-content-width);
+}
+.rb-promo[data-align='left'] .rb-promo__content {
+  align-items: flex-start;
+  text-align: left;
+  margin-right: auto;
+}
+.rb-promo[data-align='center'] .rb-promo__content {
+  align-items: center;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.rb-promo[data-align='right'] .rb-promo__content {
+  align-items: flex-end;
+  text-align: right;
+  margin-left: auto;
+}
+
+.rb-promo__heading {
+  margin: 0;
+  font-family: var(--rb-font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--rb-promo-heading);
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.04;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+.rb-promo__text {
+  margin: 1rem 0 0;
+  font-family: var(--rb-font-body);
+  color: var(--rb-promo-text);
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  line-height: 1.6;
+  max-width: 48ch;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.25);
+}
+.rb-promo__cta {
+  --rb-cta-bg: var(--rb-promo-btn-bg);
+  --rb-cta-text: var(--rb-promo-btn-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.75rem;
+  font-family: var(--rb-font-body);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1rem 2.25rem;
+  background: var(--rb-cta-bg);
+  color: var(--rb-cta-text);
+  border: 1.5px solid var(--rb-cta-bg);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.45);
+}
+.rb-promo__cta svg {
+  width: 1.05em;
+  height: 1.05em;
+  transition: transform 0.25s ease;
+}
+.rb-promo__cta:hover {
+  transform: translateY(-2px);
+}
+.rb-promo__cta:hover svg {
+  transform: translateX(4px);
+}
+.rb-promo__cta--outline {
+  background: transparent;
+  color: var(--rb-cta-text);
+  border-color: var(--rb-cta-text);
+}
+.rb-promo__cta--outline:hover {
+  background: var(--rb-cta-text);
+  color: var(--rb-cta-bg);
+}
+
+/* ---- Mobile ---- */
+@media screen and (max-width: 749px) {
+  .rb-promo {
+    --rb-promo-h: 380px;
+  }
+  .rb-promo__content {
+    max-width: 100%;
+  }
+  .rb-promo[data-btn-fullwidth='true'] .rb-promo__cta {
+    width: 100%;
+    justify-content: center;
+  }
+  /* Soften the directional gradient into a bottom one for mobile legibility */
+  .rb-promo__media::after {
+    background:
+      linear-gradient(to top, var(--rb-promo-gradient) 0%, rgba(0, 0, 0, 0) 60%),
+      var(--rb-promo-overlay);
+  }
+}

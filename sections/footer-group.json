@@ -11,25 +11,54 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
-    "footer": {
-      "type": "footer",
+    "rb_footer": {
+      "type": "rb-footer",
+      "blocks": {
+        "menu_shop": {
+          "type": "menu",
+          "settings": {
+            "heading": "Shop",
+            "menu": "footer"
+          }
+        },
+        "menu_company": {
+          "type": "menu",
+          "settings": {
+            "heading": "Company",
+            "menu": "footer"
+          }
+        },
+        "menu_help": {
+          "type": "menu",
+          "settings": {
+            "heading": "Help",
+            "menu": "footer"
+          }
+        }
+      },
+      "block_order": [
+        "menu_shop",
+        "menu_company",
+        "menu_help"
+      ],
       "settings": {
-        "color_scheme": "scheme-1",
-        "newsletter_enable": true,
-        "newsletter_heading": "Subscribe to our emails",
-        "enable_follow_on_shop": true,
+        "logo_width": 150,
+        "tagline": "Built by ride. Worn for life.",
         "show_social": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true,
-        "payment_enable": true,
-        "show_policy": true,
-        "margin_top": 0,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "show_newsletter": true,
+        "newsletter_heading": "Stay in the loop",
+        "newsletter_text": "Get updates on new drops, stories and more.",
+        "newsletter_placeholder": "Enter your email",
+        "newsletter_button_label": "Subscribe",
+        "copyright_text": "All rights reserved.",
+        "show_policies": true,
+        "color_scheme": "scheme-4",
+        "padding_top": 60,
+        "padding_bottom": 40
       }
     }
   },
   "order": [
-    "footer"
+    "rb_footer"
   ]
 }

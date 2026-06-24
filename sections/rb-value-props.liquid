@@ -1,0 +1,233 @@
+{%- comment -%}
+  Value props strip — Rough Bobber
+  A row of brand value propositions (icon + title + short text), with an optional
+  "brand vibe" highlight block. Blocks-based and fully responsive.
+
+  Conventions (conventions.md): static CSS in assets/rb-value-props.css; only
+  Liquid-driven values in the {% style %} block; color_scheme (+ no per-colour
+  overrides needed here); Dawn .section-{id}-padding; .page-width; brand fonts.
+{%- endcomment -%}
+
+{{ 'rb-value-props.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign uid = 'rb-value-props-' | append: section.id
+  assign cols = section.blocks.size
+  if cols == 0
+    assign cols = 1
+  endif
+-%}
+
+{%- style -%}
+  #{{ uid }} {
+    --rb-vp-columns: {{ cols }};
+    --rb-vp-icon-size: {{ s.icon_size }}px;
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ s.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ s.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ s.padding_top }}px;
+      padding-bottom: {{ s.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div id="{{ uid }}" class="rb-value-props color-{{ s.color_scheme }} gradient">
+  <div class="page-width section-{{ section.id }}-padding">
+    <div class="rb-value-props__grid">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        {%- case block.type -%}
+          {%- when 'vibe' -%}
+            <div class="rb-value-props__item rb-value-props__item--vibe" {{ block.shopify_attributes }}>
+              {%- if b.image != blank -%}
+                <img
+                  class="rb-value-props__icon"
+                  src="{{ b.image | image_url: width: 120 }}"
+                  srcset="{{ b.image | image_url: width: 120 }} 1x, {{ b.image | image_url: width: 240 }} 2x"
+                  width="{{ b.image.width }}"
+                  height="{{ b.image.height }}"
+                  alt="{{ b.image.alt | default: b.title | escape }}"
+                  loading="lazy"
+                >
+              {%- endif -%}
+              {%- if b.title != blank -%}
+                <p class="rb-value-props__vibe-title">{{ b.title }}</p>
+              {%- endif -%}
+              {%- if b.line_1 != blank -%}
+                <p class="rb-value-props__vibe-line">{{ b.line_1 }}</p>
+              {%- endif -%}
+              {%- if b.line_2 != blank -%}
+                <p class="rb-value-props__vibe-line">{{ b.line_2 }}</p>
+              {%- endif -%}
+            </div>
+          {%- else -%}
+            <div class="rb-value-props__item" {{ block.shopify_attributes }}>
+              {%- if b.icon != blank -%}
+                <img
+                  class="rb-value-props__icon"
+                  src="{{ b.icon | image_url: width: 120 }}"
+                  srcset="{{ b.icon | image_url: width: 120 }} 1x, {{ b.icon | image_url: width: 240 }} 2x"
+                  width="{{ b.icon.width }}"
+                  height="{{ b.icon.height }}"
+                  alt="{{ b.icon.alt | default: b.title | escape }}"
+                  loading="lazy"
+                >
+              {%- endif -%}
+              {%- if b.title != blank -%}
+                <h3 class="rb-value-props__title">{{ b.title }}</h3>
+              {%- endif -%}
+              {%- if b.text != blank -%}
+                <p class="rb-value-props__text">{{ b.text }}</p>
+              {%- endif -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.rb_value_props.name",
+  "tag": "section",
+  "class": "section-rb-value-props",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "t:sections.rb_value_props.settings.icon_size.label",
+      "min": 24,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 44
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_value_props.settings.header_colors.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-4"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "t:sections.rb_value_props.blocks.value.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "t:sections.rb_value_props.blocks.value.settings.icon.label",
+          "info": "t:sections.rb_value_props.blocks.value.settings.icon.info"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.rb_value_props.blocks.value.settings.title.label",
+          "default": "Built by Ride"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:sections.rb_value_props.blocks.value.settings.text.label",
+          "default": "Inspired by the ride, made to last."
+        }
+      ]
+    },
+    {
+      "type": "vibe",
+      "name": "t:sections.rb_value_props.blocks.vibe.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.rb_value_props.blocks.vibe.settings.image.label",
+          "info": "t:sections.rb_value_props.blocks.vibe.settings.image.info"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.rb_value_props.blocks.vibe.settings.title.label",
+          "default": "Brand Vibe"
+        },
+        {
+          "type": "text",
+          "id": "line_1",
+          "label": "t:sections.rb_value_props.blocks.vibe.settings.line_1.label",
+          "default": "Raw · Authentic · Timeless"
+        },
+        {
+          "type": "text",
+          "id": "line_2",
+          "label": "t:sections.rb_value_props.blocks.vibe.settings.line_2.label",
+          "default": "Biker Lifestyle"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.rb_value_props.presets.name",
+      "blocks": [
+        {
+          "type": "value",
+          "settings": { "title": "Built by Ride", "text": "Inspired by the ride, made to last." }
+        },
+        {
+          "type": "value",
+          "settings": { "title": "Ride Free", "text": "Freedom on two wheels." }
+        },
+        {
+          "type": "value",
+          "settings": { "title": "Stay Rough", "text": "For those who keep it real." }
+        },
+        {
+          "type": "value",
+          "settings": { "title": "Built to Last", "text": "Quality gear that goes the distance." }
+        },
+        {
+          "type": "vibe",
+          "settings": { "title": "Brand Vibe", "line_1": "Raw · Authentic · Timeless", "line_2": "Biker Lifestyle" }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

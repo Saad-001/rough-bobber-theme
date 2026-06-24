@@ -1,0 +1,356 @@
+{%- comment -%}
+  Promo banner — Rough Bobber ("For the ones who ride")
+  A fixed-height, full-bleed image banner with a heading, optional text and one
+  button overlaid. Lighter than the full-screen hero (rb-banner).
+
+  Conventions (conventions.md): static CSS in assets/rb-promo-banner.css; only
+  Liquid-driven values in the {% style %} block; color_scheme (+ optional button
+  overrides per §3.4); Dawn .section-{id}-padding; .page-width; brand fonts.
+{%- endcomment -%}
+
+{{ 'rb-promo-banner.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign uid = 'rb-promo-banner-' | append: section.id
+
+  assign desk = s.image
+  assign mob = s.image_mobile
+  if mob == blank
+    assign mob = desk
+  endif
+
+  case s.height
+    when 'small'
+      assign h = '360px'
+    when 'large'
+      assign h = '640px'
+    else
+      assign h = '480px'
+  endcase
+
+  assign overlay_alpha = s.overlay_opacity | divided_by: 100.0
+  assign overlay_rgba = s.overlay_color | color_modify: 'alpha', overlay_alpha
+
+  assign gradient_alpha = s.gradient_opacity | divided_by: 100.0
+  assign gradient_rgba = '#000000' | color_modify: 'alpha', gradient_alpha
+-%}
+
+{%- style -%}
+  #{{ uid }} {
+    --rb-promo-h: {{ h }};
+    --rb-promo-overlay: {{ overlay_rgba }};
+    --rb-promo-gradient: {{ gradient_rgba }};
+    --rb-promo-content-width: {{ s.content_width }}px;
+    --rb-promo-focal: {{ s.focal_point }};
+    {%- if s.heading_color != blank %}--rb-promo-heading: {{ s.heading_color }};{% endif -%}
+    {%- if s.text_color != blank %}--rb-promo-text: {{ s.text_color }};{% endif -%}
+    {%- if s.button_bg != blank %}--rb-promo-btn-bg: {{ s.button_bg }};{% endif -%}
+    {%- if s.button_text_color != blank %}--rb-promo-btn-text: {{ s.button_text_color }};{% endif -%}
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ s.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ s.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ s.padding_top }}px;
+      padding-bottom: {{ s.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div
+  id="{{ uid }}"
+  class="rb-promo color-{{ s.color_scheme }} gradient"
+  data-valign="{{ s.content_vertical }}"
+  data-align="{{ s.text_align }}"
+  data-btn-fullwidth="{% if s.button_full_width_mobile %}true{% else %}false{% endif %}"
+>
+  <div class="rb-promo__media">
+    {%- if desk != blank -%}
+      {%- assign d_alt = desk.alt | default: s.heading | escape -%}
+      <picture>
+        {%- if mob != blank -%}
+          <source
+            media="(max-width: 749px)"
+            srcset="{{ mob | image_url: width: 750 }} 750w, {{ mob | image_url: width: 1100 }} 1100w"
+            sizes="100vw"
+          >
+        {%- endif -%}
+        <img
+          class="rb-promo__img"
+          src="{{ desk | image_url: width: 1500 }}"
+          srcset="
+            {{ desk | image_url: width: 1100 }} 1100w,
+            {{ desk | image_url: width: 1500 }} 1500w,
+            {{ desk | image_url: width: 2200 }} 2200w,
+            {{ desk | image_url: width: 2800 }} 2800w"
+          sizes="100vw"
+          width="{{ desk.width }}"
+          height="{{ desk.height }}"
+          alt="{{ d_alt }}"
+          loading="lazy"
+        >
+      </picture>
+    {%- else -%}
+      {{ 'lifestyle-2' | placeholder_svg_tag: 'rb-promo__img rb-promo__img--placeholder' }}
+    {%- endif -%}
+  </div>
+
+  <div class="rb-promo__inner page-width section-{{ section.id }}-padding">
+    <div class="rb-promo__content">
+      {%- if s.heading != blank -%}
+        <h2 class="rb-promo__heading">{{ s.heading }}</h2>
+      {%- endif -%}
+
+      {%- if s.text != blank -%}
+        <div class="rb-promo__text">{{ s.text }}</div>
+      {%- endif -%}
+
+      {%- if s.button_label != blank -%}
+        <a
+          href="{{ s.button_link | default: '#' }}"
+          class="rb-promo__cta{% if s.button_style == 'outline' %} rb-promo__cta--outline{% endif %}"
+        >
+          {{ s.button_label }}
+          {%- if s.button_arrow -%}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          {%- endif -%}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.rb_promo_banner.name",
+  "tag": "section",
+  "class": "section-rb-promo-banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.rb_promo_banner.settings.header_image.content"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.rb_promo_banner.settings.image.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "t:sections.rb_promo_banner.settings.image_mobile.label"
+    },
+    {
+      "type": "select",
+      "id": "focal_point",
+      "label": "t:sections.rb_promo_banner.settings.focal_point.label",
+      "options": [
+        { "value": "center", "label": "t:sections.rb_promo_banner.settings.focal_point.options__center" },
+        { "value": "top", "label": "t:sections.rb_promo_banner.settings.focal_point.options__top" },
+        { "value": "bottom", "label": "t:sections.rb_promo_banner.settings.focal_point.options__bottom" },
+        { "value": "left", "label": "t:sections.rb_promo_banner.settings.focal_point.options__left" },
+        { "value": "right", "label": "t:sections.rb_promo_banner.settings.focal_point.options__right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "t:sections.rb_promo_banner.settings.height.label",
+      "options": [
+        { "value": "small", "label": "t:sections.rb_promo_banner.settings.height.options__small" },
+        { "value": "medium", "label": "t:sections.rb_promo_banner.settings.height.options__medium" },
+        { "value": "large", "label": "t:sections.rb_promo_banner.settings.height.options__large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_promo_banner.settings.header_text.content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.rb_promo_banner.settings.heading.label",
+      "default": "For the ones who ride"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:sections.rb_promo_banner.settings.text.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_promo_banner.settings.header_button.content"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.rb_promo_banner.settings.button_label.label",
+      "default": "Explore the collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:sections.rb_promo_banner.settings.button_link.label"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "t:sections.rb_promo_banner.settings.button_style.label",
+      "options": [
+        { "value": "solid", "label": "t:sections.rb_promo_banner.settings.button_style.options__solid" },
+        { "value": "outline", "label": "t:sections.rb_promo_banner.settings.button_style.options__outline" }
+      ],
+      "default": "outline"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_arrow",
+      "label": "t:sections.rb_promo_banner.settings.button_arrow.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "button_full_width_mobile",
+      "label": "t:sections.rb_promo_banner.settings.button_full_width_mobile.label",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_promo_banner.settings.header_layout.content"
+    },
+    {
+      "type": "select",
+      "id": "content_vertical",
+      "label": "t:sections.rb_promo_banner.settings.content_vertical.label",
+      "options": [
+        { "value": "top", "label": "t:sections.rb_promo_banner.settings.content_vertical.options__top" },
+        { "value": "center", "label": "t:sections.rb_promo_banner.settings.content_vertical.options__center" },
+        { "value": "bottom", "label": "t:sections.rb_promo_banner.settings.content_vertical.options__bottom" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "t:sections.rb_promo_banner.settings.text_align.label",
+      "options": [
+        { "value": "left", "label": "t:sections.rb_promo_banner.settings.text_align.options__left" },
+        { "value": "center", "label": "t:sections.rb_promo_banner.settings.text_align.options__center" },
+        { "value": "right", "label": "t:sections.rb_promo_banner.settings.text_align.options__right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "label": "t:sections.rb_promo_banner.settings.content_width.label",
+      "min": 360,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "default": 620
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_promo_banner.settings.header_colors.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-4"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.rb_promo_banner.settings.color_overrides_info.content"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "t:sections.rb_promo_banner.settings.heading_color.label"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.rb_promo_banner.settings.text_color.label"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "t:sections.rb_promo_banner.settings.button_bg.label"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "t:sections.rb_promo_banner.settings.button_text_color.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_promo_banner.settings.header_overlay.content"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "t:sections.rb_promo_banner.settings.overlay_color.label",
+      "default": "#121315"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "t:sections.rb_promo_banner.settings.overlay_opacity.label",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "gradient_opacity",
+      "label": "t:sections.rb_promo_banner.settings.gradient_opacity.label",
+      "info": "t:sections.rb_promo_banner.settings.gradient_opacity.info",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 55
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.rb_promo_banner.presets.name"
+    }
+  ]
+}
+{% endschema %}

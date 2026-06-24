@@ -9,46 +9,313 @@
  */
 {
   "sections": {
-    "rb_banner_fCfpCK": {
-      "type": "rb-banner",
-      "name": "t:sections.rb_banner.presets.name",
+    "rb_slideshow_3HYGfC": {
+      "type": "rb-slideshow",
+      "blocks": {
+        "slide_XfVrb6": {
+          "type": "slide",
+          "settings": {
+            "media_type": "image",
+            "image": "shopify://shop_images/Homepage_Slider_One_RB.webp",
+            "focal_point": "center",
+            "slide_link": "",
+            "eyebrow": "",
+            "heading": "Built by Ride",
+            "heading_2": "Worn for Life",
+            "body": "<p>Raw, authentic, timeless gear for the biker lifestyle. Dirt. Speed. Glory.</p>",
+            "button_label": "SHOP T-SHIRTS",
+            "button_link": "",
+            "button_style": "solid",
+            "button_arrow": true,
+            "button_2_label": "EXPLORE COLLECTIONS",
+            "button_2_link": "",
+            "button_2_style": "outline",
+            "button_2_arrow": true
+          }
+        },
+        "slide_NBCaW8": {
+          "type": "slide",
+          "settings": {
+            "media_type": "image",
+            "image": "shopify://shop_images/Homepage_Slider_Rough_Bobber_Clasic_Tee_White_Black.webp",
+            "focal_point": "center",
+            "slide_link": "",
+            "eyebrow": "",
+            "heading": "Premium Motorcycle",
+            "heading_2": "Apparel For Real Riders",
+            "body": "<p>Raw, authentic, timeless gear for the biker lifestyle. Dirt. Speed. Glory.</p>",
+            "button_label": "SHOP T-SHIRTS",
+            "button_link": "",
+            "button_style": "solid",
+            "button_arrow": true,
+            "button_2_label": "EXPLORE COLLECTIONS",
+            "button_2_link": "",
+            "button_2_style": "outline",
+            "button_2_arrow": true
+          }
+        },
+        "slide_Fdjtrt": {
+          "type": "slide",
+          "settings": {
+            "media_type": "image",
+            "image": "shopify://shop_images/Homepage_Slider_Rough_Bobber_Skul_Tee_Black_American_Made.webp",
+            "focal_point": "center",
+            "slide_link": "",
+            "eyebrow": "",
+            "heading": "Built For The",
+            "heading_2": "American Road",
+            "body": "<p>Raw, authentic, timeless gear for the biker lifestyle. Dirt. Speed. Glory.</p>",
+            "button_label": "Shop t-shirt",
+            "button_link": "",
+            "button_style": "solid",
+            "button_arrow": true,
+            "button_2_label": "explore collections",
+            "button_2_link": "",
+            "button_2_style": "outline",
+            "button_2_arrow": true
+          }
+        }
+      },
+      "block_order": [
+        "slide_XfVrb6",
+        "slide_NBCaW8",
+        "slide_Fdjtrt"
+      ],
+      "name": "t:sections.rb_slideshow.presets.name",
       "settings": {
-        "image": "shopify://shop_images/Homepage_Slider_One_RB.webp",
-        "focal_point": "center",
+        "autoplay": true,
+        "autoplay_speed": 4,
+        "show_arrows": true,
+        "show_dots": true,
         "priority_loading": true,
         "height": "full",
         "subtract_header": true,
-        "eyebrow": "",
-        "heading": "Built by Ride. Worn for Life.",
-        "body": "<p>Raw, authentic, timeless gear for the biker lifestyle. Dirt. Speed. Glory.</p>",
-        "button_label": "SHOP T-SHIRTS",
-        "button_link": "",
-        "button_style": "solid",
-        "button_arrow": false,
-        "button_2_label": "EXPLORE COLLECTIONS",
-        "button_2_link": "",
-        "button_2_style": "outline",
-        "button_2_arrow": true,
-        "button_full_width_mobile": false,
         "content_vertical": "center",
         "text_align": "left",
-        "content_width": 680,
-        "color_scheme": "scheme-5",
+        "content_width": 640,
+        "button_full_width_mobile": false,
+        "color_scheme": "",
         "heading_color": "",
         "text_color": "",
-        "button_bg": "#b3916b",
-        "button_text_color": "#121315",
+        "button_bg": "#C5A572",
+        "button_text_color": "#121211",
         "button_2_bg": "",
-        "button_2_text_color": "",
-        "overlay_color": "#c5b8a8",
-        "overlay_opacity": 10,
+        "button_2_text_color": "#F4EFE4",
+        "overlay_color": "#121315",
+        "overlay_opacity": 30,
         "gradient_opacity": 35,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "rb_value_props": {
+      "type": "rb-value-props",
+      "blocks": {
+        "vp1": {
+          "type": "value",
+          "settings": {
+            "icon": "shopify://shop_images/Homepage_icon_Builtbyride_RB.webp",
+            "title": "Built by Ride",
+            "text": "Inspired by the ride, made to last."
+          }
+        },
+        "vp2": {
+          "type": "value",
+          "settings": {
+            "icon": "shopify://shop_images/Homepage_icon_RideFree_RB.webp",
+            "title": "Ride Free",
+            "text": "Freedom on two wheels."
+          }
+        },
+        "vp3": {
+          "type": "value",
+          "settings": {
+            "icon": "shopify://shop_images/Homepage_icon_StayRough_RB.webp",
+            "title": "Stay Rough",
+            "text": "For those who keep it real."
+          }
+        },
+        "vp4": {
+          "type": "value",
+          "settings": {
+            "icon": "shopify://shop_images/Homepage_icon_Builttolast_RB.webp",
+            "title": "Built to Last",
+            "text": "Quality gear that goes the distance."
+          }
+        },
+        "vp5": {
+          "type": "vibe",
+          "settings": {
+            "title": "Brand Vibe",
+            "line_1": "Raw · Authentic · Timeless",
+            "line_2": "Biker Lifestyle"
+          }
+        }
+      },
+      "block_order": [
+        "vp1",
+        "vp2",
+        "vp3",
+        "vp4",
+        "vp5"
+      ],
+      "settings": {
+        "icon_size": 52,
+        "color_scheme": "scheme-4",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "rb_product_carousel": {
+      "type": "rb-product-carousel",
+      "settings": {
+        "heading": "Shop T-Shirts",
+        "collection": "frontpage",
+        "products_to_show": 10,
+        "products_per_row": 5,
+        "image_ratio": "portrait",
+        "show_swatches": true,
+        "show_badges": true,
+        "show_view_all": true,
+        "view_all_label": "View all",
+        "button_link": "",
+        "color_scheme": "scheme-2",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "rb_promo_banner": {
+      "type": "rb-promo-banner",
+      "name": "Promo banner 1",
+      "settings": {
+        "image": "shopify://shop_images/Homepage_Banner_Topitoff_Ride_Complete_RB.jpg",
+        "focal_point": "center",
+        "height": "small",
+        "heading": "For the ones who love to go out riding",
+        "text": "",
+        "button_label": "Explore the collection",
+        "button_link": "",
+        "button_style": "outline",
+        "button_arrow": false,
+        "button_full_width_mobile": false,
+        "content_vertical": "center",
+        "text_align": "center",
+        "content_width": 620,
+        "color_scheme": "scheme-4",
+        "heading_color": "",
+        "text_color": "",
+        "button_bg": "",
+        "button_text_color": "",
+        "overlay_color": "#121315",
+        "overlay_opacity": 25,
+        "gradient_opacity": 55,
         "padding_top": 0,
         "padding_bottom": 0
       }
+    },
+    "rb_product_carousel_689Hrt": {
+      "type": "rb-product-carousel",
+      "name": "t:sections.rb_product_carousel.presets.name",
+      "settings": {
+        "heading": "Shop Hoodies",
+        "collection": "",
+        "products_to_show": 10,
+        "products_per_row": 5,
+        "image_ratio": "square",
+        "show_swatches": true,
+        "show_badges": true,
+        "show_view_all": true,
+        "view_all_label": "View all",
+        "button_link": "",
+        "color_scheme": "",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "rb_promo_banner_jtJnLd": {
+      "type": "rb-promo-banner",
+      "name": "Promo banner 2",
+      "settings": {
+        "image": "shopify://shop_images/Homepage_Banner_TheRoad_is_home_RB_01_1400_600.webp",
+        "focal_point": "center",
+        "height": "medium",
+        "heading": "For the ones who ride",
+        "text": "",
+        "button_label": "Explore the collection",
+        "button_link": "",
+        "button_style": "solid",
+        "button_arrow": false,
+        "button_full_width_mobile": false,
+        "content_vertical": "bottom",
+        "text_align": "right",
+        "content_width": 600,
+        "color_scheme": "scheme-2",
+        "heading_color": "#ffffff",
+        "text_color": "",
+        "button_bg": "",
+        "button_text_color": "#ffffff",
+        "overlay_color": "#ffffff",
+        "overlay_opacity": 10,
+        "gradient_opacity": 25,
+        "padding_top": 0,
+        "padding_bottom": 40
+      }
+    },
+    "rb_product_carousel_4aWhdW": {
+      "type": "rb-product-carousel",
+      "name": "t:sections.rb_product_carousel.presets.name",
+      "settings": {
+        "heading": "Shop Hats and Beanies",
+        "collection": "",
+        "products_to_show": 10,
+        "products_per_row": 5,
+        "image_ratio": "square",
+        "show_swatches": true,
+        "show_badges": true,
+        "show_view_all": true,
+        "view_all_label": "View all",
+        "button_link": "",
+        "color_scheme": "",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "rb_about": {
+      "type": "rb-about",
+      "settings": {
+        "image_left": "shopify://shop_images/Rough_Bobber_-_illustrationImage_7.png",
+        "image_right": "shopify://shop_images/Homepage_Slider_One_RB.webp",
+        "media_height": 260,
+        "image_radius": 10,
+        "eyebrow": "",
+        "heading": "About Rough Bobber",
+        "body": "<p>Rough Bobber is more than a brand. It's a way of life. Inspired by the people, the machines and the open road. Our tees and apparel are built to last — just like the stories you collect along the way.</p>",
+        "text_align": "left",
+        "button_label": "Our story",
+        "button_link": "",
+        "button_style": "solid",
+        "button_full_width_mobile": false,
+        "color_scheme": "scheme-2",
+        "button_bg": "#b3916b",
+        "button_text_color": "",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "178208004365a1dd36": {
+      "type": "_blocks",
+      "settings": {}
     }
   },
   "order": [
-    "rb_banner_fCfpCK"
+    "rb_slideshow_3HYGfC",
+    "rb_value_props",
+    "rb_product_carousel",
+    "rb_promo_banner",
+    "rb_product_carousel_689Hrt",
+    "rb_promo_banner_jtJnLd",
+    "rb_product_carousel_4aWhdW",
+    "rb_about",
+    "178208004365a1dd36"
   ]
 }

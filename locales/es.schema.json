@@ -373,6 +373,357 @@
     }
   },
   "sections": {
+    "rb_footer": {
+      "name": "Pie de página",
+      "presets": {
+        "name": "Pie de página"
+      },
+      "settings": {
+        "header_brand": {
+          "content": "Marca"
+        },
+        "logo": {
+          "label": "Logo del pie de página",
+          "info": "Si se deja vacío, se usa el logo del tema y luego el nombre de la tienda."
+        },
+        "logo_width": {
+          "label": "Ancho del logo"
+        },
+        "tagline": {
+          "label": "Eslogan"
+        },
+        "show_social": {
+          "label": "Mostrar iconos sociales",
+          "info": "Configura los enlaces en Configuración del tema → Redes sociales."
+        },
+        "header_newsletter": {
+          "content": "Boletín"
+        },
+        "show_newsletter": {
+          "label": "Mostrar boletín"
+        },
+        "newsletter_heading": {
+          "label": "Título"
+        },
+        "newsletter_text": {
+          "label": "Texto"
+        },
+        "newsletter_placeholder": {
+          "label": "Marcador del campo de correo"
+        },
+        "newsletter_button_label": {
+          "label": "Texto del botón"
+        },
+        "header_bottom": {
+          "content": "Barra inferior"
+        },
+        "copyright_text": {
+          "label": "Texto de copyright adicional"
+        },
+        "show_policies": {
+          "label": "Mostrar enlaces de políticas",
+          "info": "Muestra las políticas de tu tienda (Términos, Privacidad, etc.). Configúralas en Configuración → Políticas."
+        },
+        "header_colors": {
+          "content": "Colores"
+        }
+      },
+      "blocks": {
+        "menu": {
+          "name": "Columna de menú",
+          "settings": {
+            "heading": {
+              "label": "Título"
+            },
+            "menu": {
+              "label": "Menú"
+            }
+          }
+        }
+      }
+    },
+    "rb_about": {
+      "name": "Acerca de",
+      "presets": {
+        "name": "Acerca de"
+      },
+      "settings": {
+        "header_images": {
+          "content": "Imágenes"
+        },
+        "image_left": {
+          "label": "Imagen izquierda (opcional)"
+        },
+        "image_right": {
+          "label": "Imagen derecha (opcional)"
+        },
+        "media_height": {
+          "label": "Altura de la imagen",
+          "info": "Ambas imágenes comparten esta altura; la imagen derecha es más ancha que la izquierda."
+        },
+        "image_radius": {
+          "label": "Radio de las esquinas de la imagen"
+        },
+        "header_text": {
+          "content": "Texto"
+        },
+        "eyebrow": {
+          "label": "Antetítulo"
+        },
+        "heading": {
+          "label": "Título"
+        },
+        "body": {
+          "label": "Texto del cuerpo"
+        },
+        "text_align": {
+          "label": "Alineación del texto",
+          "options__left": "Izquierda",
+          "options__center": "Centro"
+        },
+        "header_button": {
+          "content": "Botón"
+        },
+        "button_label": {
+          "label": "Texto del botón"
+        },
+        "button_link": {
+          "label": "Enlace del botón"
+        },
+        "button_style": {
+          "label": "Estilo del botón",
+          "options__solid": "Relleno",
+          "options__outline": "Contorno"
+        },
+        "button_full_width_mobile": {
+          "label": "Botón de ancho completo en móvil"
+        },
+        "header_colors": {
+          "content": "Colores"
+        },
+        "color_overrides_info": {
+          "content": "Los colores del botón provienen del esquema de color de arriba. Usa las anulaciones opcionales de abajo para ajustarlos."
+        },
+        "button_bg": {
+          "label": "Anulación del fondo del botón (opcional)"
+        },
+        "button_text_color": {
+          "label": "Anulación del texto del botón (opcional)"
+        }
+      }
+    },
+    "rb_promo_banner": {
+      "name": "Banner promocional",
+      "presets": {
+        "name": "Banner promocional"
+      },
+      "settings": {
+        "header_image": {
+          "content": "Imagen"
+        },
+        "image": {
+          "label": "Imagen – escritorio"
+        },
+        "image_mobile": {
+          "label": "Imagen – móvil (opcional)"
+        },
+        "focal_point": {
+          "label": "Enfoque de la imagen",
+          "options__center": "Centro",
+          "options__top": "Arriba",
+          "options__bottom": "Abajo",
+          "options__left": "Izquierda",
+          "options__right": "Derecha"
+        },
+        "height": {
+          "label": "Altura del banner",
+          "options__small": "Pequeña",
+          "options__medium": "Mediana",
+          "options__large": "Grande"
+        },
+        "header_text": {
+          "content": "Texto"
+        },
+        "heading": {
+          "label": "Título"
+        },
+        "text": {
+          "label": "Texto"
+        },
+        "header_button": {
+          "content": "Botón"
+        },
+        "button_label": {
+          "label": "Texto del botón"
+        },
+        "button_link": {
+          "label": "Enlace del botón"
+        },
+        "button_style": {
+          "label": "Estilo del botón",
+          "options__solid": "Relleno",
+          "options__outline": "Contorno"
+        },
+        "button_arrow": {
+          "label": "Mostrar flecha en el botón"
+        },
+        "button_full_width_mobile": {
+          "label": "Botón de ancho completo en móvil"
+        },
+        "header_layout": {
+          "content": "Ubicación"
+        },
+        "content_vertical": {
+          "label": "Ubicación vertical",
+          "options__top": "Arriba",
+          "options__center": "Centro",
+          "options__bottom": "Abajo"
+        },
+        "text_align": {
+          "label": "Alineación",
+          "options__left": "Izquierda",
+          "options__center": "Centro",
+          "options__right": "Derecha"
+        },
+        "content_width": {
+          "label": "Ancho máximo del texto"
+        },
+        "header_colors": {
+          "content": "Colores"
+        },
+        "color_overrides_info": {
+          "content": "Los colores de texto y botón provienen del esquema de color de arriba. Usa las anulaciones opcionales de abajo para ajustar el contraste sobre la imagen."
+        },
+        "heading_color": {
+          "label": "Anulación del título (opcional)"
+        },
+        "text_color": {
+          "label": "Anulación del texto (opcional)"
+        },
+        "button_bg": {
+          "label": "Anulación del fondo del botón (opcional)"
+        },
+        "button_text_color": {
+          "label": "Anulación del texto del botón (opcional)"
+        },
+        "header_overlay": {
+          "content": "Superposición de imagen"
+        },
+        "overlay_color": {
+          "label": "Color de superposición"
+        },
+        "overlay_opacity": {
+          "label": "Intensidad de superposición (toda la imagen)"
+        },
+        "gradient_opacity": {
+          "label": "Gradiente de superposición (hacia el texto)",
+          "info": "Oscurece el lateral/parte inferior detrás del texto para mejorar la legibilidad."
+        }
+      }
+    },
+    "rb_product_carousel": {
+      "name": "Carrusel de productos",
+      "presets": {
+        "name": "Carrusel de productos"
+      },
+      "settings": {
+        "heading": {
+          "label": "Título"
+        },
+        "collection": {
+          "label": "Colección"
+        },
+        "products_to_show": {
+          "label": "Máximo de productos a mostrar"
+        },
+        "products_per_row": {
+          "label": "Tarjetas visibles (escritorio)",
+          "info": "En tablet se muestran 3 y en móvil 2."
+        },
+        "image_ratio": {
+          "label": "Proporción de la imagen",
+          "options__square": "Cuadrada (1:1)",
+          "options__portrait": "Vertical (4:5)",
+          "options__landscape": "Horizontal (4:3)",
+          "options__contain": "Mostrar imagen completa (contain)"
+        },
+        "header_card": {
+          "content": "Tarjeta"
+        },
+        "show_swatches": {
+          "label": "Mostrar muestras de color",
+          "info": "Muestra las muestras de las opciones de producto que las tengan configuradas."
+        },
+        "show_badges": {
+          "label": "Mostrar etiquetas de oferta / agotado"
+        },
+        "header_view_all": {
+          "content": "Botón \"Ver todo\""
+        },
+        "show_view_all": {
+          "label": "Mostrar el botón \"Ver todo\""
+        },
+        "view_all_label": {
+          "label": "Texto del botón"
+        },
+        "button_link": {
+          "label": "Enlace del botón",
+          "info": "Déjalo vacío para enlazar a la colección seleccionada."
+        },
+        "header_colors": {
+          "content": "Colores"
+        }
+      }
+    },
+    "rb_value_props": {
+      "name": "Franja de valores",
+      "presets": {
+        "name": "Franja de valores"
+      },
+      "settings": {
+        "icon_size": {
+          "label": "Tamaño del icono"
+        },
+        "header_colors": {
+          "content": "Colores"
+        }
+      },
+      "blocks": {
+        "value": {
+          "name": "Valor",
+          "settings": {
+            "icon": {
+              "label": "Icono",
+              "info": "Recomendado: un icono lineal pequeño en tu dorado de marca (PNG/SVG)."
+            },
+            "title": {
+              "label": "Título"
+            },
+            "text": {
+              "label": "Texto"
+            }
+          }
+        },
+        "vibe": {
+          "name": "Esencia de marca",
+          "settings": {
+            "image": {
+              "label": "Imagen",
+              "info": "Opcional. Se muestra sobre el texto, como los iconos de las propuestas de valor."
+            },
+            "title": {
+              "label": "Título"
+            },
+            "line_1": {
+              "label": "Línea 1"
+            },
+            "line_2": {
+              "label": "Línea 2"
+            }
+          }
+        }
+      }
+    },
     "rb_banner": {
       "name": "Banner principal",
       "presets": {
@@ -671,7 +1022,11 @@
               "label": "Antetítulo"
             },
             "heading": {
-              "label": "Título"
+              "label": "Título – línea 1",
+              "info": "Las líneas 1 y 2 usan el mismo estilo; cada una se muestra en su propia fila."
+            },
+            "heading_2": {
+              "label": "Título – línea 2"
             },
             "body": {
               "label": "Texto del cuerpo"

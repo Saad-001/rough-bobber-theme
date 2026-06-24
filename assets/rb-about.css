@@ -1,0 +1,136 @@
+/* ============================================================
+   Rough Bobber — About (sections/rb-about.liquid)
+   Image | text | image layout. Static styles only; per-section values
+   come from the {% style %} block scoped to #rb-about-{id}.
+   ============================================================ */
+
+.rb-about__grid {
+  display: grid;
+  grid-template-columns: var(--rb-about-cols, 1fr 1.1fr 1fr);
+  align-items: center;
+  gap: var(--rb-about-gap, 2.5rem);
+}
+
+/* Both images share one height; the column widths (right wider than left)
+   give them their landscape shapes — so the right image is wider than the
+   left at the same height, matching the design. */
+.rb-about__media {
+  position: relative;
+  width: 100%;
+  height: var(--rb-about-media-h, 260px);
+  overflow: hidden;
+  border-radius: var(--rb-about-radius, 0px);
+  background: rgba(var(--color-foreground), 0.06);
+}
+.rb-about__img,
+.rb-about__media svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---- Text column ---- */
+.rb-about__content {
+  display: flex;
+  flex-direction: column;
+  align-items: var(--rb-about-align-items, center);
+  text-align: var(--rb-about-text-align, center);
+}
+.rb-about__eyebrow {
+  margin: 0 0 0.6rem;
+  font-family: var(--rb-font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--rb-gold);
+}
+.rb-about__heading {
+  margin: 0;
+  font-family: var(--rb-font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  color: rgb(var(--color-foreground));
+}
+.rb-about__body {
+  margin: 1.1rem 0 0;
+  font-family: var(--rb-font-body);
+  font-size: 1.125rem;
+  line-height: 1.7;
+  max-width: 46ch;
+  color: rgba(var(--color-foreground), 0.78);
+}
+.rb-about__body > * {
+  margin: 0 0 0.8rem;
+}
+.rb-about__body > *:last-child {
+  margin-bottom: 0;
+}
+.rb-about__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.75rem;
+  font-family: var(--rb-font-body);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 1rem 2.25rem;
+  background: var(--rb-about-btn-bg, rgb(var(--color-button)));
+  color: var(--rb-about-btn-text, rgb(var(--color-button-text)));
+  border: 1.5px solid var(--rb-about-btn-bg, rgb(var(--color-button)));
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
+}
+.rb-about__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -12px rgba(0, 0, 0, 0.5);
+}
+.rb-about__cta--outline {
+  background: transparent;
+  color: var(--rb-about-btn-text, rgb(var(--color-foreground)));
+  border-color: var(--rb-about-btn-text, rgb(var(--color-foreground)));
+}
+
+/* ---- Tablet: text first, images side by side below ---- */
+@media screen and (max-width: 989px) {
+  .rb-about__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .rb-about__content {
+    grid-column: 1 / -1;
+    order: -1;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* ---- Mobile: full stack ---- */
+@media screen and (max-width: 749px) {
+  .rb-about__grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .rb-about__content {
+    align-items: center;
+    text-align: center;
+  }
+  /* Full-width stacked images read better as a consistent landscape than a
+     short fixed-height strip. */
+  .rb-about__media {
+    height: auto;
+    aspect-ratio: 3 / 2;
+  }
+  .rb-about__body {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .rb-about[data-btn-fullwidth='true'] .rb-about__cta {
+    width: 100%;
+    justify-content: center;
+  }
+}

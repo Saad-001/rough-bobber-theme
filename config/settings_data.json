@@ -11,11 +11,12 @@
   "current": {
     "logo": "shopify://shop_images/Logo-05.png",
     "logo_width": 160,
+    "favicon": "shopify://shop_images/Rough_Bobber_-_illustrationImage_7.png",
     "type_header_font": "oswald_n7",
-    "heading_scale": 110,
+    "heading_scale": 100,
     "type_body_font": "assistant_n4",
-    "body_scale": 100,
-    "page_width": 1200,
+    "body_scale": 105,
+    "page_width": 1400,
     "spacing_sections": 0,
     "spacing_grid_horizontal": 8,
     "spacing_grid_vertical": 8,
@@ -30,7 +31,7 @@
     "buttons_shadow_blur": 5,
     "variant_pills_border_thickness": 1,
     "variant_pills_border_opacity": 55,
-    "variant_pills_radius": 40,
+    "variant_pills_radius": 0,
     "variant_pills_shadow_opacity": 0,
     "variant_pills_shadow_horizontal_offset": 0,
     "variant_pills_shadow_vertical_offset": 4,
@@ -189,13 +190,13 @@
       },
       "scheme-5": {
         "settings": {
-          "background": "#C5B8A8",
+          "background": "#c5b8a8",
           "background_gradient": "",
-          "text": "#FFFFFF",
-          "button": "#B3916B",
-          "button_label": "#FFFFFF",
-          "secondary_button_label": "#B3916B",
-          "shadow": "#C5B8A8"
+          "text": "#ffffff",
+          "button": "#b3916b",
+          "button_label": "#ffffff",
+          "secondary_button_label": "#b3916b",
+          "shadow": "#c5b8a8"
         }
       }
     }

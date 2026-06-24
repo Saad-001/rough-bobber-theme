@@ -373,6 +373,357 @@
     }
   },
   "sections": {
+    "rb_footer": {
+      "name": "Footer",
+      "presets": {
+        "name": "Footer"
+      },
+      "settings": {
+        "header_brand": {
+          "content": "Brand"
+        },
+        "logo": {
+          "label": "Footer logo",
+          "info": "Falls back to the theme logo, then the shop name."
+        },
+        "logo_width": {
+          "label": "Logo width"
+        },
+        "tagline": {
+          "label": "Tagline"
+        },
+        "show_social": {
+          "label": "Show social icons",
+          "info": "Set the links under Theme settings → Social media."
+        },
+        "header_newsletter": {
+          "content": "Newsletter"
+        },
+        "show_newsletter": {
+          "label": "Show newsletter"
+        },
+        "newsletter_heading": {
+          "label": "Heading"
+        },
+        "newsletter_text": {
+          "label": "Text"
+        },
+        "newsletter_placeholder": {
+          "label": "Email field placeholder"
+        },
+        "newsletter_button_label": {
+          "label": "Button label"
+        },
+        "header_bottom": {
+          "content": "Bottom bar"
+        },
+        "copyright_text": {
+          "label": "Extra copyright text"
+        },
+        "show_policies": {
+          "label": "Show policy links",
+          "info": "Shows your store policies (Terms, Privacy, etc.). Set them under Settings → Policies."
+        },
+        "header_colors": {
+          "content": "Colors"
+        }
+      },
+      "blocks": {
+        "menu": {
+          "name": "Menu column",
+          "settings": {
+            "heading": {
+              "label": "Heading"
+            },
+            "menu": {
+              "label": "Menu"
+            }
+          }
+        }
+      }
+    },
+    "rb_about": {
+      "name": "About",
+      "presets": {
+        "name": "About"
+      },
+      "settings": {
+        "header_images": {
+          "content": "Images"
+        },
+        "image_left": {
+          "label": "Left image (optional)"
+        },
+        "image_right": {
+          "label": "Right image (optional)"
+        },
+        "media_height": {
+          "label": "Image height",
+          "info": "Both images share this height; the right image is wider than the left."
+        },
+        "image_radius": {
+          "label": "Image corner radius"
+        },
+        "header_text": {
+          "content": "Text"
+        },
+        "eyebrow": {
+          "label": "Eyebrow"
+        },
+        "heading": {
+          "label": "Heading"
+        },
+        "body": {
+          "label": "Body text"
+        },
+        "text_align": {
+          "label": "Text alignment",
+          "options__left": "Left",
+          "options__center": "Center"
+        },
+        "header_button": {
+          "content": "Button"
+        },
+        "button_label": {
+          "label": "Button label"
+        },
+        "button_link": {
+          "label": "Button link"
+        },
+        "button_style": {
+          "label": "Button style",
+          "options__solid": "Solid",
+          "options__outline": "Outline"
+        },
+        "button_full_width_mobile": {
+          "label": "Full-width button on mobile"
+        },
+        "header_colors": {
+          "content": "Colors"
+        },
+        "color_overrides_info": {
+          "content": "Button colors come from the color scheme above. Use the optional overrides below to fine-tune them."
+        },
+        "button_bg": {
+          "label": "Button background override (optional)"
+        },
+        "button_text_color": {
+          "label": "Button text override (optional)"
+        }
+      }
+    },
+    "rb_promo_banner": {
+      "name": "Promo banner",
+      "presets": {
+        "name": "Promo banner"
+      },
+      "settings": {
+        "header_image": {
+          "content": "Image"
+        },
+        "image": {
+          "label": "Image – desktop"
+        },
+        "image_mobile": {
+          "label": "Image – mobile (optional)"
+        },
+        "focal_point": {
+          "label": "Image focus",
+          "options__center": "Center",
+          "options__top": "Top",
+          "options__bottom": "Bottom",
+          "options__left": "Left",
+          "options__right": "Right"
+        },
+        "height": {
+          "label": "Banner height",
+          "options__small": "Small",
+          "options__medium": "Medium",
+          "options__large": "Large"
+        },
+        "header_text": {
+          "content": "Text"
+        },
+        "heading": {
+          "label": "Heading"
+        },
+        "text": {
+          "label": "Text"
+        },
+        "header_button": {
+          "content": "Button"
+        },
+        "button_label": {
+          "label": "Button label"
+        },
+        "button_link": {
+          "label": "Button link"
+        },
+        "button_style": {
+          "label": "Button style",
+          "options__solid": "Solid",
+          "options__outline": "Outline"
+        },
+        "button_arrow": {
+          "label": "Show arrow on button"
+        },
+        "button_full_width_mobile": {
+          "label": "Full-width button on mobile"
+        },
+        "header_layout": {
+          "content": "Placement"
+        },
+        "content_vertical": {
+          "label": "Vertical placement",
+          "options__top": "Top",
+          "options__center": "Center",
+          "options__bottom": "Bottom"
+        },
+        "text_align": {
+          "label": "Alignment",
+          "options__left": "Left",
+          "options__center": "Center",
+          "options__right": "Right"
+        },
+        "content_width": {
+          "label": "Max text width"
+        },
+        "header_colors": {
+          "content": "Colors"
+        },
+        "color_overrides_info": {
+          "content": "Text and button colors come from the color scheme above. Use the optional overrides below to fine-tune contrast over the image."
+        },
+        "heading_color": {
+          "label": "Heading override (optional)"
+        },
+        "text_color": {
+          "label": "Text override (optional)"
+        },
+        "button_bg": {
+          "label": "Button background override (optional)"
+        },
+        "button_text_color": {
+          "label": "Button text override (optional)"
+        },
+        "header_overlay": {
+          "content": "Image overlay"
+        },
+        "overlay_color": {
+          "label": "Overlay color"
+        },
+        "overlay_opacity": {
+          "label": "Overlay strength (whole image)"
+        },
+        "gradient_opacity": {
+          "label": "Overlay gradient (toward text)",
+          "info": "Darkens the side/bottom behind the text for better legibility."
+        }
+      }
+    },
+    "rb_product_carousel": {
+      "name": "Product carousel",
+      "presets": {
+        "name": "Product carousel"
+      },
+      "settings": {
+        "heading": {
+          "label": "Heading"
+        },
+        "collection": {
+          "label": "Collection"
+        },
+        "products_to_show": {
+          "label": "Maximum products to show"
+        },
+        "products_per_row": {
+          "label": "Cards visible (desktop)",
+          "info": "Tablet shows 3, mobile shows 2."
+        },
+        "image_ratio": {
+          "label": "Image ratio",
+          "options__square": "Square (1:1)",
+          "options__portrait": "Portrait (4:5)",
+          "options__landscape": "Landscape (4:3)",
+          "options__contain": "Show full image (contain)"
+        },
+        "header_card": {
+          "content": "Card"
+        },
+        "show_swatches": {
+          "label": "Show colour swatches",
+          "info": "Shows swatches for product options that have swatches configured."
+        },
+        "show_badges": {
+          "label": "Show sale / sold-out badges"
+        },
+        "header_view_all": {
+          "content": "View all button"
+        },
+        "show_view_all": {
+          "label": "Show \"View all\" button"
+        },
+        "view_all_label": {
+          "label": "Button label"
+        },
+        "button_link": {
+          "label": "Button link",
+          "info": "Leave empty to link to the selected collection."
+        },
+        "header_colors": {
+          "content": "Colors"
+        }
+      }
+    },
+    "rb_value_props": {
+      "name": "Value props strip",
+      "presets": {
+        "name": "Value props strip"
+      },
+      "settings": {
+        "icon_size": {
+          "label": "Icon size"
+        },
+        "header_colors": {
+          "content": "Colors"
+        }
+      },
+      "blocks": {
+        "value": {
+          "name": "Value prop",
+          "settings": {
+            "icon": {
+              "label": "Icon",
+              "info": "Recommended: a small line icon in your brand gold (PNG/SVG)."
+            },
+            "title": {
+              "label": "Title"
+            },
+            "text": {
+              "label": "Text"
+            }
+          }
+        },
+        "vibe": {
+          "name": "Brand vibe",
+          "settings": {
+            "image": {
+              "label": "Image",
+              "info": "Optional. Shown above the text, like the value-prop icons."
+            },
+            "title": {
+              "label": "Title"
+            },
+            "line_1": {
+              "label": "Line 1"
+            },
+            "line_2": {
+              "label": "Line 2"
+            }
+          }
+        }
+      }
+    },
     "rb_banner": {
       "name": "Hero banner",
       "presets": {
@@ -671,7 +1022,11 @@
               "label": "Eyebrow"
             },
             "heading": {
-              "label": "Heading"
+              "label": "Heading – line 1",
+              "info": "Lines 1 and 2 use the same style; each shows on its own row."
+            },
+            "heading_2": {
+              "label": "Heading – line 2"
             },
             "body": {
               "label": "Body text"

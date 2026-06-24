@@ -1,0 +1,117 @@
+/* ============================================================
+   Rough Bobber — Value props strip (sections/rb-value-props.liquid)
+   Static styles only. Per-section values come from the {% style %}
+   block scoped to #rb-value-props-{id}.
+   ============================================================ */
+
+.rb-value-props {
+  --rb-vp-divider: rgba(var(--color-foreground), 0.18);
+  --rb-vp-muted: rgba(var(--color-foreground), 0.7);
+}
+
+.rb-value-props__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--rb-vp-columns, 4), 1fr);
+  align-items: stretch;
+}
+
+.rb-value-props__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.6rem;
+  padding: 0.5rem 1.75rem;
+}
+/* Vertical dividers between items in the same row */
+.rb-value-props__item + .rb-value-props__item {
+  border-left: 1px solid var(--rb-vp-divider);
+}
+
+.rb-value-props__icon {
+  display: block;
+  height: var(--rb-vp-icon-size, 44px);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  margin-bottom: 0.2rem;
+}
+
+.rb-value-props__title {
+  margin: 0;
+  font-family: var(--rb-font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  color: rgb(var(--color-foreground));
+}
+
+.rb-value-props__text {
+  margin: 0;
+  font-family: var(--rb-font-body);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--rb-vp-muted);
+}
+
+/* ---- Brand-vibe block (set off to the side) ---- */
+/* Has fewer/shorter elements than the value props, so center it vertically
+   within the stretched cell to keep it aligned with the other columns. */
+.rb-value-props__item--vibe {
+  gap: 0.4rem;
+  justify-content: center;
+}
+.rb-value-props__vibe-title {
+  margin: 0;
+  font-family: var(--rb-font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.85rem;
+  color: var(--rb-gold);
+}
+.rb-value-props__vibe-line {
+  margin: 0;
+  font-family: var(--rb-font-body);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--rb-vp-muted);
+}
+
+/* ---- Tablet ---- */
+@media screen and (max-width: 989px) {
+  .rb-value-props__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  /* On a 2-col grid, remove the every-other left divider and use a grid look */
+  .rb-value-props__item {
+    padding: 1.1rem 1rem;
+    border-left: 1px solid var(--rb-vp-divider);
+    border-top: 1px solid var(--rb-vp-divider);
+  }
+  /* No left border on the first column */
+  .rb-value-props__item:nth-child(2n + 1) {
+    border-left: 0;
+  }
+  /* No top border on the first row */
+  .rb-value-props__item:nth-child(1),
+  .rb-value-props__item:nth-child(2) {
+    border-top: 0;
+  }
+}
+
+/* ---- Mobile ---- */
+@media screen and (max-width: 749px) {
+  .rb-value-props__grid {
+    grid-template-columns: 1fr;
+  }
+  .rb-value-props__item {
+    border-left: 0 !important;
+    border-top: 1px solid var(--rb-vp-divider);
+    padding: 1.4rem 1rem;
+  }
+  .rb-value-props__item:nth-child(1) {
+    border-top: 0;
+  }
+}

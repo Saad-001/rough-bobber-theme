@@ -1,0 +1,242 @@
+/* ============================================================
+   Rough Bobber — Footer (sections/rb-footer.liquid)
+   Brand block + newsletter + menu columns + bottom bar.
+   Static styles only; per-section values come from the {% style %}
+   block scoped to #rb-footer-{id}.
+   ============================================================ */
+
+.rb-footer {
+  --rb-footer-muted: rgba(var(--color-foreground), 0.62);
+  --rb-footer-line: rgba(var(--color-foreground), 0.14);
+}
+
+.rb-footer__top {
+  display: grid;
+  grid-template-columns: 1.1fr 1.4fr auto;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* ---- Brand ---- */
+.rb-footer__logo-img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: var(--rb-footer-logo-width, 150px);
+  margin-bottom: 1rem;
+}
+.rb-footer__logo-text {
+  margin: 0 0 1rem;
+  font-family: var(--rb-font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.95;
+  font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+  color: rgb(var(--color-foreground));
+}
+.rb-footer__tagline {
+  margin: 0 0 1.25rem;
+  font-family: var(--rb-font-body);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--rb-footer-muted);
+}
+.rb-footer__social {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.rb-footer__social a {
+  display: inline-flex;
+  color: rgb(var(--color-foreground));
+  opacity: 0.85;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.rb-footer__social a:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+.rb-footer__social svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* ---- Newsletter ---- */
+.rb-footer__heading {
+  margin: 0 0 0.6rem;
+  font-family: var(--rb-font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.95rem;
+  color: rgb(var(--color-foreground));
+}
+.rb-footer__newsletter-text {
+  margin: 0 0 1.1rem;
+  font-family: var(--rb-font-body);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--rb-footer-muted);
+  max-width: 42ch;
+}
+.rb-footer__form {
+  display: flex;
+  max-width: 440px;
+  border: 1px solid var(--rb-footer-line);
+}
+.rb-footer__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 0.9rem 1rem;
+  font-family: var(--rb-font-body);
+  font-size: 0.95rem;
+  color: rgb(var(--color-foreground));
+}
+.rb-footer__input::placeholder {
+  color: var(--rb-footer-muted);
+}
+.rb-footer__input:focus {
+  outline: 2px solid var(--rb-gold);
+  outline-offset: -2px;
+}
+.rb-footer__submit {
+  flex: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0 1.5rem;
+  font-family: var(--rb-font-body);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--rb-gold);
+  color: #fff;
+  transition: filter 0.2s ease;
+}
+.rb-footer__submit:hover {
+  filter: brightness(1.08);
+}
+.rb-footer__newsletter-success {
+  margin: 0.75rem 0 0;
+  font-family: var(--rb-font-body);
+  font-size: 0.9rem;
+  color: var(--rb-gold);
+}
+.rb-footer__newsletter-error {
+  margin: 0.5rem 0 0;
+  font-family: var(--rb-font-body);
+  font-size: 0.85rem;
+  color: rgb(var(--color-foreground));
+  opacity: 0.85;
+}
+
+/* ---- Menu columns ---- */
+.rb-footer__menus {
+  display: flex;
+  gap: 3rem;
+}
+.rb-footer__col {
+  min-width: 0;
+}
+.rb-footer__col-title {
+  margin: 0 0 1rem;
+  font-family: var(--rb-font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.8rem;
+  color: rgb(var(--color-foreground));
+}
+.rb-footer__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.rb-footer__links a {
+  font-family: var(--rb-font-body);
+  font-size: 0.92rem;
+  text-decoration: none;
+  color: var(--rb-footer-muted);
+  transition: color 0.2s ease;
+}
+.rb-footer__links a:hover {
+  color: rgb(var(--color-foreground));
+}
+
+/* ---- Bottom bar ---- */
+.rb-footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rb-footer-line);
+}
+.rb-footer__copy {
+  margin: 0;
+  font-family: var(--rb-font-body);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--rb-footer-muted);
+}
+.rb-footer__policies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.rb-footer__policies a {
+  font-family: var(--rb-font-body);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--rb-footer-muted);
+  transition: color 0.2s ease;
+}
+.rb-footer__policies a:hover {
+  color: rgb(var(--color-foreground));
+}
+
+/* ---- Tablet ---- */
+@media screen and (max-width: 989px) {
+  .rb-footer__top {
+    grid-template-columns: 1fr 1fr;
+  }
+  .rb-footer__menus {
+    grid-column: 1 / -1;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+}
+
+/* ---- Mobile ---- */
+@media screen and (max-width: 749px) {
+  .rb-footer__top {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+  }
+  .rb-footer__menus {
+    flex-wrap: wrap;
+    gap: 2rem 3rem;
+  }
+  .rb-footer__col {
+    flex: 1 1 40%;
+  }
+  .rb-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
