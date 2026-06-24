@@ -1,0 +1,349 @@
+{%- comment -%}
+  Breadcrumb — Rough Bobber
+  Accessible breadcrumb trail (nav > ol) with schema.org BreadcrumbList microdata.
+
+  On a PRODUCT page it shows the full collection path:
+    Home / [parent collections…] / current collection / product
+  - "current collection" is the one the shopper is browsing in (the `collection`
+    URL context, e.g. /collections/shop/products/x). If the product was opened
+    directly (no collection in the URL), it falls back to the product's first
+    collection (toggle below).
+  - Shopify collections are flat, so true parent/child "nesting" comes from a
+    collection metafield that references its parent collection. This section walks
+    that metafield upward (configurable key, default custom.parent_collection) to
+    list every ancestor. Set up the metafield to get nested trails; without it the
+    trail is simply Home / collection / product.
+
+  It also renders sensible trails on collection / page / blog / article / search /
+  cart / 404 templates.
+
+  Conventions (conventions.md): static CSS in assets/rb-breadcrumb.css; only
+  Liquid-driven values in the {% style %} block; color_scheme + optional colour
+  overrides; Dawn .section-{id}-padding; .page-width; brand fonts; strings
+  translatable (the only customer-facing string here — the nav aria-label — lives
+  in the storefront locale; visible crumb labels are content/settings).
+{%- endcomment -%}
+
+{{ 'rb-breadcrumb.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign uid = 'rb-breadcrumb-' | append: section.id
+  assign pt = request.page_type
+
+  assign plain_class = ''
+  unless s.uppercase
+    assign plain_class = ' is-plain'
+  endunless
+
+  # ---- Parent-collection metafield (namespace.key) ----------------------------
+  assign mf_ns = ''
+  assign mf_key = ''
+  if s.enable_nested and s.parent_metafield != blank
+    assign mf_parts = s.parent_metafield | strip | split: '.'
+    assign mf_ns = mf_parts[0]
+    assign mf_key = mf_parts[1]
+  endif
+
+  # ---- Decide which collection the trail hangs off ----------------------------
+  # cur_col  = collection rendered as a LINK on product pages (the product is current)
+  # start_col = collection whose ancestors we walk (the current collection itself
+  #             on collection pages, or cur_col on product pages)
+  assign cur_col = ''
+  assign start_col = ''
+
+  if pt == 'product'
+    # Prefer the browsing context if it's a real collection — i.e. not Shopify's
+    # automatic "Home page" (handle: frontpage) or the catch-all "all".
+    if collection != blank and collection.handle != blank and collection.handle != 'frontpage' and collection.handle != 'all'
+      assign cur_col = collection
+    endif
+    # Otherwise pick the product's first real collection, again skipping the
+    # default Home page / all. This is what shows a genuine parent like "Shop".
+    if cur_col == blank and product != blank
+      for c in product.collections
+        unless c.handle == 'frontpage' or c.handle == 'all'
+          assign cur_col = c
+          break
+        endunless
+      endfor
+    endif
+    # Last resort: the product is only in the default Home page collection.
+    # Show it only if the merchant opted in (fallback_collection).
+    if cur_col == blank and s.fallback_collection
+      if collection != blank and collection.handle != blank
+        assign cur_col = collection
+      elsif product != blank and product.collections.size > 0
+        assign cur_col = product.collections.first
+      endif
+    endif
+    assign start_col = cur_col
+  elsif pt == 'collection'
+    assign start_col = collection
+  endif
+
+  # ---- Walk the parent chain (root-first list of ancestor handles) ------------
+  assign chain = ''
+  if mf_ns != blank and mf_key != blank and start_col != blank
+    assign cursor = start_col
+    for i in (1..s.max_levels)
+      assign parent = cursor.metafields[mf_ns][mf_key].value
+      if parent == blank
+        break
+      endif
+      if chain == ''
+        assign chain = parent.handle
+      else
+        assign chain = parent.handle | append: ',' | append: chain
+      endif
+      assign cursor = parent
+    endfor
+  endif
+  assign chain_handles = chain | split: ','
+
+  assign pos = 0
+-%}
+
+{%- style -%}
+  #{{ uid }} {
+    --rb-bc-size: {{ s.text_size }}px;
+    --rb-bc-tracking: {{ s.letter_spacing }}px;
+    --rb-bc-sep: "{{ s.separator }}";
+    {%- if s.text_color != blank %}--rb-bc-text: {{ s.text_color }};{% endif -%}
+    {%- if s.separator_color != blank %}--rb-bc-muted: {{ s.separator_color }};{% endif -%}
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ s.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ s.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ s.padding_top }}px;
+      padding-bottom: {{ s.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<nav
+  id="{{ uid }}"
+  class="rb-breadcrumb color-{{ s.color_scheme }} gradient{{ plain_class }}"
+  aria-label="{{ 'general.breadcrumb.label' | t }}"
+  role="navigation"
+>
+  <div class="page-width section-{{ section.id }}-padding">
+    <ol class="rb-breadcrumb__list" itemscope itemtype="http://schema.org/BreadcrumbList">
+      {%- if s.show_home -%}
+      {%- assign pos = pos | plus: 1 -%}
+      {%- render 'rb-breadcrumb-item', label: s.home_label, url: routes.root_url, position: pos -%}
+    {%- endif -%}
+
+    {%- case pt -%}
+      {%- when 'product' -%}
+        {%- for h in chain_handles -%}
+          {%- assign anc = collections[h] -%}
+          {%- if anc != blank and anc.handle != blank -%}
+            {%- assign pos = pos | plus: 1 -%}
+            {%- render 'rb-breadcrumb-item', label: anc.title, url: anc.url, position: pos -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if cur_col != blank -%}
+          {%- assign pos = pos | plus: 1 -%}
+          {%- render 'rb-breadcrumb-item', label: cur_col.title, url: cur_col.url, position: pos -%}
+        {%- endif -%}
+        {%- assign pos = pos | plus: 1 -%}
+        {%- render 'rb-breadcrumb-item', label: product.title, position: pos, current: true -%}
+
+      {%- when 'collection' -%}
+        {%- for h in chain_handles -%}
+          {%- assign anc = collections[h] -%}
+          {%- if anc != blank and anc.handle != blank -%}
+            {%- assign pos = pos | plus: 1 -%}
+            {%- render 'rb-breadcrumb-item', label: anc.title, url: anc.url, position: pos -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- assign pos = pos | plus: 1 -%}
+        {%- render 'rb-breadcrumb-item', label: collection.title, position: pos, current: true -%}
+
+      {%- when 'article' -%}
+        {%- if blog != blank -%}
+          {%- assign pos = pos | plus: 1 -%}
+          {%- render 'rb-breadcrumb-item', label: blog.title, url: blog.url, position: pos -%}
+        {%- endif -%}
+        {%- assign pos = pos | plus: 1 -%}
+        {%- render 'rb-breadcrumb-item', label: article.title, position: pos, current: true -%}
+
+      {%- when 'blog' -%}
+        {%- assign pos = pos | plus: 1 -%}
+        {%- render 'rb-breadcrumb-item', label: blog.title, position: pos, current: true -%}
+
+      {%- when 'page' -%}
+        {%- assign pos = pos | plus: 1 -%}
+        {%- render 'rb-breadcrumb-item', label: page.title, position: pos, current: true -%}
+
+      {%- when 'list-collections' -%}
+        {%- assign pos = pos | plus: 1 -%}
+        {%- render 'rb-breadcrumb-item', label: page_title, position: pos, current: true -%}
+
+      {%- else -%}
+        {%- if page_title != blank and pt != 'index' -%}
+          {%- assign pos = pos | plus: 1 -%}
+          {%- render 'rb-breadcrumb-item', label: page_title, position: pos, current: true -%}
+        {%- endif -%}
+    {%- endcase -%}
+    </ol>
+  </div>
+</nav>
+
+{% schema %}
+{
+  "name": "t:sections.rb_breadcrumb.name",
+  "tag": "section",
+  "class": "section-rb-breadcrumb",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.rb_breadcrumb.settings.header_general.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_home",
+      "label": "t:sections.rb_breadcrumb.settings.show_home.label",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "home_label",
+      "label": "t:sections.rb_breadcrumb.settings.home_label.label",
+      "default": "Home"
+    },
+    {
+      "type": "text",
+      "id": "separator",
+      "label": "t:sections.rb_breadcrumb.settings.separator.label",
+      "default": "/"
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase",
+      "label": "t:sections.rb_breadcrumb.settings.uppercase.label",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "t:sections.rb_breadcrumb.settings.text_size.label",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "t:sections.rb_breadcrumb.settings.letter_spacing.label",
+      "min": 0,
+      "max": 6,
+      "step": 0.5,
+      "unit": "px",
+      "default": 1.5
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_breadcrumb.settings.header_product.content"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.rb_breadcrumb.settings.product_info.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "fallback_collection",
+      "label": "t:sections.rb_breadcrumb.settings.fallback_collection.label",
+      "info": "t:sections.rb_breadcrumb.settings.fallback_collection.info",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_nested",
+      "label": "t:sections.rb_breadcrumb.settings.enable_nested.label",
+      "info": "t:sections.rb_breadcrumb.settings.enable_nested.info",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "parent_metafield",
+      "label": "t:sections.rb_breadcrumb.settings.parent_metafield.label",
+      "info": "t:sections.rb_breadcrumb.settings.parent_metafield.info",
+      "default": "custom.parent_collection"
+    },
+    {
+      "type": "range",
+      "id": "max_levels",
+      "label": "t:sections.rb_breadcrumb.settings.max_levels.label",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_breadcrumb.settings.header_colors.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.rb_breadcrumb.settings.color_overrides_info.content"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.rb_breadcrumb.settings.text_color.label"
+    },
+    {
+      "type": "color",
+      "id": "separator_color",
+      "label": "t:sections.rb_breadcrumb.settings.separator_color.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 16
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product", "collection", "page", "blog", "article", "search", "list-collections", "404"]
+  },
+  "presets": [
+    {
+      "name": "t:sections.rb_breadcrumb.presets.name"
+    }
+  ]
+}
+{% endschema %}

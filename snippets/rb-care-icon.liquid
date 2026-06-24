@@ -1,0 +1,63 @@
+{%- comment -%}
+  Rough Bobber — built-in laundry/care symbols for rb-product-specs.
+  Renders an inline SVG (stroke = currentColor) for the given key.
+
+  Params:
+    icon  {String} wash, similar_colors, tumble_dry, tumble_dry_low, line_dry,
+                   iron, no_iron, no_bleach, no_dry_clean
+    class {String} class attribute for the <svg>
+{%- endcomment -%}
+{%- liquid
+  assign svg_class = class | default: 'rb-care-icon'
+-%}
+{%- case icon -%}
+  {%- when 'similar_colors' -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M9 4.5 4.5 7l1.8 2.6L8 8.4V19.5h8V8.4l1.7 1.2L19.5 7 15 4.5a3 3 0 0 1-6 0z"/>
+    </svg>
+  {%- when 'tumble_dry' -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <rect x="3.5" y="4.5" width="17" height="15" rx="2"/>
+      <circle cx="12" cy="12" r="4.5"/>
+    </svg>
+  {%- when 'tumble_dry_low' -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <rect x="3.5" y="4.5" width="17" height="15" rx="2"/>
+      <circle cx="12" cy="12" r="4.5"/>
+      <circle cx="12" cy="12" r="0.8" fill="currentColor" stroke="none"/>
+    </svg>
+  {%- when 'line_dry' -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <rect x="3.5" y="4.5" width="17" height="15" rx="2"/>
+      <line x1="12" y1="7.5" x2="12" y2="16.5"/>
+    </svg>
+  {%- when 'iron' -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M2.8 16.2h17l-1.1-4.6a1 1 0 0 0-.74-.74C13.4 9.7 8.6 9.7 4.6 10.9z"/>
+      <path d="M5.2 12.4C6 10.4 7.2 9.3 9 9.3h6.5"/>
+    </svg>
+  {%- when 'no_iron' -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M2.8 16.2h17l-1.1-4.6a1 1 0 0 0-.74-.74C13.4 9.7 8.6 9.7 4.6 10.9z"/>
+      <path d="M5.2 12.4C6 10.4 7.2 9.3 9 9.3h6.5"/>
+      <line x1="5.5" y1="8.8" x2="17.5" y2="18.4"/>
+      <line x1="17.5" y1="8.8" x2="5.5" y2="18.4"/>
+    </svg>
+  {%- when 'no_bleach' -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M12 4.5 20.5 19H3.5z"/>
+      <line x1="9.5" y1="11.5" x2="14.5" y2="16.5"/>
+      <line x1="14.5" y1="11.5" x2="9.5" y2="16.5"/>
+    </svg>
+  {%- when 'no_dry_clean' -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <circle cx="12" cy="12" r="8.5"/>
+      <line x1="6.4" y1="6.4" x2="17.6" y2="17.6"/>
+      <line x1="17.6" y1="6.4" x2="6.4" y2="17.6"/>
+    </svg>
+  {%- else -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M2.5 9 5 6.5h14L21.5 9v2.5a8.5 8.5 0 0 1-17 0z"/>
+      <path d="M6 12.2c1-.8 2-.8 3 0s2 .8 3 0 2-.8 3 0"/>
+    </svg>
+{%- endcase -%}

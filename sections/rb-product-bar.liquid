@@ -1,0 +1,319 @@
+{%- comment -%}
+  Product top bar — Rough Bobber
+  A slim strip for the top of the product page: brand feature items (icon + label)
+  on the left, and the product's tags rendered breadcrumb-style (slash separated)
+  on the right. These tags are NOT breadcrumbs — just the product's tags presented
+  this way. A real breadcrumb section is built separately.
+
+  Responsive: on desktop the features sit left and the tags push right. Below the
+  990px breakpoint the whole row becomes a single horizontal scroll track — it does
+  NOT wrap or stack, so the bar keeps its shape at the top of the page.
+
+  Conventions (conventions.md): static CSS in assets/rb-product-bar.css; only
+  Liquid-driven values in the {% style %} block; color_scheme + optional per-element
+  colour overrides that fall back to the scheme; Dawn .section-{id}-padding; .page-width;
+  brand fonts; all strings translatable.
+{%- endcomment -%}
+
+{{ 'rb-product-bar.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign uid = 'rb-product-bar-' | append: section.id
+
+  # ---- Build the tag list ----------------------------------------------------
+  assign tag_list = '' | split: ','
+  if s.tags_source == 'product' and product != blank and product.tags.size > 0
+    assign tag_list = product.tags
+  elsif s.custom_tags != blank
+    assign tag_list = s.custom_tags | split: ','
+  endif
+
+  # Optional cap on how many tags are shown (0 = all)
+  if s.tag_limit > 0 and tag_list.size > s.tag_limit
+    assign tag_list = tag_list | slice: 0, s.tag_limit
+  endif
+
+  assign has_features = false
+  if section.blocks.size > 0
+    assign has_features = true
+  endif
+  assign has_tags = false
+  if tag_list.size > 0
+    assign has_tags = true
+  endif
+
+  assign plain_class = ''
+  unless s.uppercase
+    assign plain_class = ' is-plain'
+  endunless
+-%}
+
+{%- style -%}
+  #{{ uid }} {
+    --rb-pb-icon-size: {{ s.icon_size }}px;
+    --rb-pb-feature-size: {{ s.feature_text_size }}px;
+    --rb-pb-tag-size: {{ s.tag_text_size }}px;
+    --rb-pb-tracking: {{ s.letter_spacing }}px;
+    --rb-pb-item-gap: {{ s.item_gap }}px;
+    {%- if s.text_color != blank %}--rb-pb-text: {{ s.text_color }};{% endif -%}
+    {%- if s.tag_color != blank %}--rb-pb-tag: {{ s.tag_color }};{% endif -%}
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ s.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ s.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ s.padding_top }}px;
+      padding-bottom: {{ s.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div id="{{ uid }}" class="rb-product-bar color-{{ s.color_scheme }} gradient{{ plain_class }}">
+  <div class="rb-product-bar__track page-width section-{{ section.id }}-padding">
+    {%- if has_features -%}
+      <div class="rb-product-bar__features">
+        {%- for block in section.blocks -%}
+          {%- assign b = block.settings -%}
+          {%- liquid
+            assign tag_name = 'div'
+            if b.link != blank
+              assign tag_name = 'a'
+            endif
+          -%}
+          <{{ tag_name }}
+            class="rb-product-bar__feature"
+            {% if b.link != blank %}href="{{ b.link }}"{% endif %}
+            {{ block.shopify_attributes }}
+          >
+            {%- if b.icon != blank -%}
+              <img
+                class="rb-product-bar__icon"
+                src="{{ b.icon | image_url: width: 96 }}"
+                srcset="{{ b.icon | image_url: width: 96 }} 1x, {{ b.icon | image_url: width: 192 }} 2x"
+                width="{{ b.icon.width }}"
+                height="{{ b.icon.height }}"
+                alt="{{ b.icon.alt | default: b.label | escape }}"
+                loading="lazy"
+              >
+            {%- endif -%}
+            {%- if b.label != blank -%}
+              <span class="rb-product-bar__label">{{ b.label }}</span>
+            {%- endif -%}
+          </{{ tag_name }}>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if has_tags -%}
+      <div class="rb-product-bar__tags">
+        {%- for tag in tag_list -%}
+          <span class="rb-product-bar__tag">{{ tag | strip }}</span>
+          {%- unless forloop.last -%}
+            <span class="rb-product-bar__sep" aria-hidden="true">{{ s.tag_separator | default: '/' }}</span>
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.rb_product_bar.name",
+  "tag": "section",
+  "class": "section-rb-product-bar",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.rb_product_bar.settings.header_features.content"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "t:sections.rb_product_bar.settings.icon_size.label",
+      "min": 14,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "feature_text_size",
+      "label": "t:sections.rb_product_bar.settings.feature_text_size.label",
+      "min": 10,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "item_gap",
+      "label": "t:sections.rb_product_bar.settings.item_gap.label",
+      "min": 12,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "letter_spacing",
+      "label": "t:sections.rb_product_bar.settings.letter_spacing.label",
+      "min": 0,
+      "max": 6,
+      "step": 0.5,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase",
+      "label": "t:sections.rb_product_bar.settings.uppercase.label",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_product_bar.settings.header_tags.content"
+    },
+    {
+      "type": "select",
+      "id": "tags_source",
+      "label": "t:sections.rb_product_bar.settings.tags_source.label",
+      "info": "t:sections.rb_product_bar.settings.tags_source.info",
+      "options": [
+        { "value": "product", "label": "t:sections.rb_product_bar.settings.tags_source.options__product" },
+        { "value": "custom", "label": "t:sections.rb_product_bar.settings.tags_source.options__custom" }
+      ],
+      "default": "product"
+    },
+    {
+      "type": "text",
+      "id": "custom_tags",
+      "label": "t:sections.rb_product_bar.settings.custom_tags.label",
+      "info": "t:sections.rb_product_bar.settings.custom_tags.info",
+      "default": "Raw, Authentic, Timeless, Biker Lifestyle"
+    },
+    {
+      "type": "text",
+      "id": "tag_separator",
+      "label": "t:sections.rb_product_bar.settings.tag_separator.label",
+      "default": "/"
+    },
+    {
+      "type": "range",
+      "id": "tag_text_size",
+      "label": "t:sections.rb_product_bar.settings.tag_text_size.label",
+      "min": 10,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "tag_limit",
+      "label": "t:sections.rb_product_bar.settings.tag_limit.label",
+      "info": "t:sections.rb_product_bar.settings.tag_limit.info",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_product_bar.settings.header_colors.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.rb_product_bar.settings.color_overrides_info.content"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.rb_product_bar.settings.text_color.label"
+    },
+    {
+      "type": "color",
+      "id": "tag_color",
+      "label": "t:sections.rb_product_bar.settings.tag_color.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 16
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "t:sections.rb_product_bar.blocks.feature.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "t:sections.rb_product_bar.blocks.feature.settings.icon.label",
+          "info": "t:sections.rb_product_bar.blocks.feature.settings.icon.info"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "t:sections.rb_product_bar.blocks.feature.settings.label.label",
+          "default": "Built by Ride"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.rb_product_bar.blocks.feature.settings.link.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.rb_product_bar.presets.name",
+      "blocks": [
+        { "type": "feature", "settings": { "label": "Built by Ride" } },
+        { "type": "feature", "settings": { "label": "Ride Free" } },
+        { "type": "feature", "settings": { "label": "Stay Rough" } },
+        { "type": "feature", "settings": { "label": "Built to Last" } }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product", "page", "index", "collection"]
+  }
+}
+{% endschema %}

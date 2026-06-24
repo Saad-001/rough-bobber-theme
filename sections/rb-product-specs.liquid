@@ -1,0 +1,481 @@
+{%- comment -%}
+  Product specs — Rough Bobber
+  Three-column product spec block: Product Details (rich text + bullet list +
+  tagline), Size Guide (CSV-style table), and Care Instructions (built-in care
+  symbols + text). Sits above rb-info-columns on the product page.
+
+  Content is GLOBAL (section settings) but can be overridden PER PRODUCT via
+  metafields (so a tee, hoodie, cap each show their own specs):
+    - product.metafields.specs.product_details   (Rich text)        → Details body
+    - product.metafields.specs.size_guide        (Multi-line text)  → Size table
+    - product.metafields.specs.size_guide_image  (Image)            → Size image
+    - product.metafields.specs.size_note         (Single line text) → Size note
+  Size guide precedence: size_guide (text) > size_guide_image (image) > section
+  size_table setting. Text wins over image when both are set (easier to edit).
+  Size table format = one row per line, cells separated by commas; first line is
+  the header row. The same parser reads both the metafield and the section setting.
+
+  Responsive: 3 columns on desktop, stacked to 1 below 990px; the size table
+  scrolls horizontally on narrow screens instead of wrapping.
+
+  Conventions (conventions.md): static CSS in assets/rb-product-specs.css; only
+  Liquid-driven values in the {% style %} block; color_scheme + optional colour
+  overrides; Dawn .section-{id}-padding; .page-width; brand fonts; strings
+  translatable.
+{%- endcomment -%}
+
+{{ 'rb-product-specs.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign uid = 'rb-product-specs-' | append: section.id
+
+  # ---- Per-product metafield overrides --------------------------------------
+  assign mf_details = product.metafields.specs.product_details
+  assign mf_size = product.metafields.specs.size_guide
+  assign mf_size_image = product.metafields.specs.size_guide_image
+  assign mf_note = product.metafields.specs.size_note
+
+  # Size guide source precedence: product text > product image > global table.
+  # Text wins when both product metafields are set (easier for merchants to edit).
+  assign size_mode = 'table'
+  assign size_raw = s.size_table
+  if mf_size != blank
+    assign size_raw = mf_size.value
+  elsif mf_size_image != blank and mf_size_image.value != blank
+    assign size_mode = 'image'
+  endif
+  assign size_rows = size_raw | strip | newline_to_br | split: '<br />'
+
+  assign size_note = s.size_note
+  if mf_note != blank
+    assign size_note = mf_note.value
+  endif
+
+  assign care_blocks = section.blocks | where: 'type', 'care'
+
+  # ---- Which columns are visible (drives grid + dividers) -------------------
+  assign cols = 0
+  if s.show_details
+    assign cols = cols | plus: 1
+  endif
+  if s.show_size
+    assign cols = cols | plus: 1
+  endif
+  if s.show_care
+    assign cols = cols | plus: 1
+  endif
+  if cols == 0
+    assign cols = 1
+  endif
+
+  assign mods = ''
+  if s.show_dividers
+    assign mods = mods | append: ' has-dividers'
+  endif
+  if s.show_top_rule
+    assign mods = mods | append: ' has-top-rule'
+  endif
+  if s.show_bottom_rule
+    assign mods = mods | append: ' has-bottom-rule'
+  endif
+-%}
+
+{%- style -%}
+  #{{ uid }} {
+    --rb-ps-cols: {{ cols }};
+    --rb-ps-heading-size: {{ s.heading_size }}px;
+    --rb-ps-body-size: {{ s.body_size }}px;
+    --rb-ps-care-icon-size: {{ s.care_icon_size }}px;
+    {%- if s.heading_color != blank %}--rb-ps-heading: {{ s.heading_color }};{% endif -%}
+    {%- if s.text_color != blank %}--rb-ps-muted: {{ s.text_color }};{% endif -%}
+    {%- if s.accent_color != blank %}--rb-ps-accent: {{ s.accent_color }};{% endif -%}
+    {%- if s.rule_color != blank %}--rb-ps-rule: {{ s.rule_color }};{% endif -%}
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ s.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ s.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ s.padding_top }}px;
+      padding-bottom: {{ s.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div id="{{ uid }}" class="rb-product-specs color-{{ s.color_scheme }} gradient{{ mods }}">
+  <div class="page-width section-{{ section.id }}-padding">
+    <div class="rb-product-specs__grid">
+
+      {%- if s.show_details -%}
+        <div class="rb-product-specs__col rb-product-specs__col--details">
+          {%- if s.details_heading != blank -%}
+            <h2 class="rb-product-specs__heading">{{ s.details_heading }}</h2>
+          {%- endif -%}
+
+          <div class="rb-product-specs__rte rte">
+            {%- if mf_details != blank -%}
+              {{ mf_details }}
+            {%- else -%}
+              {{ s.details_intro }}
+              {{ s.details_list }}
+            {%- endif -%}
+          </div>
+
+          {%- if s.details_tagline != blank -%}
+            <p class="rb-product-specs__tagline">{{ s.details_tagline }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- if s.show_size -%}
+        <div class="rb-product-specs__col rb-product-specs__col--size">
+          {%- if s.size_heading != blank -%}
+            <h2 class="rb-product-specs__heading">{{ s.size_heading }}</h2>
+          {%- endif -%}
+
+          {%- if size_mode == 'image' -%}
+            {%- assign size_img = mf_size_image.value -%}
+            <img
+              class="rb-product-specs__size-image"
+              src="{{ size_img | image_url: width: 800 }}"
+              srcset="{{ size_img | image_url: width: 400 }} 400w, {{ size_img | image_url: width: 800 }} 800w, {{ size_img | image_url: width: 1200 }} 1200w"
+              sizes="(min-width: 990px) 32vw, 100vw"
+              width="{{ size_img.width }}"
+              height="{{ size_img.height }}"
+              alt="{{ size_img.alt | default: s.size_heading | escape }}"
+              loading="lazy"
+            >
+          {%- elsif size_raw != blank -%}
+            {%- assign header_cells = size_rows[0] | strip | split: ',' -%}
+            <div class="rb-product-specs__table-wrap">
+              <table class="rb-product-specs__table">
+                <thead>
+                  <tr>
+                    {%- for c in header_cells -%}<th scope="col">{{ c | strip }}</th>{%- endfor -%}
+                  </tr>
+                </thead>
+                <tbody>
+                  {%- for row in size_rows -%}
+                    {%- unless forloop.first -%}
+                      {%- assign rtrim = row | strip -%}
+                      {%- if rtrim != blank -%}
+                        {%- assign cells = rtrim | split: ',' -%}
+                        <tr>
+                          {%- for c in cells -%}<td>{{ c | strip }}</td>{%- endfor -%}
+                        </tr>
+                      {%- endif -%}
+                    {%- endunless -%}
+                  {%- endfor -%}
+                </tbody>
+              </table>
+            </div>
+          {%- endif -%}
+
+          {%- if size_note != blank -%}
+            <p class="rb-product-specs__note">{{ size_note }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- if s.show_care -%}
+        <div class="rb-product-specs__col rb-product-specs__col--care">
+          {%- if s.care_heading != blank -%}
+            <h2 class="rb-product-specs__heading">{{ s.care_heading }}</h2>
+          {%- endif -%}
+
+          {%- if care_blocks.size > 0 -%}
+            <ul class="rb-product-specs__care">
+              {%- for block in care_blocks -%}
+                {%- assign b = block.settings -%}
+                <li class="rb-product-specs__care-item" {{ block.shopify_attributes }}>
+                  {%- if b.image != blank -%}
+                    <img
+                      class="rb-product-specs__care-icon"
+                      src="{{ b.image | image_url: width: 96 }}"
+                      srcset="{{ b.image | image_url: width: 96 }} 1x, {{ b.image | image_url: width: 192 }} 2x"
+                      width="{{ b.image.width }}"
+                      height="{{ b.image.height }}"
+                      alt="{{ b.image.alt | default: b.text | escape }}"
+                      loading="lazy"
+                    >
+                  {%- else -%}
+                    {%- render 'rb-care-icon', icon: b.care_icon, class: 'rb-product-specs__care-icon rb-product-specs__care-icon--svg' -%}
+                  {%- endif -%}
+                  {%- if b.text != blank -%}
+                    <span class="rb-product-specs__care-text">{{ b.text }}</span>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.rb_product_specs.name",
+  "tag": "section",
+  "class": "section-rb-product-specs",
+  "max_blocks": 10,
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.rb_product_specs.settings.header_layout.content"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "t:sections.rb_product_specs.settings.heading_size.label",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "t:sections.rb_product_specs.settings.body_size.label",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dividers",
+      "label": "t:sections.rb_product_specs.settings.show_dividers.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_top_rule",
+      "label": "t:sections.rb_product_specs.settings.show_top_rule.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bottom_rule",
+      "label": "t:sections.rb_product_specs.settings.show_bottom_rule.label",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_product_specs.settings.header_details.content"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.rb_product_specs.settings.details_mf_info.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_details",
+      "label": "t:sections.rb_product_specs.settings.show_details.label",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "details_heading",
+      "label": "t:sections.rb_product_specs.settings.details_heading.label",
+      "default": "Product Details"
+    },
+    {
+      "type": "richtext",
+      "id": "details_intro",
+      "label": "t:sections.rb_product_specs.settings.details_intro.label",
+      "default": "<p>Crafted for the long haul. Every detail built to ride.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "details_list",
+      "label": "t:sections.rb_product_specs.settings.details_list.label",
+      "default": "<ul><li>100% combed ringspun cotton</li><li>Pre-shrunk fabric</li><li>Soft hand feel</li><li>Ribbed crew neckline</li><li>Custom Rough Bobber neck label</li><li>Printed front &amp; back</li><li>Regular fit</li></ul>"
+    },
+    {
+      "type": "text",
+      "id": "details_tagline",
+      "label": "t:sections.rb_product_specs.settings.details_tagline.label",
+      "default": "Built by Ride. Worn for Life."
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_product_specs.settings.header_size.content"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.rb_product_specs.settings.size_mf_info.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_size",
+      "label": "t:sections.rb_product_specs.settings.show_size.label",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "size_heading",
+      "label": "t:sections.rb_product_specs.settings.size_heading.label",
+      "default": "Size Guide"
+    },
+    {
+      "type": "textarea",
+      "id": "size_table",
+      "label": "t:sections.rb_product_specs.settings.size_table.label",
+      "info": "t:sections.rb_product_specs.settings.size_table.info",
+      "default": "Size, Chest (in), Length (in)\nS, 18, 28\nM, 20, 29\nL, 22, 30\nXL, 24, 31\n2XL, 26, 32"
+    },
+    {
+      "type": "text",
+      "id": "size_note",
+      "label": "t:sections.rb_product_specs.settings.size_note.label",
+      "default": "Measurements may vary slightly. If you are between sizes, size up for a looser fit."
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_product_specs.settings.header_care.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_care",
+      "label": "t:sections.rb_product_specs.settings.show_care.label",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "care_heading",
+      "label": "t:sections.rb_product_specs.settings.care_heading.label",
+      "default": "Care Instructions"
+    },
+    {
+      "type": "range",
+      "id": "care_icon_size",
+      "label": "t:sections.rb_product_specs.settings.care_icon_size.label",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_product_specs.settings.header_colors.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-2"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.rb_product_specs.settings.color_overrides_info.content"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "t:sections.rb_product_specs.settings.heading_color.label"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.rb_product_specs.settings.text_color.label"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "t:sections.rb_product_specs.settings.accent_color.label"
+    },
+    {
+      "type": "color",
+      "id": "rule_color",
+      "label": "t:sections.rb_product_specs.settings.rule_color.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 44
+    }
+  ],
+  "blocks": [
+    {
+      "type": "care",
+      "name": "t:sections.rb_product_specs.blocks.care.name",
+      "settings": [
+        {
+          "type": "select",
+          "id": "care_icon",
+          "label": "t:sections.rb_product_specs.blocks.care.settings.care_icon.label",
+          "options": [
+            { "value": "wash", "label": "t:sections.rb_product_specs.blocks.care.settings.care_icon.options__wash" },
+            { "value": "similar_colors", "label": "t:sections.rb_product_specs.blocks.care.settings.care_icon.options__similar_colors" },
+            { "value": "tumble_dry", "label": "t:sections.rb_product_specs.blocks.care.settings.care_icon.options__tumble_dry" },
+            { "value": "tumble_dry_low", "label": "t:sections.rb_product_specs.blocks.care.settings.care_icon.options__tumble_dry_low" },
+            { "value": "line_dry", "label": "t:sections.rb_product_specs.blocks.care.settings.care_icon.options__line_dry" },
+            { "value": "iron", "label": "t:sections.rb_product_specs.blocks.care.settings.care_icon.options__iron" },
+            { "value": "no_iron", "label": "t:sections.rb_product_specs.blocks.care.settings.care_icon.options__no_iron" },
+            { "value": "no_bleach", "label": "t:sections.rb_product_specs.blocks.care.settings.care_icon.options__no_bleach" },
+            { "value": "no_dry_clean", "label": "t:sections.rb_product_specs.blocks.care.settings.care_icon.options__no_dry_clean" }
+          ],
+          "default": "wash"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.rb_product_specs.blocks.care.settings.image.label",
+          "info": "t:sections.rb_product_specs.blocks.care.settings.image.info"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:sections.rb_product_specs.blocks.care.settings.text.label",
+          "default": "Machine wash cold"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.rb_product_specs.presets.name",
+      "blocks": [
+        { "type": "care", "settings": { "care_icon": "wash", "text": "Machine wash cold" } },
+        { "type": "care", "settings": { "care_icon": "similar_colors", "text": "Wash with similar colors" } },
+        { "type": "care", "settings": { "care_icon": "tumble_dry_low", "text": "Tumble dry low" } },
+        { "type": "care", "settings": { "care_icon": "no_bleach", "text": "Do not bleach" } },
+        { "type": "care", "settings": { "care_icon": "no_iron", "text": "Do not iron print" } },
+        { "type": "care", "settings": { "care_icon": "no_dry_clean", "text": "Do not dry clean" } }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product", "page"]
+  }
+}
+{% endschema %}

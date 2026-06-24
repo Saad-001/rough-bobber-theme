@@ -1,0 +1,180 @@
+/* ============================================================
+   Rough Bobber — Info columns (sections/rb-info-columns.liquid)
+   Static styles only. Per-section values come from the {% style %}
+   block scoped to #rb-info-columns-{id}.
+   ============================================================ */
+
+.rb-info-columns {
+  --rb-ic-rule: rgba(var(--color-foreground), 0.2);
+  --rb-ic-muted: rgba(var(--color-foreground), 0.72);
+  --rb-ic-heading: rgb(var(--color-foreground));
+  --rb-ic-link: var(--rb-gold);
+}
+
+.rb-info-columns__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--rb-ic-cols, 4), 1fr);
+  align-items: stretch;
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+}
+
+/* Thin rules above / below the row (full content width). */
+.rb-info-columns.has-top-rule .rb-info-columns__grid {
+  border-top: 1px solid var(--rb-ic-rule);
+}
+.rb-info-columns.has-bottom-rule .rb-info-columns__grid {
+  border-bottom: 1px solid var(--rb-ic-rule);
+}
+
+.rb-info-columns__item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 0.7rem;
+  padding: 0.25rem 1.9rem;
+}
+.rb-info-columns__item:first-child {
+  padding-left: 0;
+}
+.rb-info-columns__item:last-child {
+  padding-right: 0;
+}
+
+/* Vertical dividers between columns. */
+.rb-info-columns.has-dividers .rb-info-columns__item + .rb-info-columns__item {
+  border-left: 1px solid var(--rb-ic-rule);
+}
+
+/* ---- Head: icon + heading inline ---- */
+.rb-info-columns__head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.rb-info-columns__icon {
+  display: block;
+  flex: 0 0 auto;
+  height: var(--rb-ic-icon-size, 28px);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* Built-in SVG fallback icons inherit color and stay square. */
+.rb-info-columns__icon--svg {
+  width: var(--rb-ic-icon-size, 28px);
+  height: var(--rb-ic-icon-size, 28px);
+  color: var(--rb-ic-heading);
+}
+
+.rb-info-columns__heading {
+  margin: 0;
+  font-family: var(--rb-font-body);
+  font-weight: 700;
+  font-size: var(--rb-ic-heading-size, 15px);
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rb-ic-heading);
+}
+
+/* ---- Body copy ---- */
+.rb-info-columns__body {
+  font-family: var(--rb-font-body);
+  font-size: var(--rb-ic-body-size, 15px);
+  line-height: 1.6;
+  color: var(--rb-ic-muted);
+}
+.rb-info-columns__body > * {
+  margin: 0 0 0.4rem;
+}
+.rb-info-columns__body > *:last-child {
+  margin-bottom: 0;
+}
+.rb-info-columns__body a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+/* ---- More info link (pinned to the bottom so columns align) ---- */
+.rb-info-columns__link {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--rb-font-body);
+  font-size: var(--rb-ic-body-size, 15px);
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--rb-ic-link);
+  padding-top: 0.2rem;
+}
+.rb-info-columns__link-text {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+.rb-info-columns__arrow {
+  transition: transform 0.15s ease;
+}
+.rb-info-columns__link:hover .rb-info-columns__arrow {
+  transform: translateX(0.2rem);
+}
+
+/* ---- Centered variant ---- */
+.rb-info-columns.is-center .rb-info-columns__item {
+  align-items: center;
+  text-align: center;
+}
+.rb-info-columns.is-center .rb-info-columns__head {
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+/* ---- Tablet ---- */
+@media screen and (max-width: 989px) {
+  .rb-info-columns__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.75rem 0;
+  }
+  /* On a 2-col grid, rebuild dividers as a grid of borders. */
+  .rb-info-columns__item {
+    padding: 0 1.5rem;
+  }
+  .rb-info-columns__item:first-child,
+  .rb-info-columns__item:last-child {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .rb-info-columns.has-dividers .rb-info-columns__item + .rb-info-columns__item {
+    border-left: 0;
+  }
+  .rb-info-columns.has-dividers .rb-info-columns__item:nth-child(2n) {
+    border-left: 1px solid var(--rb-ic-rule);
+  }
+}
+
+/* ---- Mobile ---- */
+@media screen and (max-width: 749px) {
+  .rb-info-columns__grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .rb-info-columns__item {
+    /* Even spacing on both sides of each stacked divider. */
+    padding: 1.6rem 0;
+    border-left: 0 !important;
+  }
+  .rb-info-columns__item:first-child {
+    padding-top: 0;
+  }
+  .rb-info-columns__item:last-child {
+    padding-bottom: 0;
+  }
+  /* Stacked: separate items with a top border instead of verticals. */
+  .rb-info-columns.has-dividers .rb-info-columns__item + .rb-info-columns__item {
+    border-top: 1px solid var(--rb-ic-rule);
+  }
+}

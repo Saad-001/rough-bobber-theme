@@ -724,6 +724,362 @@
         }
       }
     },
+    "rb_product_specs": {
+      "name": "Especificaciones del producto",
+      "presets": {
+        "name": "Especificaciones del producto"
+      },
+      "settings": {
+        "header_layout": {
+          "content": "Diseño"
+        },
+        "heading_size": {
+          "label": "Tamaño del título"
+        },
+        "body_size": {
+          "label": "Tamaño del texto"
+        },
+        "show_dividers": {
+          "label": "Mostrar divisores entre columnas"
+        },
+        "show_top_rule": {
+          "label": "Mostrar línea superior"
+        },
+        "show_bottom_rule": {
+          "label": "Mostrar línea inferior"
+        },
+        "header_details": {
+          "content": "Columna 1 — Detalles del producto"
+        },
+        "details_mf_info": {
+          "content": "Anulación por producto: configura el metacampo del producto specs.product_details (Texto enriquecido) para reemplazar el cuerpo de abajo en ese producto."
+        },
+        "show_details": {
+          "label": "Mostrar esta columna"
+        },
+        "details_heading": {
+          "label": "Título"
+        },
+        "details_intro": {
+          "label": "Introducción"
+        },
+        "details_list": {
+          "label": "Lista de detalles",
+          "info": "Usa una lista con viñetas para las líneas de especificaciones."
+        },
+        "details_tagline": {
+          "label": "Eslogan"
+        },
+        "header_size": {
+          "content": "Columna 2 — Guía de tallas"
+        },
+        "size_mf_info": {
+          "content": "Anulación por producto: configura el metacampo del producto specs.size_guide (Texto multilínea) —y opcionalmente specs.size_note— para reemplazar la tabla de abajo en ese producto."
+        },
+        "show_size": {
+          "label": "Mostrar esta columna"
+        },
+        "size_heading": {
+          "label": "Título"
+        },
+        "size_table": {
+          "label": "Tabla de tallas",
+          "info": "Una fila por línea, celdas separadas por comas. La primera línea es la fila de encabezado."
+        },
+        "size_note": {
+          "label": "Nota"
+        },
+        "header_care": {
+          "content": "Columna 3 — Instrucciones de cuidado"
+        },
+        "show_care": {
+          "label": "Mostrar esta columna"
+        },
+        "care_heading": {
+          "label": "Título"
+        },
+        "care_icon_size": {
+          "label": "Tamaño del icono"
+        },
+        "header_colors": {
+          "content": "Colores"
+        },
+        "color_overrides_info": {
+          "content": "Los colores provienen del esquema de color de arriba. Usa las anulaciones opcionales de abajo para ajustarlos."
+        },
+        "heading_color": {
+          "label": "Anular título (opcional)"
+        },
+        "text_color": {
+          "label": "Anular texto (opcional)"
+        },
+        "accent_color": {
+          "label": "Anular acento — viñetas e iconos (opcional)"
+        },
+        "rule_color": {
+          "label": "Anular líneas, divisores y tabla (opcional)"
+        }
+      },
+      "blocks": {
+        "care": {
+          "name": "Elemento de cuidado",
+          "settings": {
+            "care_icon": {
+              "label": "Icono integrado",
+              "options__wash": "Lavar a máquina",
+              "options__similar_colors": "Lavar con colores similares",
+              "options__tumble_dry": "Secadora",
+              "options__tumble_dry_low": "Secadora a baja temperatura",
+              "options__line_dry": "Secar al aire",
+              "options__iron": "Planchar",
+              "options__no_iron": "No planchar",
+              "options__no_bleach": "No usar lejía",
+              "options__no_dry_clean": "No lavar en seco"
+            },
+            "image": {
+              "label": "Icono personalizado (opcional)",
+              "info": "Reemplaza el icono integrado de arriba."
+            },
+            "text": {
+              "label": "Texto"
+            }
+          }
+        }
+      }
+    },
+    "rb_info_columns": {
+      "name": "Columnas de información",
+      "presets": {
+        "name": "Columnas de información"
+      },
+      "settings": {
+        "header_layout": {
+          "content": "Diseño"
+        },
+        "icon_size": {
+          "label": "Tamaño del icono"
+        },
+        "heading_size": {
+          "label": "Tamaño del título"
+        },
+        "body_size": {
+          "label": "Tamaño del texto"
+        },
+        "text_align": {
+          "label": "Alineación",
+          "options__left": "Izquierda",
+          "options__center": "Centro"
+        },
+        "show_arrow": {
+          "label": "Mostrar flecha en el enlace"
+        },
+        "show_dividers": {
+          "label": "Mostrar divisores entre columnas"
+        },
+        "show_top_rule": {
+          "label": "Mostrar línea superior"
+        },
+        "show_bottom_rule": {
+          "label": "Mostrar línea inferior"
+        },
+        "header_colors": {
+          "content": "Colores"
+        },
+        "color_overrides_info": {
+          "content": "Los colores provienen del esquema de color de arriba. Usa las anulaciones opcionales de abajo para ajustarlos."
+        },
+        "heading_color": {
+          "label": "Anular título (opcional)"
+        },
+        "text_color": {
+          "label": "Anular texto (opcional)"
+        },
+        "link_color": {
+          "label": "Anular enlace (opcional)"
+        },
+        "rule_color": {
+          "label": "Anular líneas y divisores (opcional)"
+        }
+      },
+      "blocks": {
+        "column": {
+          "name": "Columna",
+          "settings": {
+            "icon": {
+              "label": "Icono",
+              "info": "Recomendado: un icono de línea pequeño en tu dorado de marca (PNG/SVG)."
+            },
+            "fallback_icon": {
+              "label": "Icono integrado (si no hay imagen)",
+              "info": "Se muestra solo cuando no hay imagen de icono arriba. «Automático» elige uno según el título.",
+              "options__auto": "Automático (según el título)",
+              "options__truck": "Camión de envío",
+              "options__returns": "Devoluciones",
+              "options__shield": "Escudo (calidad)",
+              "options__phone": "Teléfono",
+              "options__headset": "Auriculares (soporte)",
+              "options__lock": "Candado (seguro)",
+              "options__tag": "Etiqueta",
+              "options__gift": "Regalo",
+              "options__none": "Ninguno"
+            },
+            "heading": {
+              "label": "Título"
+            },
+            "body": {
+              "label": "Texto"
+            },
+            "link_label": {
+              "label": "Texto del enlace",
+              "info": "Déjalo vacío para ocultar el enlace."
+            },
+            "link_url": {
+              "label": "Enlace"
+            }
+          }
+        }
+      }
+    },
+    "rb_breadcrumb": {
+      "name": "Ruta de navegación",
+      "presets": {
+        "name": "Ruta de navegación"
+      },
+      "settings": {
+        "header_general": {
+          "content": "General"
+        },
+        "show_home": {
+          "label": "Mostrar enlace «Inicio»"
+        },
+        "home_label": {
+          "label": "Texto de inicio"
+        },
+        "separator": {
+          "label": "Carácter separador"
+        },
+        "uppercase": {
+          "label": "Texto en mayúsculas"
+        },
+        "text_size": {
+          "label": "Tamaño del texto"
+        },
+        "letter_spacing": {
+          "label": "Espaciado entre letras"
+        },
+        "header_product": {
+          "content": "Ruta de colecciones en la página de producto"
+        },
+        "product_info": {
+          "content": "En una página de producto la ruta muestra: Inicio / colecciones superiores / colección / producto."
+        },
+        "fallback_collection": {
+          "label": "Usar la colección predeterminada «Página de inicio» como respaldo",
+          "info": "Siempre se prefiere una colección real (p. ej. Shop). Esto solo aplica cuando el producto no tiene ninguna colección además de la «Página de inicio» predeterminada de Shopify — activado: muestra «Página de inicio»; desactivado: no muestra ninguna colección."
+        },
+        "enable_nested": {
+          "label": "Mostrar colecciones superiores (anidadas)",
+          "info": "Recorre un metacampo de colección que apunta a su colección superior para mostrar la ruta anidada completa."
+        },
+        "parent_metafield": {
+          "label": "Metacampo de colección superior",
+          "info": "namespace.key de un metacampo de colección (tipo: Colección) que referencia la colección superior. Predeterminado: custom.parent_collection"
+        },
+        "max_levels": {
+          "label": "Niveles máximos de anidación"
+        },
+        "header_colors": {
+          "content": "Colores"
+        },
+        "color_overrides_info": {
+          "content": "Los colores provienen del esquema de color de arriba. Usa las anulaciones opcionales de abajo para ajustarlos."
+        },
+        "text_color": {
+          "label": "Anular color del texto (opcional)"
+        },
+        "separator_color": {
+          "label": "Anular color del separador (opcional)"
+        }
+      }
+    },
+    "rb_product_bar": {
+      "name": "Barra superior de producto",
+      "presets": {
+        "name": "Barra superior de producto"
+      },
+      "settings": {
+        "header_features": {
+          "content": "Elementos destacados"
+        },
+        "icon_size": {
+          "label": "Tamaño del icono"
+        },
+        "feature_text_size": {
+          "label": "Tamaño del texto"
+        },
+        "item_gap": {
+          "label": "Espacio entre elementos"
+        },
+        "letter_spacing": {
+          "label": "Espaciado entre letras"
+        },
+        "uppercase": {
+          "label": "Texto en mayúsculas"
+        },
+        "header_tags": {
+          "content": "Etiquetas"
+        },
+        "tags_source": {
+          "label": "Origen de las etiquetas",
+          "info": "En una página de producto, «Etiquetas del producto» muestra las etiquetas de ese producto. Si no hay, se usa la lista personalizada de abajo.",
+          "options__product": "Etiquetas del producto",
+          "options__custom": "Lista personalizada"
+        },
+        "custom_tags": {
+          "label": "Etiquetas personalizadas",
+          "info": "Separa cada etiqueta con una coma."
+        },
+        "tag_separator": {
+          "label": "Carácter separador"
+        },
+        "tag_text_size": {
+          "label": "Tamaño del texto de la etiqueta"
+        },
+        "tag_limit": {
+          "label": "Máximo de etiquetas a mostrar",
+          "info": "Pon 0 para mostrar todas."
+        },
+        "header_colors": {
+          "content": "Colores"
+        },
+        "color_overrides_info": {
+          "content": "Los colores provienen del esquema de color de arriba. Usa las anulaciones opcionales de abajo para ajustarlos."
+        },
+        "text_color": {
+          "label": "Anular color del texto (opcional)"
+        },
+        "tag_color": {
+          "label": "Anular color de la etiqueta (opcional)"
+        }
+      },
+      "blocks": {
+        "feature": {
+          "name": "Elemento",
+          "settings": {
+            "icon": {
+              "label": "Icono",
+              "info": "Recomendado: un icono de línea pequeño en tu dorado de marca (PNG/SVG)."
+            },
+            "label": {
+              "label": "Etiqueta"
+            },
+            "link": {
+              "label": "Enlace (opcional)"
+            }
+          }
+        }
+      }
+    },
     "rb_banner": {
       "name": "Banner principal",
       "presets": {

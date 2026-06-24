@@ -1,0 +1,362 @@
+{%- comment -%}
+  Info columns — Rough Bobber
+  A row of store-info columns (icon + heading inline, body copy, "More info" link),
+  separated by vertical dividers, with optional thin rules above and below.
+  Built for content like Shipping / Returns / Quality / Contact. Blocks-based.
+
+  Responsive: desktop = one column per block (with dividers), 2 columns on tablet,
+  1 column stacked on mobile — dividers become row/column borders at each step,
+  the same proven pattern as rb-value-props.
+
+  Conventions (conventions.md): static CSS in assets/rb-info-columns.css; only
+  Liquid-driven values in the {% style %} block; color_scheme + optional per-element
+  colour overrides; Dawn .section-{id}-padding; .page-width; brand fonts; strings
+  translatable.
+{%- endcomment -%}
+
+{{ 'rb-info-columns.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign uid = 'rb-info-columns-' | append: section.id
+  assign cols = section.blocks.size
+  if cols == 0
+    assign cols = 1
+  endif
+
+  assign mods = ''
+  if s.text_align == 'center'
+    assign mods = mods | append: ' is-center'
+  endif
+  if s.show_top_rule
+    assign mods = mods | append: ' has-top-rule'
+  endif
+  if s.show_bottom_rule
+    assign mods = mods | append: ' has-bottom-rule'
+  endif
+  if s.show_dividers
+    assign mods = mods | append: ' has-dividers'
+  endif
+-%}
+
+{%- style -%}
+  #{{ uid }} {
+    --rb-ic-cols: {{ cols }};
+    --rb-ic-icon-size: {{ s.icon_size }}px;
+    --rb-ic-heading-size: {{ s.heading_size }}px;
+    --rb-ic-body-size: {{ s.body_size }}px;
+    {%- if s.heading_color != blank %}--rb-ic-heading: {{ s.heading_color }};{% endif -%}
+    {%- if s.text_color != blank %}--rb-ic-muted: {{ s.text_color }};{% endif -%}
+    {%- if s.link_color != blank %}--rb-ic-link: {{ s.link_color }};{% endif -%}
+    {%- if s.rule_color != blank %}--rb-ic-rule: {{ s.rule_color }};{% endif -%}
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ s.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ s.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ s.padding_top }}px;
+      padding-bottom: {{ s.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div id="{{ uid }}" class="rb-info-columns color-{{ s.color_scheme }} gradient{{ mods }}">
+  <div class="page-width section-{{ section.id }}-padding">
+    <div class="rb-info-columns__grid">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <div class="rb-info-columns__item" {{ block.shopify_attributes }}>
+          <div class="rb-info-columns__head">
+            {%- if b.icon != blank -%}
+              <img
+                class="rb-info-columns__icon"
+                src="{{ b.icon | image_url: width: 120 }}"
+                srcset="{{ b.icon | image_url: width: 120 }} 1x, {{ b.icon | image_url: width: 240 }} 2x"
+                width="{{ b.icon.width }}"
+                height="{{ b.icon.height }}"
+                alt="{{ b.icon.alt | default: b.heading | escape }}"
+                loading="lazy"
+              >
+            {%- else -%}
+              {%- liquid
+                assign fb = b.fallback_icon | default: 'auto'
+                if fb == 'auto'
+                  assign hl = b.heading | downcase
+                  if hl contains 'ship' or hl contains 'deliver'
+                    assign fb = 'truck'
+                  elsif hl contains 'return' or hl contains 'exchange' or hl contains 'refund'
+                    assign fb = 'returns'
+                  elsif hl contains 'quality' or hl contains 'guarantee' or hl contains 'warrant' or hl contains 'promise'
+                    assign fb = 'shield'
+                  elsif hl contains 'contact' or hl contains 'support' or hl contains 'help' or hl contains 'phone' or hl contains 'email'
+                    assign fb = 'phone'
+                  else
+                    assign fb = 'info'
+                  endif
+                endif
+              -%}
+              {%- unless fb == 'none' -%}
+                {%- render 'rb-info-icon', icon: fb, class: 'rb-info-columns__icon rb-info-columns__icon--svg' -%}
+              {%- endunless -%}
+            {%- endif -%}
+            {%- if b.heading != blank -%}
+              <h3 class="rb-info-columns__heading">{{ b.heading }}</h3>
+            {%- endif -%}
+          </div>
+
+          {%- if b.body != blank -%}
+            <div class="rb-info-columns__body rte">{{ b.body }}</div>
+          {%- endif -%}
+
+          {%- if b.link_label != blank -%}
+            <a
+              class="rb-info-columns__link"
+              {% if b.link_url != blank %}href="{{ b.link_url }}"{% else %}href="#" aria-disabled="true"{% endif %}
+            >
+              <span class="rb-info-columns__link-text">{{ b.link_label }}</span>
+              {%- if s.show_arrow -%}
+                <span class="rb-info-columns__arrow" aria-hidden="true">&rarr;</span>
+              {%- endif -%}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.rb_info_columns.name",
+  "tag": "section",
+  "class": "section-rb-info-columns",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.rb_info_columns.settings.header_layout.content"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "t:sections.rb_info_columns.settings.icon_size.label",
+      "min": 16,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "t:sections.rb_info_columns.settings.heading_size.label",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "t:sections.rb_info_columns.settings.body_size.label",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "t:sections.rb_info_columns.settings.text_align.label",
+      "options": [
+        { "value": "left", "label": "t:sections.rb_info_columns.settings.text_align.options__left" },
+        { "value": "center", "label": "t:sections.rb_info_columns.settings.text_align.options__center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "t:sections.rb_info_columns.settings.show_arrow.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dividers",
+      "label": "t:sections.rb_info_columns.settings.show_dividers.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_top_rule",
+      "label": "t:sections.rb_info_columns.settings.show_top_rule.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bottom_rule",
+      "label": "t:sections.rb_info_columns.settings.show_bottom_rule.label",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_info_columns.settings.header_colors.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-4"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.rb_info_columns.settings.color_overrides_info.content"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "t:sections.rb_info_columns.settings.heading_color.label"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.rb_info_columns.settings.text_color.label"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "t:sections.rb_info_columns.settings.link_color.label"
+    },
+    {
+      "type": "color",
+      "id": "rule_color",
+      "label": "t:sections.rb_info_columns.settings.rule_color.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "t:sections.rb_info_columns.blocks.column.name",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "t:sections.rb_info_columns.blocks.column.settings.icon.label",
+          "info": "t:sections.rb_info_columns.blocks.column.settings.icon.info"
+        },
+        {
+          "type": "select",
+          "id": "fallback_icon",
+          "label": "t:sections.rb_info_columns.blocks.column.settings.fallback_icon.label",
+          "info": "t:sections.rb_info_columns.blocks.column.settings.fallback_icon.info",
+          "options": [
+            { "value": "auto", "label": "t:sections.rb_info_columns.blocks.column.settings.fallback_icon.options__auto" },
+            { "value": "truck", "label": "t:sections.rb_info_columns.blocks.column.settings.fallback_icon.options__truck" },
+            { "value": "returns", "label": "t:sections.rb_info_columns.blocks.column.settings.fallback_icon.options__returns" },
+            { "value": "shield", "label": "t:sections.rb_info_columns.blocks.column.settings.fallback_icon.options__shield" },
+            { "value": "phone", "label": "t:sections.rb_info_columns.blocks.column.settings.fallback_icon.options__phone" },
+            { "value": "headset", "label": "t:sections.rb_info_columns.blocks.column.settings.fallback_icon.options__headset" },
+            { "value": "lock", "label": "t:sections.rb_info_columns.blocks.column.settings.fallback_icon.options__lock" },
+            { "value": "tag", "label": "t:sections.rb_info_columns.blocks.column.settings.fallback_icon.options__tag" },
+            { "value": "gift", "label": "t:sections.rb_info_columns.blocks.column.settings.fallback_icon.options__gift" },
+            { "value": "none", "label": "t:sections.rb_info_columns.blocks.column.settings.fallback_icon.options__none" }
+          ],
+          "default": "auto"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.rb_info_columns.blocks.column.settings.heading.label",
+          "default": "Shipping"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "t:sections.rb_info_columns.blocks.column.settings.body.label",
+          "default": "<p>We ship worldwide. Orders are processed within 1–2 business days. Standard delivery: 3–7 business days.</p>"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "t:sections.rb_info_columns.blocks.column.settings.link_label.label",
+          "default": "More info"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "t:sections.rb_info_columns.blocks.column.settings.link_url.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.rb_info_columns.presets.name",
+      "blocks": [
+        {
+          "type": "column",
+          "settings": {
+            "heading": "Shipping",
+            "body": "<p>We ship worldwide. Orders are processed within 1–2 business days. Standard delivery: 3–7 business days.</p>",
+            "link_label": "More info"
+          }
+        },
+        {
+          "type": "column",
+          "settings": {
+            "heading": "Returns",
+            "body": "<p>Not happy with your order? You can return or exchange it within 30 days of delivery. Items must be unworn and in original condition.</p>",
+            "link_label": "More info"
+          }
+        },
+        {
+          "type": "column",
+          "settings": {
+            "heading": "Quality Promise",
+            "body": "<p>We stand behind everything we make. If it's not right, we'll make it right. Built to last. Guaranteed.</p>",
+            "link_label": "More info"
+          }
+        },
+        {
+          "type": "column",
+          "settings": {
+            "heading": "Contact Us",
+            "body": "<p>Have a question? We're here for you. Email: info@roughbobber.com</p>",
+            "link_label": "More info"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

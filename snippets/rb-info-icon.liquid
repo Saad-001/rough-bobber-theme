@@ -1,0 +1,65 @@
+{%- comment -%}
+  Rough Bobber — built-in line icons for rb-info-columns fallbacks.
+  Renders an inline SVG (stroke = currentColor) for the given key.
+
+  Params:
+    icon  {String} one of: truck, returns, shield, phone, headset, lock, tag, gift, info
+    class {String} class attribute for the <svg>
+{%- endcomment -%}
+{%- liquid
+  assign svg_class = class | default: 'rb-info-icon'
+-%}
+{%- case icon -%}
+  {%- when 'truck' -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M1.5 5.5h12v10h-12z"/>
+      <path d="M13.5 8.5h3.7l3.3 3.3v3.7h-7z"/>
+      <circle cx="6" cy="18" r="1.8"/>
+      <circle cx="17" cy="18" r="1.8"/>
+    </svg>
+  {%- when 'returns' -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <polyline points="1 4 1 10 7 10"/>
+      <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+    </svg>
+  {%- when 'shield' -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      <polyline points="8.8 12 11 14.2 15.2 9.5"/>
+    </svg>
+  {%- when 'phone' -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </svg>
+  {%- when 'headset' -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M4 13v-1a8 8 0 0 1 16 0v1"/>
+      <rect x="3.3" y="13" width="3.7" height="6" rx="1.3"/>
+      <rect x="17" y="13" width="3.7" height="6" rx="1.3"/>
+      <path d="M20.7 18.6V19a3 3 0 0 1-3 3h-2.6"/>
+    </svg>
+  {%- when 'lock' -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <rect x="4.5" y="10.5" width="15" height="10" rx="2"/>
+      <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/>
+    </svg>
+  {%- when 'tag' -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.83 0L3 13.05V3.5h9.55L20.6 11a2 2 0 0 1 0 2.4z"/>
+      <circle cx="7.5" cy="7.5" r="1.2"/>
+    </svg>
+  {%- when 'gift' -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <polyline points="20 12 20 21 4 21 4 12"/>
+      <rect x="2.5" y="7.5" width="19" height="4.5" rx="0.5"/>
+      <line x1="12" y1="7.5" x2="12" y2="21"/>
+      <path d="M12 7.5H7.75a2.25 2.25 0 1 1 0-4.5C10.75 3 12 7.5 12 7.5z"/>
+      <path d="M12 7.5h4.25a2.25 2.25 0 1 0 0-4.5C13.25 3 12 7.5 12 7.5z"/>
+    </svg>
+  {%- else -%}
+    <svg class="{{ svg_class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+      <circle cx="12" cy="12" r="9"/>
+      <line x1="12" y1="11" x2="12" y2="16"/>
+      <circle cx="12" cy="7.8" r="0.7" fill="currentColor" stroke="none"/>
+    </svg>
+{%- endcase -%}

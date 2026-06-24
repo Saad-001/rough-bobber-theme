@@ -1,0 +1,72 @@
+/* ============================================================
+   Rough Bobber — Breadcrumb (sections/rb-breadcrumb.liquid)
+   Static styles only. Per-section values come from the {% style %}
+   block scoped to #rb-breadcrumb-{id}.
+   ============================================================ */
+
+.rb-breadcrumb {
+  --rb-bc-text: rgb(var(--color-foreground));
+  --rb-bc-muted: rgba(var(--color-foreground), 0.5);
+  --rb-bc-accent: var(--rb-gold);
+  --rb-bc-sep: "/";
+}
+
+.rb-breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rb-breadcrumb__item {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--rb-font-body);
+  font-weight: 600;
+  font-size: var(--rb-bc-size, 13px);
+  line-height: 1.3;
+  letter-spacing: var(--rb-bc-tracking, 1.5px);
+  text-transform: uppercase;
+}
+
+/* Separator before every item except the first. */
+.rb-breadcrumb__item:not(:first-child)::before {
+  content: var(--rb-bc-sep, "/");
+  margin-right: 0.6rem;
+  color: var(--rb-bc-muted);
+  font-weight: 400;
+}
+
+/* Truncate long labels with an ellipsis so a big product/collection title never
+   blows out the bar. The full title stays in the DOM (screen readers) and is
+   surfaced on hover via the title attribute. The trail itself still wraps. */
+.rb-breadcrumb__link,
+.rb-breadcrumb__current {
+  display: block;
+  max-width: min(28ch, 60vw);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rb-breadcrumb__link {
+  color: var(--rb-bc-text);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.rb-breadcrumb__link:hover {
+  color: var(--rb-bc-accent);
+}
+
+.rb-breadcrumb__current {
+  color: var(--rb-bc-text);
+  opacity: 0.7;
+}
+
+/* ---- Uppercase toggle off ---- */
+.rb-breadcrumb.is-plain .rb-breadcrumb__item {
+  text-transform: none;
+}

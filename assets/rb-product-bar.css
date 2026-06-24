@@ -1,0 +1,143 @@
+/* ============================================================
+   Rough Bobber — Product top bar (sections/rb-product-bar.liquid)
+   Static styles only. Per-section values come from the {% style %}
+   block scoped to #rb-product-bar-{id}.
+
+   Layout: one flex row. Desktop = features left, tags pushed right.
+   Below 990px the row turns into a single horizontal scroll track —
+   it never wraps or stacks.
+   ============================================================ */
+
+.rb-product-bar {
+  --rb-pb-text: rgb(var(--color-foreground));
+  --rb-pb-tag: var(--rb-gold);
+  --rb-pb-muted: rgba(var(--color-foreground), 0.55);
+}
+
+/* The track is also the scroll container (carries .page-width + padding). */
+.rb-product-bar__track {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--rb-pb-item-gap, 40px);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Hide the scrollbar but keep it scrollable (Firefox + legacy IE). */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.rb-product-bar__track::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---- Feature group (left) ---- */
+.rb-product-bar__features {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--rb-pb-item-gap, 40px);
+  flex: 0 0 auto;
+}
+
+.rb-product-bar__feature {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  text-decoration: none;
+  color: inherit;
+}
+a.rb-product-bar__feature {
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+a.rb-product-bar__feature:hover {
+  color: var(--rb-pb-tag);
+}
+
+.rb-product-bar__icon {
+  display: block;
+  flex: 0 0 auto;
+  height: var(--rb-pb-icon-size, 26px);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.rb-product-bar__label {
+  font-family: var(--rb-font-body);
+  font-weight: 700;
+  font-size: var(--rb-pb-feature-size, 14px);
+  line-height: 1;
+  letter-spacing: var(--rb-pb-tracking, 2px);
+  text-transform: uppercase;
+  color: var(--rb-pb-text);
+}
+
+/* ---- Tag group (right) ---- */
+/* margin-left:auto pushes tags right on desktop; when the row overflows and
+   scrolls, the auto margin collapses to 0 so it reads as one continuous line. */
+.rb-product-bar__tags {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.rb-product-bar__tag {
+  font-family: var(--rb-font-body);
+  font-weight: 600;
+  font-size: var(--rb-pb-tag-size, 13px);
+  line-height: 1;
+  letter-spacing: var(--rb-pb-tracking, 2px);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--rb-pb-tag);
+}
+
+.rb-product-bar__sep {
+  font-size: var(--rb-pb-tag-size, 13px);
+  line-height: 1;
+  color: var(--rb-pb-muted);
+  user-select: none;
+}
+
+/* ---- Uppercase toggle off ---- */
+.rb-product-bar.is-plain .rb-product-bar__label,
+.rb-product-bar.is-plain .rb-product-bar__tag {
+  text-transform: none;
+}
+
+/* ---- Below desktop: the row scrolls horizontally ----
+   Discoverability: a soft fade on both edges signals "there's more to scroll"
+   so the cut-off content doesn't read as a UI bug. The natural overflow leaves
+   the next item partially visible (a "peek"), and the fade reinforces it.
+   No motion — accessible, and nothing auto-scrolls. The fades sit on the fixed
+   visual edges, so items dim as they approach an edge while you swipe. The left
+   fade mostly lands on page-width's gutter at rest, so the first item stays clear. */
+@media screen and (max-width: 989px) {
+  .rb-product-bar__track {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 24px,
+      #000 calc(100% - 28px),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 24px,
+      #000 calc(100% - 28px),
+      transparent 100%
+    );
+  }
+
+  /* When scrolling, keep a little breathing room after the last item so it can
+     sit fully clear of the right-edge fade once scrolled to the end. */
+  .rb-product-bar__tags {
+    padding-right: 0.75rem;
+  }
+}

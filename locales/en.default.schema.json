@@ -724,6 +724,362 @@
         }
       }
     },
+    "rb_product_specs": {
+      "name": "Product specs",
+      "presets": {
+        "name": "Product specs"
+      },
+      "settings": {
+        "header_layout": {
+          "content": "Layout"
+        },
+        "heading_size": {
+          "label": "Heading size"
+        },
+        "body_size": {
+          "label": "Body text size"
+        },
+        "show_dividers": {
+          "label": "Show dividers between columns"
+        },
+        "show_top_rule": {
+          "label": "Show line above"
+        },
+        "show_bottom_rule": {
+          "label": "Show line below"
+        },
+        "header_details": {
+          "content": "Column 1 — Product details"
+        },
+        "details_mf_info": {
+          "content": "Per-product override: set the product metafield specs.product_details (Rich text) to replace the body below for that product."
+        },
+        "show_details": {
+          "label": "Show this column"
+        },
+        "details_heading": {
+          "label": "Heading"
+        },
+        "details_intro": {
+          "label": "Intro"
+        },
+        "details_list": {
+          "label": "Details list",
+          "info": "Use a bulleted list for the spec lines."
+        },
+        "details_tagline": {
+          "label": "Tagline"
+        },
+        "header_size": {
+          "content": "Column 2 — Size guide"
+        },
+        "size_mf_info": {
+          "content": "Per-product override: set the product metafield specs.size_guide (Multi-line text) — and optionally specs.size_note — to replace the table below for that product."
+        },
+        "show_size": {
+          "label": "Show this column"
+        },
+        "size_heading": {
+          "label": "Heading"
+        },
+        "size_table": {
+          "label": "Size table",
+          "info": "One row per line, cells separated by commas. The first line is the header row."
+        },
+        "size_note": {
+          "label": "Note"
+        },
+        "header_care": {
+          "content": "Column 3 — Care instructions"
+        },
+        "show_care": {
+          "label": "Show this column"
+        },
+        "care_heading": {
+          "label": "Heading"
+        },
+        "care_icon_size": {
+          "label": "Icon size"
+        },
+        "header_colors": {
+          "content": "Colors"
+        },
+        "color_overrides_info": {
+          "content": "Colors come from the color scheme above. Use the optional overrides below to fine-tune them."
+        },
+        "heading_color": {
+          "label": "Heading override (optional)"
+        },
+        "text_color": {
+          "label": "Body text override (optional)"
+        },
+        "accent_color": {
+          "label": "Accent override — bullets & icons (optional)"
+        },
+        "rule_color": {
+          "label": "Lines, dividers & table override (optional)"
+        }
+      },
+      "blocks": {
+        "care": {
+          "name": "Care item",
+          "settings": {
+            "care_icon": {
+              "label": "Built-in icon",
+              "options__wash": "Machine wash",
+              "options__similar_colors": "Wash with similar colors",
+              "options__tumble_dry": "Tumble dry",
+              "options__tumble_dry_low": "Tumble dry low",
+              "options__line_dry": "Line dry",
+              "options__iron": "Iron",
+              "options__no_iron": "Do not iron",
+              "options__no_bleach": "Do not bleach",
+              "options__no_dry_clean": "Do not dry clean"
+            },
+            "image": {
+              "label": "Custom icon (optional)",
+              "info": "Overrides the built-in icon above."
+            },
+            "text": {
+              "label": "Text"
+            }
+          }
+        }
+      }
+    },
+    "rb_info_columns": {
+      "name": "Info columns",
+      "presets": {
+        "name": "Info columns"
+      },
+      "settings": {
+        "header_layout": {
+          "content": "Layout"
+        },
+        "icon_size": {
+          "label": "Icon size"
+        },
+        "heading_size": {
+          "label": "Heading size"
+        },
+        "body_size": {
+          "label": "Body text size"
+        },
+        "text_align": {
+          "label": "Alignment",
+          "options__left": "Left",
+          "options__center": "Center"
+        },
+        "show_arrow": {
+          "label": "Show arrow on link"
+        },
+        "show_dividers": {
+          "label": "Show dividers between columns"
+        },
+        "show_top_rule": {
+          "label": "Show line above"
+        },
+        "show_bottom_rule": {
+          "label": "Show line below"
+        },
+        "header_colors": {
+          "content": "Colors"
+        },
+        "color_overrides_info": {
+          "content": "Colors come from the color scheme above. Use the optional overrides below to fine-tune them."
+        },
+        "heading_color": {
+          "label": "Heading override (optional)"
+        },
+        "text_color": {
+          "label": "Body text override (optional)"
+        },
+        "link_color": {
+          "label": "Link override (optional)"
+        },
+        "rule_color": {
+          "label": "Lines & dividers override (optional)"
+        }
+      },
+      "blocks": {
+        "column": {
+          "name": "Column",
+          "settings": {
+            "icon": {
+              "label": "Icon",
+              "info": "Recommended: a small line icon in your brand gold (PNG/SVG)."
+            },
+            "fallback_icon": {
+              "label": "Built-in icon (if no image)",
+              "info": "Shown only when no icon image is set above. \"Auto\" picks one from the heading.",
+              "options__auto": "Auto (match heading)",
+              "options__truck": "Delivery truck",
+              "options__returns": "Returns",
+              "options__shield": "Shield (quality)",
+              "options__phone": "Phone",
+              "options__headset": "Headset (support)",
+              "options__lock": "Lock (secure)",
+              "options__tag": "Tag",
+              "options__gift": "Gift",
+              "options__none": "None"
+            },
+            "heading": {
+              "label": "Heading"
+            },
+            "body": {
+              "label": "Body text"
+            },
+            "link_label": {
+              "label": "Link label",
+              "info": "Leave empty to hide the link."
+            },
+            "link_url": {
+              "label": "Link"
+            }
+          }
+        }
+      }
+    },
+    "rb_breadcrumb": {
+      "name": "Breadcrumb",
+      "presets": {
+        "name": "Breadcrumb"
+      },
+      "settings": {
+        "header_general": {
+          "content": "General"
+        },
+        "show_home": {
+          "label": "Show \"Home\" link"
+        },
+        "home_label": {
+          "label": "Home label"
+        },
+        "separator": {
+          "label": "Separator character"
+        },
+        "uppercase": {
+          "label": "Uppercase text"
+        },
+        "text_size": {
+          "label": "Text size"
+        },
+        "letter_spacing": {
+          "label": "Letter spacing"
+        },
+        "header_product": {
+          "content": "Product page collection path"
+        },
+        "product_info": {
+          "content": "On a product page the trail shows the collection path: Home / parent collections / collection / product."
+        },
+        "fallback_collection": {
+          "label": "Fall back to the default \"Home page\" collection",
+          "info": "A real collection (e.g. Shop) is always preferred. This only applies when the product has no collection other than Shopify's default Home page — on: show \"Home page\"; off: show no collection crumb."
+        },
+        "enable_nested": {
+          "label": "Show parent (nested) collections",
+          "info": "Walks a collection metafield that points to its parent collection so the full nested path is shown."
+        },
+        "parent_metafield": {
+          "label": "Parent collection metafield",
+          "info": "namespace.key of a collection metafield (type: Collection) that references the parent collection. Default: custom.parent_collection"
+        },
+        "max_levels": {
+          "label": "Maximum nesting levels"
+        },
+        "header_colors": {
+          "content": "Colors"
+        },
+        "color_overrides_info": {
+          "content": "Colors come from the color scheme above. Use the optional overrides below to fine-tune them."
+        },
+        "text_color": {
+          "label": "Text override (optional)"
+        },
+        "separator_color": {
+          "label": "Separator color override (optional)"
+        }
+      }
+    },
+    "rb_product_bar": {
+      "name": "Product top bar",
+      "presets": {
+        "name": "Product top bar"
+      },
+      "settings": {
+        "header_features": {
+          "content": "Feature items"
+        },
+        "icon_size": {
+          "label": "Icon size"
+        },
+        "feature_text_size": {
+          "label": "Feature text size"
+        },
+        "item_gap": {
+          "label": "Space between items"
+        },
+        "letter_spacing": {
+          "label": "Letter spacing"
+        },
+        "uppercase": {
+          "label": "Uppercase text"
+        },
+        "header_tags": {
+          "content": "Tags"
+        },
+        "tags_source": {
+          "label": "Tags source",
+          "info": "On a product page, \"Product tags\" shows that product's tags. Falls back to the custom list below when there are none.",
+          "options__product": "Product tags",
+          "options__custom": "Custom list"
+        },
+        "custom_tags": {
+          "label": "Custom tags",
+          "info": "Separate each tag with a comma."
+        },
+        "tag_separator": {
+          "label": "Separator character"
+        },
+        "tag_text_size": {
+          "label": "Tag text size"
+        },
+        "tag_limit": {
+          "label": "Maximum tags to show",
+          "info": "Set to 0 to show all."
+        },
+        "header_colors": {
+          "content": "Colors"
+        },
+        "color_overrides_info": {
+          "content": "Colors come from the color scheme above. Use the optional overrides below to fine-tune them."
+        },
+        "text_color": {
+          "label": "Feature text override (optional)"
+        },
+        "tag_color": {
+          "label": "Tag color override (optional)"
+        }
+      },
+      "blocks": {
+        "feature": {
+          "name": "Feature",
+          "settings": {
+            "icon": {
+              "label": "Icon",
+              "info": "Recommended: a small line icon in your brand gold (PNG/SVG)."
+            },
+            "label": {
+              "label": "Label"
+            },
+            "link": {
+              "label": "Link (optional)"
+            }
+          }
+        }
+      }
+    },
     "rb_banner": {
       "name": "Hero banner",
       "presets": {

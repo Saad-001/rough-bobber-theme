@@ -1,0 +1,208 @@
+/* ============================================================
+   Rough Bobber — Product specs (sections/rb-product-specs.liquid)
+   Static styles only. Per-section values come from the {% style %}
+   block scoped to #rb-product-specs-{id}.
+   ============================================================ */
+
+.rb-product-specs {
+  --rb-ps-rule: rgba(var(--color-foreground), 0.2);
+  --rb-ps-muted: rgba(var(--color-foreground), 0.78);
+  --rb-ps-heading: rgb(var(--color-foreground));
+  --rb-ps-accent: var(--rb-gold);
+}
+
+/* Mobile-first: single column. Three columns from 990px up. */
+.rb-product-specs__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+}
+
+.rb-product-specs.has-top-rule .rb-product-specs__grid {
+  border-top: 1px solid var(--rb-ps-rule);
+}
+.rb-product-specs.has-bottom-rule .rb-product-specs__grid {
+  border-bottom: 1px solid var(--rb-ps-rule);
+}
+
+.rb-product-specs__col {
+  display: flex;
+  flex-direction: column;
+  padding: 1.6rem 0;
+}
+.rb-product-specs__col:first-child {
+  padding-top: 0;
+}
+.rb-product-specs__col:last-child {
+  padding-bottom: 0;
+}
+.rb-product-specs.has-dividers .rb-product-specs__col + .rb-product-specs__col {
+  border-top: 1px solid var(--rb-ps-rule);
+}
+
+/* ---- Headings ---- */
+.rb-product-specs__heading {
+  margin: 0 0 1rem;
+  font-family: var(--rb-font-body);
+  font-weight: 700;
+  font-size: var(--rb-ps-heading-size, 17px);
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rb-ps-heading);
+}
+
+/* ---- Details column ---- */
+.rb-product-specs__rte {
+  font-family: var(--rb-font-body);
+  font-size: var(--rb-ps-body-size, 15px);
+  line-height: 1.6;
+  color: var(--rb-ps-muted);
+}
+.rb-product-specs__rte > :first-child {
+  margin-top: 0;
+}
+.rb-product-specs__rte p {
+  margin: 0 0 0.9rem;
+}
+.rb-product-specs__rte ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.rb-product-specs__rte li {
+  position: relative;
+  padding-left: 1.1rem;
+  margin-bottom: 0.45rem;
+}
+.rb-product-specs__rte li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 50%;
+  background: var(--rb-ps-accent);
+}
+
+.rb-product-specs__tagline {
+  margin: 1.5rem 0 0;
+  font-family: var(--rb-font-body);
+  font-weight: 700;
+  font-size: var(--rb-ps-body-size, 15px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rb-ps-heading);
+}
+/* On desktop, pin the tagline to the bottom of the column. */
+@media screen and (min-width: 990px) {
+  .rb-product-specs__col--details {
+    height: 100%;
+  }
+  .rb-product-specs__tagline {
+    margin-top: auto;
+    padding-top: 1.5rem;
+  }
+}
+
+/* ---- Size guide table ---- */
+.rb-product-specs__table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.rb-product-specs__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--rb-font-body);
+  font-size: var(--rb-ps-body-size, 15px);
+  color: var(--rb-ps-muted);
+}
+.rb-product-specs__table th,
+.rb-product-specs__table td {
+  text-align: left;
+  padding: 0.5rem 1rem 0.5rem 0;
+  border-bottom: 1px solid var(--rb-ps-rule);
+  white-space: nowrap;
+}
+.rb-product-specs__table th {
+  font-weight: 700;
+  font-size: 0.84em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rb-ps-heading);
+}
+.rb-product-specs__table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Size guide image (from the specs.size_guide_image metafield). */
+.rb-product-specs__size-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+.rb-product-specs__note {
+  margin: 0.9rem 0 0;
+  font-family: var(--rb-font-body);
+  font-size: calc(var(--rb-ps-body-size, 15px) - 1px);
+  line-height: 1.5;
+  color: var(--rb-ps-muted);
+  opacity: 0.85;
+}
+
+/* ---- Care column ---- */
+.rb-product-specs__care {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.rb-product-specs__care-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.rb-product-specs__care-icon {
+  flex: 0 0 auto;
+  height: var(--rb-ps-care-icon-size, 24px);
+  width: auto;
+  object-fit: contain;
+}
+.rb-product-specs__care-icon--svg {
+  width: var(--rb-ps-care-icon-size, 24px);
+  height: var(--rb-ps-care-icon-size, 24px);
+  color: var(--rb-ps-heading);
+}
+.rb-product-specs__care-text {
+  font-family: var(--rb-font-body);
+  font-size: var(--rb-ps-body-size, 15px);
+  line-height: 1.4;
+  color: var(--rb-ps-muted);
+}
+
+/* ---- Desktop: 3 columns with vertical dividers ---- */
+@media screen and (min-width: 990px) {
+  .rb-product-specs__grid {
+    grid-template-columns: repeat(var(--rb-ps-cols, 3), 1fr);
+    align-items: stretch;
+  }
+  .rb-product-specs__col {
+    padding: 0 2.25rem;
+  }
+  .rb-product-specs__col:first-child {
+    padding-left: 0;
+  }
+  .rb-product-specs__col:last-child {
+    padding-right: 0;
+  }
+  .rb-product-specs.has-dividers .rb-product-specs__col + .rb-product-specs__col {
+    border-top: 0;
+    border-left: 1px solid var(--rb-ps-rule);
+  }
+}
