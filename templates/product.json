@@ -139,6 +139,36 @@
             "show_gift_card_recipient": true
           }
         },
+        "rb_icon_text_usp": {
+          "type": "rb_icon_text",
+          "settings": {
+            "item_layout": "inline",
+            "icon_size": 20,
+            "heading_size": 12,
+            "subheading_size": 11,
+            "item_gap": 10,
+            "letter_spacing": 0.5,
+            "uppercase": true,
+            "show_dividers": false,
+            "margin_top": 16,
+            "margin_bottom": 8,
+            "icon_1": "returns",
+            "heading_1": "Easy Returns",
+            "subheading_1": "30-Day Return",
+            "icon_2": "shield",
+            "heading_2": "Quality Guarantee",
+            "subheading_2": "Built to Last",
+            "icon_3": "lock",
+            "heading_3": "Secure Checkout",
+            "subheading_3": "100% Safe",
+            "icon_4": "none",
+            "heading_4": "",
+            "subheading_4": "",
+            "heading_color": "",
+            "text_color": "",
+            "icon_color": ""
+          }
+        },
         "share": {
           "type": "share",
           "settings": {
@@ -155,6 +185,7 @@
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
+        "rb_icon_text_usp",
         "share"
       ],
       "settings": {
@@ -320,7 +351,7 @@
         "text_color": "",
         "link_color": "",
         "rule_color": "",
-        "padding_top": 12,
+        "padding_top": 0,
         "padding_bottom": 40
       }
     },

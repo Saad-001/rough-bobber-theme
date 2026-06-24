@@ -24,11 +24,11 @@
             "heading_2": "Worn for Life",
             "body": "<p>Raw, authentic, timeless gear for the biker lifestyle. Dirt. Speed. Glory.</p>",
             "button_label": "SHOP T-SHIRTS",
-            "button_link": "",
+            "button_link": "shopify://collections/t-shirts",
             "button_style": "solid",
             "button_arrow": true,
             "button_2_label": "EXPLORE COLLECTIONS",
-            "button_2_link": "",
+            "button_2_link": "shopify://collections",
             "button_2_style": "outline",
             "button_2_arrow": true
           }
@@ -45,11 +45,11 @@
             "heading_2": "Apparel For Real Riders",
             "body": "<p>Raw, authentic, timeless gear for the biker lifestyle. Dirt. Speed. Glory.</p>",
             "button_label": "SHOP T-SHIRTS",
-            "button_link": "",
+            "button_link": "shopify://collections/t-shirts",
             "button_style": "solid",
             "button_arrow": true,
             "button_2_label": "EXPLORE COLLECTIONS",
-            "button_2_link": "",
+            "button_2_link": "shopify://collections",
             "button_2_style": "outline",
             "button_2_arrow": true
           }
@@ -66,11 +66,11 @@
             "heading_2": "American Road",
             "body": "<p>Raw, authentic, timeless gear for the biker lifestyle. Dirt. Speed. Glory.</p>",
             "button_label": "Shop t-shirt",
-            "button_link": "",
+            "button_link": "shopify://collections/t-shirts",
             "button_style": "solid",
             "button_arrow": true,
             "button_2_label": "explore collections",
-            "button_2_link": "",
+            "button_2_link": "shopify://collections",
             "button_2_style": "outline",
             "button_2_arrow": true
           }
@@ -97,10 +97,10 @@
         "color_scheme": "",
         "heading_color": "",
         "text_color": "",
-        "button_bg": "#C5A572",
+        "button_bg": "#c5a572",
         "button_text_color": "#121211",
         "button_2_bg": "",
-        "button_2_text_color": "#F4EFE4",
+        "button_2_text_color": "#f4efe4",
         "overlay_color": "#121315",
         "overlay_opacity": 30,
         "gradient_opacity": 35,
@@ -162,8 +162,8 @@
       "settings": {
         "icon_size": 52,
         "color_scheme": "scheme-4",
-        "padding_top": 40,
-        "padding_bottom": 40
+        "padding_top": 20,
+        "padding_bottom": 20
       }
     },
     "rb_product_carousel": {
@@ -173,9 +173,13 @@
         "collection": "frontpage",
         "products_to_show": 10,
         "products_per_row": 5,
+        "products_per_row_tablet": 3,
+        "products_per_row_mobile": 1.5,
+        "show_arrows_small": true,
         "image_ratio": "portrait",
         "show_swatches": true,
         "show_badges": true,
+        "show_second_image": true,
         "show_view_all": true,
         "view_all_label": "View all",
         "button_link": "",
@@ -213,21 +217,24 @@
         "padding_bottom": 0
       }
     },
-    "rb_product_carousel_689Hrt": {
+    "rb_product_carousel_AkpdAT": {
       "type": "rb-product-carousel",
-      "name": "t:sections.rb_product_carousel.presets.name",
       "settings": {
         "heading": "Shop Hoodies",
-        "collection": "",
+        "collection": "frontpage",
         "products_to_show": 10,
         "products_per_row": 5,
-        "image_ratio": "square",
+        "products_per_row_tablet": 3,
+        "products_per_row_mobile": 1.5,
+        "show_arrows_small": false,
+        "image_ratio": "portrait",
         "show_swatches": true,
         "show_badges": true,
+        "show_second_image": true,
         "show_view_all": true,
         "view_all_label": "View all",
-        "button_link": "",
-        "color_scheme": "",
+        "button_link": "shopify://collections/t-shirts",
+        "color_scheme": "scheme-2",
         "padding_top": 60,
         "padding_bottom": 60
       }
@@ -259,25 +266,6 @@
         "gradient_opacity": 25,
         "padding_top": 0,
         "padding_bottom": 40
-      }
-    },
-    "rb_product_carousel_4aWhdW": {
-      "type": "rb-product-carousel",
-      "name": "t:sections.rb_product_carousel.presets.name",
-      "settings": {
-        "heading": "Shop Hats and Beanies",
-        "collection": "",
-        "products_to_show": 10,
-        "products_per_row": 5,
-        "image_ratio": "square",
-        "show_swatches": true,
-        "show_badges": true,
-        "show_view_all": true,
-        "view_all_label": "View all",
-        "button_link": "",
-        "color_scheme": "",
-        "padding_top": 60,
-        "padding_bottom": 60
       }
     },
     "rb_about": {
@@ -312,9 +300,8 @@
     "rb_value_props",
     "rb_product_carousel",
     "rb_promo_banner",
-    "rb_product_carousel_689Hrt",
+    "rb_product_carousel_AkpdAT",
     "rb_promo_banner_jtJnLd",
-    "rb_product_carousel_4aWhdW",
     "rb_about",
     "178208004365a1dd36"
   ]

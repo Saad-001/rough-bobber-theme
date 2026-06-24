@@ -117,8 +117,9 @@
           {%- endif -%}
 
           <div class="rb-product-specs__rte rte">
-            {%- if mf_details != blank -%}
-              {{ mf_details }}
+            {%- comment -%} Rich text must go through the metafield_tag filter to render as HTML; printing the object or .value dumps the raw JSON/hash. Guard on type so a non–rich-text field falls back to the section defaults instead of leaking data. {%- endcomment -%}
+            {%- if mf_details != blank and mf_details.type == 'rich_text_field' -%}
+              {{ mf_details | metafield_tag }}
             {%- else -%}
               {{ s.details_intro }}
               {{ s.details_list }}

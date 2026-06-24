@@ -44,6 +44,25 @@
     --rb-pc-fit: {{ fit }};
   }
 
+  /* Visible card count per breakpoint — emitted on the #id selector so it wins
+     over the CSS defaults at every width (a plain .rb-pc media rule loses to the
+     #id rule above on specificity). */
+  @media screen and (max-width: 989px) {
+    #{{ uid }} { --rb-pc-per: {{ s.products_per_row_tablet }}; }
+  }
+  @media screen and (max-width: 749px) {
+    #{{ uid }} {
+      --rb-pc-per: {{ s.products_per_row_mobile }};
+      --rb-pc-gap: 1rem;
+    }
+  }
+
+  {%- unless s.show_arrows_small -%}
+    @media screen and (max-width: 989px) {
+      #{{ uid }} .rb-pc__arrow { display: none; }
+    }
+  {%- endunless -%}
+
   .section-{{ section.id }}-padding {
     padding-top: {{ s.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ s.padding_bottom | times: 0.75 | round: 0 }}px;
@@ -91,7 +110,7 @@
               <div class="rb-pc__media">
                 {%- if product.featured_media -%}
                   <img
-                    class="rb-pc__img"
+                    class="rb-pc__img rb-pc__img--primary"
                     src="{{ product.featured_media | image_url: width: 600 }}"
                     srcset="
                       {{ product.featured_media | image_url: width: 300 }} 300w,
@@ -104,6 +123,24 @@
                     alt="{{ product.featured_media.alt | default: product.title | escape }}"
                     loading="lazy"
                   >
+                  {%- assign second_image = product.images[1] -%}
+                  {%- if s.show_second_image and second_image != blank -%}
+                    <img
+                      class="rb-pc__img rb-pc__img--secondary"
+                      src="{{ second_image | image_url: width: 600 }}"
+                      srcset="
+                        {{ second_image | image_url: width: 300 }} 300w,
+                        {{ second_image | image_url: width: 450 }} 450w,
+                        {{ second_image | image_url: width: 600 }} 600w,
+                        {{ second_image | image_url: width: 900 }} 900w"
+                      sizes="(max-width: 749px) 45vw, 18vw"
+                      width="{{ second_image.width }}"
+                      height="{{ second_image.height }}"
+                      alt="{{ second_image.alt | default: product.title | escape }}"
+                      loading="lazy"
+                      aria-hidden="true"
+                    >
+                  {%- endif -%}
                 {%- else -%}
                   {{ 'product-apparel-1' | placeholder_svg_tag: 'rb-pc__placeholder-svg' }}
                 {%- endif -%}
@@ -222,29 +259,42 @@
     update();
 
     // Pointer drag-to-scroll (mouse). Touch uses native scrolling.
-    var down = false, startX = 0, startLeft = 0, moved = false;
+    // The pointer is captured only AFTER the drag passes a threshold, so a plain
+    // click is never hijacked and the card link navigates normally.
+    var DRAG = 5;
+    var down = false, dragging = false, startX = 0, startLeft = 0, captured = false, pid = null;
     root.classList.add('rb-pc--draggable');
     track.addEventListener('pointerdown', function (e) {
-      if (e.pointerType === 'touch') return;
-      down = true; moved = false;
-      startX = e.clientX; startLeft = track.scrollLeft;
-      try { track.setPointerCapture(e.pointerId); } catch (err) {}
+      if (e.pointerType === 'touch' || e.button !== 0) return;
+      down = true; dragging = false; captured = false;
+      startX = e.clientX; startLeft = track.scrollLeft; pid = e.pointerId;
     });
     track.addEventListener('pointermove', function (e) {
       if (!down) return;
       var dx = e.clientX - startX;
-      if (Math.abs(dx) > 4) { moved = true; root.classList.add('is-dragging'); }
+      if (!dragging) {
+        if (Math.abs(dx) < DRAG) return;
+        dragging = true;
+        root.classList.add('is-dragging');
+        try { track.setPointerCapture(pid); captured = true; } catch (err) {}
+      }
       track.scrollLeft = startLeft - dx;
     });
-    function release(e) {
+    function release() {
       if (!down) return;
       down = false;
+      if (captured) { try { track.releasePointerCapture(pid); } catch (err) {} captured = false; }
       root.classList.remove('is-dragging');
-      try { track.releasePointerCapture(e.pointerId); } catch (err) {}
     }
     track.addEventListener('pointerup', release);
     track.addEventListener('pointercancel', release);
-    track.addEventListener('click', function (e) { if (moved) { e.preventDefault(); moved = false; } }, true);
+    // Stop the browser's native image/link drag from hijacking the scroll-drag.
+    track.addEventListener('dragstart', function (e) { e.preventDefault(); });
+    // Swallow the click that ends a real drag so it doesn't open a card.
+    track.addEventListener('click', function (e) {
+      if (dragging) { e.preventDefault(); e.stopPropagation(); }
+      dragging = false;
+    }, true);
   })();
 </script>
 
@@ -285,6 +335,33 @@
       "default": 5
     },
     {
+      "type": "range",
+      "id": "products_per_row_tablet",
+      "label": "t:sections.rb_product_carousel.settings.products_per_row_tablet.label",
+      "info": "t:sections.rb_product_carousel.settings.products_per_row_mobile.info",
+      "min": 2,
+      "max": 4,
+      "step": 0.5,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_mobile",
+      "label": "t:sections.rb_product_carousel.settings.products_per_row_mobile.label",
+      "info": "t:sections.rb_product_carousel.settings.products_per_row_mobile.info",
+      "min": 1,
+      "max": 3,
+      "step": 0.5,
+      "default": 2.5
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows_small",
+      "label": "t:sections.rb_product_carousel.settings.show_arrows_small.label",
+      "info": "t:sections.rb_product_carousel.settings.show_arrows_small.info",
+      "default": true
+    },
+    {
       "type": "select",
       "id": "image_ratio",
       "label": "t:sections.rb_product_carousel.settings.image_ratio.label",
@@ -311,6 +388,13 @@
       "type": "checkbox",
       "id": "show_badges",
       "label": "t:sections.rb_product_carousel.settings.show_badges.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_second_image",
+      "label": "t:sections.rb_product_carousel.settings.show_second_image.label",
+      "info": "t:sections.rb_product_carousel.settings.show_second_image.info",
       "default": true
     },
     {

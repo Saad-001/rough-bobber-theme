@@ -382,9 +382,19 @@
         "header_brand": {
           "content": "Brand"
         },
+        "logo_style": {
+          "label": "Logo style",
+          "info": "Text shows the shop name as a wordmark; Image uses the footer logo below (or the theme logo).",
+          "options__1": {
+            "label": "Text wordmark"
+          },
+          "options__2": {
+            "label": "Image"
+          }
+        },
         "logo": {
           "label": "Footer logo",
-          "info": "Falls back to the theme logo, then the shop name."
+          "info": "Used when Logo style is Image. Falls back to the theme logo, then the shop name."
         },
         "logo_width": {
           "label": "Logo width"
@@ -638,7 +648,18 @@
         },
         "products_per_row": {
           "label": "Cards visible (desktop)",
-          "info": "Tablet shows 3, mobile shows 2."
+          "info": "Number of cards in view on desktop."
+        },
+        "products_per_row_tablet": {
+          "label": "Cards visible (tablet)"
+        },
+        "products_per_row_mobile": {
+          "label": "Cards visible (mobile)",
+          "info": "Use a half value like 2.5 to peek the next card."
+        },
+        "show_arrows_small": {
+          "label": "Show arrows on tablet & mobile",
+          "info": "When off, only swipe/drag is used on smaller screens."
         },
         "image_ratio": {
           "label": "Image ratio",
@@ -656,6 +677,10 @@
         },
         "show_badges": {
           "label": "Show sale / sold-out badges"
+        },
+        "show_second_image": {
+          "label": "Show second image on hover",
+          "info": "Fades to the product's second image when hovering the card (desktop)."
         },
         "header_view_all": {
           "content": "View all button"
@@ -2142,6 +2167,9 @@
           },
           "options__4": {
             "label": "Middle center"
+          },
+          "options__5": {
+            "label": "Logo left, menu center"
           }
         },
         "menu": {
@@ -3322,6 +3350,117 @@
             },
             "enable_quick_add": {
               "label": "Quick add"
+            }
+          }
+        },
+        "rb_icon_text": {
+          "name": "Trust badges (icon + text)",
+          "settings": {
+            "info": {
+              "content": "Row of icon + heading + sub-text. To hide a slot, clear its heading and sub-text, remove its image, and set its icon to “None”."
+            },
+            "item_layout": {
+              "label": "Item layout",
+              "options__1": {
+                "label": "Icon left of text"
+              },
+              "options__2": {
+                "label": "Icon above text"
+              }
+            },
+            "icon_size": {
+              "label": "Icon size"
+            },
+            "heading_size": {
+              "label": "Heading size"
+            },
+            "subheading_size": {
+              "label": "Sub-text size"
+            },
+            "item_gap": {
+              "label": "Space between items"
+            },
+            "letter_spacing": {
+              "label": "Letter spacing"
+            },
+            "uppercase": {
+              "label": "Uppercase text"
+            },
+            "show_dividers": {
+              "label": "Show dividers between items"
+            },
+            "margin_top": {
+              "label": "Space above"
+            },
+            "margin_bottom": {
+              "label": "Space below"
+            },
+            "icon": {
+              "label": "Icon",
+              "options__none": {
+                "label": "None"
+              },
+              "options__returns": {
+                "label": "Returns (arrow)"
+              },
+              "options__shield": {
+                "label": "Shield / guarantee"
+              },
+              "options__lock": {
+                "label": "Lock / secure"
+              },
+              "options__truck": {
+                "label": "Truck / shipping"
+              },
+              "options__phone": {
+                "label": "Phone"
+              },
+              "options__headset": {
+                "label": "Support / headset"
+              },
+              "options__tag": {
+                "label": "Price tag"
+              },
+              "options__gift": {
+                "label": "Gift"
+              },
+              "options__info": {
+                "label": "Info"
+              }
+            },
+            "image": {
+              "label": "Image",
+              "info": "Optional. Overrides the icon above."
+            },
+            "heading": {
+              "label": "Heading"
+            },
+            "subheading": {
+              "label": "Sub-text"
+            },
+            "item_1": {
+              "content": "Item 1"
+            },
+            "item_2": {
+              "content": "Item 2"
+            },
+            "item_3": {
+              "content": "Item 3"
+            },
+            "item_4": {
+              "content": "Item 4"
+            },
+            "colors": {
+              "content": "Colors (optional)"
+            },
+            "heading_color": {
+              "label": "Heading override"
+            },
+            "text_color": {
+              "label": "Sub-text override"
+            },
+            "icon_color": {
+              "label": "Icon override"
             }
           }
         },

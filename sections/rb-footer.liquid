@@ -40,7 +40,7 @@
   <div class="page-width section-{{ section.id }}-padding">
     <div class="rb-footer__top">
       <div class="rb-footer__brand">
-        {%- if footer_logo != blank -%}
+        {%- if s.logo_style == 'image' and footer_logo != blank -%}
           {%- assign logo_w = s.logo_width | times: 2 -%}
           <img
             class="rb-footer__logo-img"
@@ -181,6 +181,23 @@
     {
       "type": "header",
       "content": "t:sections.rb_footer.settings.header_brand.content"
+    },
+    {
+      "type": "select",
+      "id": "logo_style",
+      "label": "t:sections.rb_footer.settings.logo_style.label",
+      "info": "t:sections.rb_footer.settings.logo_style.info",
+      "options": [
+        {
+          "value": "text",
+          "label": "t:sections.rb_footer.settings.logo_style.options__1.label"
+        },
+        {
+          "value": "image",
+          "label": "t:sections.rb_footer.settings.logo_style.options__2.label"
+        }
+      ],
+      "default": "text"
     },
     {
       "type": "image_picker",

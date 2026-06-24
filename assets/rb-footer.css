@@ -12,8 +12,8 @@
 
 .rb-footer__top {
   display: grid;
-  grid-template-columns: 1.1fr 1.4fr auto;
-  gap: 3rem;
+  grid-template-columns: 0.8fr 1.5fr 1.5fr;
+  gap: 2.5rem;
   align-items: start;
 }
 
@@ -26,64 +26,73 @@
   margin-bottom: 1rem;
 }
 .rb-footer__logo-text {
-  margin: 0 0 1rem;
+  margin: 0 0 0.85rem;
+  max-width: 8ch; /* wraps "Rough Bobber" onto two stacked lines like the design */
   font-family: var(--rb-font-display);
   font-weight: 400;
   text-transform: uppercase;
   line-height: 0.95;
-  font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+  font-size: clamp(1.35rem, 1.9vw, 1.65rem);
   color: rgb(var(--color-foreground));
 }
 .rb-footer__tagline {
-  margin: 0 0 1.25rem;
+  margin: 0 0 1.4rem;
+  max-width: 16ch; /* keeps the tagline to ~two lines under the logo */
   font-family: var(--rb-font-body);
-  font-size: 0.95rem;
+  font-size: 1.25rem;
   line-height: 1.5;
   color: var(--rb-footer-muted);
 }
 .rb-footer__social {
   display: flex;
-  gap: 1rem;
+  gap: 0.6rem;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 .rb-footer__social a {
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid rgba(var(--color-foreground), 0.45);
+  border-radius: 50%;
   color: rgb(var(--color-foreground));
   opacity: 0.85;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 }
 .rb-footer__social a:hover {
   opacity: 1;
   transform: translateY(-2px);
+  border-color: rgba(var(--color-foreground), 0.8);
 }
 .rb-footer__social svg {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.3rem;
+  height: 1.3rem;
 }
 
 /* ---- Newsletter ---- */
 .rb-footer__heading {
-  margin: 0 0 0.6rem;
+  margin: 0 0 0.7rem;
   font-family: var(--rb-font-body);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  font-size: 0.95rem;
+  font-size: 1.3rem;
   color: rgb(var(--color-foreground));
 }
 .rb-footer__newsletter-text {
-  margin: 0 0 1.1rem;
+  margin: 0 0 1.2rem;
   font-family: var(--rb-font-body);
-  font-size: 0.95rem;
+  font-size: 1.25rem;
   line-height: 1.55;
   color: var(--rb-footer-muted);
   max-width: 42ch;
 }
 .rb-footer__form {
   display: flex;
-  max-width: 440px;
+  max-width: 420px;
   border: 1px solid var(--rb-footer-line);
 }
 .rb-footer__input {
@@ -91,9 +100,9 @@
   min-width: 0;
   border: 0;
   background: transparent;
-  padding: 0.9rem 1rem;
+  padding: 1rem 1.2rem;
   font-family: var(--rb-font-body);
-  font-size: 0.95rem;
+  font-size: 1.35rem;
   color: rgb(var(--color-foreground));
 }
 .rb-footer__input::placeholder {
@@ -107,10 +116,10 @@
   flex: none;
   border: 0;
   cursor: pointer;
-  padding: 0 1.5rem;
+  padding: 0 1.8rem;
   font-family: var(--rb-font-body);
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 1.2rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   background: var(--rb-gold);
@@ -137,7 +146,8 @@
 /* ---- Menu columns ---- */
 .rb-footer__menus {
   display: flex;
-  gap: 3rem;
+  justify-content: space-between;
+  gap: 2rem;
 }
 .rb-footer__col {
   min-width: 0;
@@ -148,7 +158,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  font-size: 0.8rem;
+  font-size: 1.3rem;
   color: rgb(var(--color-foreground));
 }
 .rb-footer__links {
@@ -157,11 +167,12 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.2rem;
 }
 .rb-footer__links a {
   font-family: var(--rb-font-body);
-  font-size: 0.92rem;
+  font-size: 1.25rem;
+  line-height: 1.2;
   text-decoration: none;
   color: var(--rb-footer-muted);
   transition: color 0.2s ease;
@@ -177,14 +188,15 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1rem;
-  margin-top: 3rem;
-  padding-top: 1.5rem;
+  margin-top: 2.25rem;
+  padding-top: 1.25rem;
   border-top: 1px solid var(--rb-footer-line);
 }
 .rb-footer__copy {
   margin: 0;
   font-family: var(--rb-font-body);
-  font-size: 0.8rem;
+  font-size: 1.05rem;
+  line-height: 1.5;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--rb-footer-muted);
@@ -199,7 +211,7 @@
 }
 .rb-footer__policies a {
   font-family: var(--rb-font-body);
-  font-size: 0.8rem;
+  font-size: 1.05rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   text-decoration: none;
@@ -238,5 +250,8 @@
   .rb-footer__bottom {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+    padding-top: 1rem;
   }
 }

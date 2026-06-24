@@ -1,0 +1,97 @@
+{%- comment -%}
+  Rough Bobber — Trust badges (icon + text) block for the product info column.
+
+  A row of up to 4 items, each = icon on the LEFT + heading and sub-text stacked
+  on the right (matches the product-page USP strip: Easy Returns / Quality
+  Guarantee / Secure Checkout). Built as a main-product block so it lives in the
+  product info column under the buy buttons.
+
+  Per item the merchant can EITHER pick a built-in line icon (rendered through
+  snippets/rb-info-icon.liquid — returns / shield / lock / truck / phone /
+  headset / tag / gift / info) OR upload a custom image, which overrides the
+  icon. A slot is hidden when it has no heading, no sub-text, no image and its
+  icon is "none".
+
+  Accepts:
+    - block {Object} the main-product block (settings + shopify_attributes).
+
+  Colours inherit the section's color scheme; optional per-element overrides
+  (heading / sub-text / icon) apply only when set. CSS lives in
+  assets/rb-icon-text.css (loaded once via stylesheet_tag, deduped by Shopify).
+{%- endcomment -%}
+
+{{ 'rb-icon-text.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign b = block.settings
+  assign uid = 'rb-icon-text-' | append: block.id
+
+  assign mods = ' rb-icon-text--' | append: b.item_layout
+  if b.uppercase
+    assign mods = mods | append: ' is-uppercase'
+  endif
+  if b.show_dividers
+    assign mods = mods | append: ' has-dividers'
+  endif
+-%}
+
+{%- style -%}
+  #{{ uid }} {
+    --rb-it-icon-size: {{ b.icon_size }}px;
+    --rb-it-heading-size: {{ b.heading_size }}px;
+    --rb-it-sub-size: {{ b.subheading_size }}px;
+    --rb-it-gap: {{ b.item_gap }}px;
+    --rb-it-letter-spacing: {{ b.letter_spacing }}px;
+    margin-top: {{ b.margin_top }}px;
+    margin-bottom: {{ b.margin_bottom }}px;
+    {%- if b.heading_color != blank %}--rb-it-heading: {{ b.heading_color }};{% endif -%}
+    {%- if b.text_color != blank %}--rb-it-sub: {{ b.text_color }};{% endif -%}
+    {%- if b.icon_color != blank %}--rb-it-icon: {{ b.icon_color }};{% endif -%}
+  }
+{%- endstyle -%}
+
+<ul id="{{ uid }}" class="rb-icon-text{{ mods }} list-unstyled" {{ block.shopify_attributes }}>
+  {%- for i in (1..4) -%}
+    {%- liquid
+      assign key_heading = 'heading_' | append: i
+      assign key_sub = 'subheading_' | append: i
+      assign key_icon = 'icon_' | append: i
+      assign key_image = 'image_' | append: i
+      assign heading = b[key_heading]
+      assign sub = b[key_sub]
+      assign icon = b[key_icon]
+      assign image = b[key_image]
+    -%}
+    {%- if heading != blank or sub != blank or image != blank or icon != 'none' -%}
+      <li class="rb-icon-text__item">
+        {%- if image != blank or icon != 'none' -%}
+          <span class="rb-icon-text__icon">
+            {%- if image != blank -%}
+              <img
+                class="rb-icon-text__img"
+                src="{{ image | image_url: width: 96 }}"
+                srcset="{{ image | image_url: width: 96 }} 1x, {{ image | image_url: width: 192 }} 2x"
+                width="{{ image.width }}"
+                height="{{ image.height }}"
+                alt="{{ image.alt | default: heading | escape }}"
+                loading="lazy"
+              >
+            {%- else -%}
+              {%- render 'rb-info-icon', icon: icon, class: 'rb-icon-text__svg' -%}
+            {%- endif -%}
+          </span>
+        {%- endif -%}
+        {%- if heading != blank or sub != blank -%}
+          <span class="rb-icon-text__text">
+            {%- if heading != blank -%}
+              <span class="rb-icon-text__heading">{{ heading | escape }}</span>
+            {%- endif -%}
+            {%- if sub != blank -%}
+              <span class="rb-icon-text__sub">{{ sub | escape }}</span>
+            {%- endif -%}
+          </span>
+        {%- endif -%}
+      </li>
+    {%- endif -%}
+  {%- endfor -%}
+</ul>
