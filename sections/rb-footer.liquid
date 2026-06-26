@@ -159,6 +159,18 @@
       <p class="rb-footer__copy">
         &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}{% if s.copyright_text != blank %} · {{ s.copyright_text }}{% endif %}
       </p>
+      {%- if s.show_payment_icons -%}
+        <div class="rb-footer__payments">
+          <img
+            class="rb-footer__payments-img"
+            src="{{ 'Payment_Methods_icons.webp' | asset_url }}"
+            alt="{{ shop.name | escape }} — accepted payment methods"
+            width="458"
+            height="35"
+            loading="lazy"
+          >
+        </div>
+      {%- endif -%}
       {%- if s.show_policies and shop.policies.size > 0 -%}
         <ul class="rb-footer__policies">
           {%- for policy in shop.policies -%}
@@ -277,6 +289,12 @@
       "id": "show_policies",
       "label": "t:sections.rb_footer.settings.show_policies.label",
       "info": "t:sections.rb_footer.settings.show_policies.info",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "t:sections.rb_footer.settings.show_payment_icons.label",
       "default": true
     },
     {

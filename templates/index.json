@@ -143,10 +143,19 @@
             "text": "Quality gear that goes the distance."
           }
         },
+        "value_fHXqT3": {
+          "type": "value",
+          "settings": {
+            "icon": "shopify://shop_images/Homepage_icon_Brand_Vibe_RB.webp",
+            "title": "Brand Vibe",
+            "text": "Raw · Authentic · Timeless Biker Lifestyle"
+          }
+        },
         "vp5": {
           "type": "vibe",
+          "disabled": true,
           "settings": {
-            "title": "Brand Vibe",
+            "title": "Brand vibe",
             "line_1": "Raw · Authentic · Timeless",
             "line_2": "Biker Lifestyle"
           }
@@ -157,6 +166,7 @@
         "vp2",
         "vp3",
         "vp4",
+        "value_fHXqT3",
         "vp5"
       ],
       "settings": {
@@ -175,14 +185,14 @@
         "products_per_row": 5,
         "products_per_row_tablet": 3,
         "products_per_row_mobile": 1.5,
-        "show_arrows_small": true,
+        "show_arrows_small": false,
         "image_ratio": "portrait",
         "show_swatches": true,
         "show_badges": true,
         "show_second_image": true,
         "show_view_all": true,
         "view_all_label": "View all",
-        "button_link": "",
+        "button_link": "shopify://collections/t-shirts",
         "color_scheme": "scheme-2",
         "padding_top": 60,
         "padding_bottom": 60
@@ -197,10 +207,10 @@
         "height": "small",
         "heading": "For the ones who love to go out riding",
         "text": "",
-        "button_label": "Explore the collection",
-        "button_link": "",
-        "button_style": "outline",
-        "button_arrow": false,
+        "button_label": "Explore collections",
+        "button_link": "shopify://collections",
+        "button_style": "solid",
+        "button_arrow": true,
         "button_full_width_mobile": false,
         "content_vertical": "center",
         "text_align": "center",
@@ -208,8 +218,8 @@
         "color_scheme": "scheme-4",
         "heading_color": "",
         "text_color": "",
-        "button_bg": "",
-        "button_text_color": "",
+        "button_bg": "#c5a572",
+        "button_text_color": "#121211",
         "overlay_color": "#121315",
         "overlay_opacity": 25,
         "gradient_opacity": 55,
@@ -248,10 +258,10 @@
         "height": "medium",
         "heading": "For the ones who ride",
         "text": "",
-        "button_label": "Explore the collection",
-        "button_link": "",
+        "button_label": "Explore collections",
+        "button_link": "shopify://collections",
         "button_style": "solid",
-        "button_arrow": false,
+        "button_arrow": true,
         "button_full_width_mobile": false,
         "content_vertical": "bottom",
         "text_align": "right",
@@ -259,8 +269,8 @@
         "color_scheme": "scheme-2",
         "heading_color": "#ffffff",
         "text_color": "",
-        "button_bg": "",
-        "button_text_color": "#ffffff",
+        "button_bg": "#c5a572",
+        "button_text_color": "#121211",
         "overlay_color": "#ffffff",
         "overlay_opacity": 10,
         "gradient_opacity": 25,
@@ -285,7 +295,7 @@
         "button_full_width_mobile": false,
         "color_scheme": "scheme-2",
         "button_bg": "#b3916b",
-        "button_text_color": "",
+        "button_text_color": "#121212",
         "padding_top": 64,
         "padding_bottom": 64
       }

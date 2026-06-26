@@ -434,6 +434,9 @@
           "label": "Mostrar enlaces de políticas",
           "info": "Muestra las políticas de tu tienda (Términos, Privacidad, etc.). Configúralas en Configuración → Políticas."
         },
+        "show_payment_icons": {
+          "label": "Mostrar iconos de pago"
+        },
         "header_colors": {
           "content": "Colores"
         }
@@ -3099,6 +3102,40 @@
             },
             "icon_color": {
               "label": "Anulación del ícono"
+            }
+          }
+        },
+        "rb_payment_icons": {
+          "name": "Iconos de pago",
+          "settings": {
+            "info": {
+              "content": "Muestra una imagen de iconos de pago. Deja la imagen vacía para usar el archivo incluido Payment_Methods_icons.webp."
+            },
+            "image": {
+              "label": "Imagen",
+              "info": "Opcional. Por defecto usa la imagen de iconos de pago incluida."
+            },
+            "image_width": {
+              "label": "Ancho de la imagen",
+              "info": "Porcentaje del ancho del botón de compra. 100 % coincide con el botón."
+            },
+            "alignment": {
+              "label": "Alineación",
+              "options__1": {
+                "label": "Izquierda"
+              },
+              "options__2": {
+                "label": "Centro"
+              },
+              "options__3": {
+                "label": "Derecha"
+              }
+            },
+            "margin_top": {
+              "label": "Espacio superior"
+            },
+            "margin_bottom": {
+              "label": "Espacio inferior"
             }
           }
         },

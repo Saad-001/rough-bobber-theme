@@ -201,6 +201,16 @@
   text-transform: uppercase;
   color: var(--rb-footer-muted);
 }
+.rb-footer__payments {
+  display: flex;
+  align-items: center;
+}
+.rb-footer__payments-img {
+  display: block;
+  height: 26px;
+  width: auto;
+  max-width: 100%;
+}
 .rb-footer__policies {
   display: flex;
   flex-wrap: wrap;

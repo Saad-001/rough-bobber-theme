@@ -37,6 +37,10 @@
         padding-bottom: {{ section.settings.padding_bottom }}px;
       }
     }
+
+    .product__info-container .product-form {
+      margin-bottom: 0;
+    }
   {%- endstyle -%}
 
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
@@ -690,6 +694,38 @@
                   {% render 'icon-with-text', block: block %}
                 {%- when 'rb_icon_text' -%}
                   {% render 'rb-icon-text', block: block %}
+                {%- when 'rb_payment_icons' -%}
+                  {%- liquid
+                    assign pay_img = block.settings.image
+                    assign pay_align = block.settings.alignment
+                  -%}
+                  <div
+                    class="rb-payment-icons rb-payment-icons--{{ pay_align }}"
+                    style="--rb-pay-width: {{ block.settings.image_width }}%; margin-top: {{ block.settings.margin_top }}px; margin-bottom: {{ block.settings.margin_bottom }}px;"
+                    {{ block.shopify_attributes }}
+                  >
+                    {%- if pay_img != blank -%}
+                      <img
+                        class="rb-payment-icons__img"
+                        src="{{ pay_img | image_url: width: 600 }}"
+                        srcset="{{ pay_img | image_url: width: 300 }} 300w, {{ pay_img | image_url: width: 600 }} 600w"
+                        sizes="(min-width: 750px) 600px, 100vw"
+                        alt="{{ pay_img.alt | default: 'Accepted payment methods' | escape }}"
+                        width="{{ pay_img.width }}"
+                        height="{{ pay_img.height }}"
+                        loading="lazy"
+                      >
+                    {%- else -%}
+                      <img
+                        class="rb-payment-icons__img"
+                        src="{{ 'Payment_Methods_icons.webp' | asset_url }}"
+                        alt="{{ 'Accepted payment methods' }}"
+                        width="458"
+                        height="35"
+                        loading="lazy"
+                      >
+                    {%- endif -%}
+                  </div>
               {%- endcase -%}
             {%- endfor -%}
             <a href="{{ product.url }}" class="link product__view-details animate-arrow">
@@ -1806,6 +1842,73 @@
           "type": "color",
           "id": "icon_color",
           "label": "t:sections.main-product.blocks.rb_icon_text.settings.icon_color.label"
+        }
+      ]
+    },
+    {
+      "type": "rb_payment_icons",
+      "name": "t:sections.main-product.blocks.rb_payment_icons.name",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "t:sections.main-product.blocks.rb_payment_icons.settings.info.content"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.main-product.blocks.rb_payment_icons.settings.image.label",
+          "info": "t:sections.main-product.blocks.rb_payment_icons.settings.image.info"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "min": 30,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "t:sections.main-product.blocks.rb_payment_icons.settings.image_width.label",
+          "info": "t:sections.main-product.blocks.rb_payment_icons.settings.image_width.info",
+          "default": 100
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "t:sections.main-product.blocks.rb_payment_icons.settings.alignment.options__1.label"
+            },
+            {
+              "value": "center",
+              "label": "t:sections.main-product.blocks.rb_payment_icons.settings.alignment.options__2.label"
+            },
+            {
+              "value": "right",
+              "label": "t:sections.main-product.blocks.rb_payment_icons.settings.alignment.options__3.label"
+            }
+          ],
+          "default": "left",
+          "label": "t:sections.main-product.blocks.rb_payment_icons.settings.alignment.label"
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": 0,
+          "max": 48,
+          "step": 2,
+          "unit": "px",
+          "label": "t:sections.main-product.blocks.rb_payment_icons.settings.margin_top.label",
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "margin_bottom",
+          "min": 0,
+          "max": 48,
+          "step": 2,
+          "unit": "px",
+          "label": "t:sections.main-product.blocks.rb_payment_icons.settings.margin_bottom.label",
+          "default": 0
         }
       ]
     },

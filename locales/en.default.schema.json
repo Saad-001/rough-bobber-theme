@@ -434,6 +434,9 @@
           "label": "Show policy links",
           "info": "Shows your store policies (Terms, Privacy, etc.). Set them under Settings → Policies."
         },
+        "show_payment_icons": {
+          "label": "Show payment icons"
+        },
         "header_colors": {
           "content": "Colors"
         }
@@ -3461,6 +3464,40 @@
             },
             "icon_color": {
               "label": "Icon override"
+            }
+          }
+        },
+        "rb_payment_icons": {
+          "name": "Payment icons",
+          "settings": {
+            "info": {
+              "content": "Shows a payment icons image. Leave the image empty to use the bundled Payment_Methods_icons.webp."
+            },
+            "image": {
+              "label": "Image",
+              "info": "Optional. Defaults to the bundled payment icons image."
+            },
+            "image_width": {
+              "label": "Image width",
+              "info": "Percentage of the buy button width. 100% matches the button."
+            },
+            "alignment": {
+              "label": "Alignment",
+              "options__1": {
+                "label": "Left"
+              },
+              "options__2": {
+                "label": "Center"
+              },
+              "options__3": {
+                "label": "Right"
+              }
+            },
+            "margin_top": {
+              "label": "Top spacing"
+            },
+            "margin_bottom": {
+              "label": "Bottom spacing"
             }
           }
         },

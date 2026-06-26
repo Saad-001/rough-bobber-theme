@@ -1492,3 +1492,26 @@ a.product__text {
     border: none;
   }
 }
+
+/* ---- Payment icons block (rb_payment_icons) ---- */
+.rb-payment-icons {
+  display: flex;
+  /* Match the buy-button container width (.product-form__buttons) so the
+     icons never extend past the buttons on wide screens. */
+  max-width: 44rem;
+}
+.rb-payment-icons--left {
+  justify-content: flex-start;
+}
+.rb-payment-icons--center {
+  justify-content: center;
+}
+.rb-payment-icons--right {
+  justify-content: flex-end;
+}
+.rb-payment-icons__img {
+  display: block;
+  width: var(--rb-pay-width, 100%);
+  max-width: 100%;
+  height: auto;
+}

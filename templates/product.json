@@ -139,6 +139,15 @@
             "show_gift_card_recipient": true
           }
         },
+        "rb_payment_icons_ADTKMH": {
+          "type": "rb_payment_icons",
+          "settings": {
+            "image_width": 80,
+            "alignment": "center",
+            "margin_top": 0,
+            "margin_bottom": 0
+          }
+        },
         "rb_icon_text_usp": {
           "type": "rb_icon_text",
           "settings": {
@@ -185,6 +194,7 @@
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
+        "rb_payment_icons_ADTKMH",
         "rb_icon_text_usp",
         "share"
       ],
