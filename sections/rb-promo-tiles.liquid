@@ -1,0 +1,481 @@
+{%- comment -%}
+  Promo tiles — Rough Bobber
+  A row of clickable image tiles (blocks) sitting in the same "promo banner"
+  family as rb-promo-banner, but split into two (or more) side-by-side cards.
+  Designed so one tile can lead to the Blog and the other to a Collection, etc.
+
+  - Each tile is its own block: desktop + optional mobile image, overlay,
+    eyebrow, heading, optional text and an optional button.
+  - Whole tile is clickable via an absolutely-positioned overlay link (sibling,
+    not parent, of the button) so there are never nested anchors.
+  - Two-up on desktop (merchant can switch to three), stacks to one on mobile.
+
+  Conventions (conventions.md): static CSS in assets/rb-promo-tiles.css; only
+  Liquid-driven values in the {% style %} block; color_scheme (+ optional
+  per-element overrides per §3.4); Dawn .section-{id}-padding; .page-width;
+  brand fonts. All customer-facing strings are translatable.
+{%- endcomment -%}
+
+{{ 'rb-promo-tiles.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign uid = 'rb-promo-tiles-' | append: section.id
+
+  case s.tile_height
+    when 'small'
+      assign h = '320px'
+    when 'large'
+      assign h = '520px'
+    else
+      assign h = '420px'
+  endcase
+
+  assign cols = s.columns | plus: 0
+  assign col_vw = 100 | divided_by: cols
+
+  assign overlay_alpha = s.overlay_opacity | divided_by: 100.0
+  assign overlay_rgba = s.overlay_color | color_modify: 'alpha', overlay_alpha
+
+  assign gradient_alpha = s.gradient_opacity | divided_by: 100.0
+  assign gradient_rgba = '#000000' | color_modify: 'alpha', gradient_alpha
+-%}
+
+{%- style -%}
+  #{{ uid }} {
+    --rb-tiles-cols: {{ s.columns }};
+    --rb-tiles-h: {{ h }};
+    --rb-tiles-gap: {{ s.gap }}px;
+    --rb-tiles-radius: {{ s.image_radius }}px;
+    --rb-tiles-overlay: {{ overlay_rgba }};
+    --rb-tiles-gradient: {{ gradient_rgba }};
+    {%- if s.heading_color != blank %}--rb-tiles-heading: {{ s.heading_color }};{% endif -%}
+    {%- if s.text_color != blank %}--rb-tiles-text: {{ s.text_color }};{% endif -%}
+    {%- if s.button_bg != blank %}--rb-tiles-btn-bg: {{ s.button_bg }};{% endif -%}
+    {%- if s.button_text_color != blank %}--rb-tiles-btn-text: {{ s.button_text_color }};{% endif -%}
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ s.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ s.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ s.padding_top }}px;
+      padding-bottom: {{ s.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div
+  id="{{ uid }}"
+  class="rb-tiles color-{{ s.color_scheme }} gradient"
+  data-valign="{{ s.content_vertical }}"
+  data-align="{{ s.text_align }}"
+>
+  <div class="rb-tiles__inner page-width section-{{ section.id }}-padding">
+    {%- if s.heading != blank or s.subheading != blank -%}
+      <div class="rb-tiles__head">
+        {%- if s.subheading != blank -%}
+          <p class="rb-tiles__eyebrow">{{ s.subheading }}</p>
+        {%- endif -%}
+        {%- if s.heading != blank -%}
+          <h2 class="rb-tiles__title">{{ s.heading }}</h2>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="rb-tiles__grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign b = block.settings
+          assign desk = b.image
+          assign mob = b.image_mobile
+          if mob == blank
+            assign mob = desk
+          endif
+          assign has_button = false
+          if b.button_label != blank
+            assign has_button = true
+          endif
+        -%}
+
+        <div class="rb-tiles__tile" {{ block.shopify_attributes }}>
+          <div class="rb-tiles__media">
+            {%- if desk != blank -%}
+              {%- assign d_alt = desk.alt | default: b.heading | escape -%}
+              <picture>
+                {%- if mob != blank -%}
+                  <source
+                    media="(max-width: 749px)"
+                    srcset="
+                      {{ mob | image_url: width: 600 }} 600w,
+                      {{ mob | image_url: width: 900 }} 900w,
+                      {{ mob | image_url: width: 1200 }} 1200w"
+                    sizes="100vw"
+                  >
+                {%- endif -%}
+                <img
+                  class="rb-tiles__img"
+                  style="object-position: {{ b.focal_point }};"
+                  src="{{ desk | image_url: width: 900 }}"
+                  srcset="
+                    {{ desk | image_url: width: 600 }} 600w,
+                    {{ desk | image_url: width: 900 }} 900w,
+                    {{ desk | image_url: width: 1200 }} 1200w,
+                    {{ desk | image_url: width: 1600 }} 1600w"
+                  sizes="(min-width: 750px) {{ col_vw }}vw, 100vw"
+                  width="{{ desk.width }}"
+                  height="{{ desk.height }}"
+                  alt="{{ d_alt }}"
+                  loading="lazy"
+                >
+              </picture>
+            {%- else -%}
+              {{ 'lifestyle-2' | placeholder_svg_tag: 'rb-tiles__img rb-tiles__img--placeholder' }}
+            {%- endif -%}
+          </div>
+
+          {%- if b.tile_link != blank -%}
+            <a
+              class="rb-tiles__overlay-link"
+              href="{{ b.tile_link }}"
+              aria-label="{% if b.heading != blank %}{{ b.heading | escape }}{% else %}{{ 'sections.rb_promo_tiles.tile' | t | escape }}{% endif %}"
+            ></a>
+          {%- endif -%}
+
+          <div class="rb-tiles__content">
+            {%- if b.eyebrow != blank -%}
+              <p class="rb-tiles__tile-eyebrow">{{ b.eyebrow }}</p>
+            {%- endif -%}
+
+            {%- if b.heading != blank -%}
+              <h3 class="rb-tiles__tile-heading">{{ b.heading }}</h3>
+            {%- endif -%}
+
+            {%- if b.text != blank -%}
+              <div class="rb-tiles__tile-text">{{ b.text }}</div>
+            {%- endif -%}
+
+            {%- if has_button -%}
+              <a
+                href="{{ b.button_link | default: '#' }}"
+                class="rb-tiles__cta{% if b.button_style == 'outline' %} rb-tiles__cta--outline{% endif %}"
+              >
+                {{ b.button_label }}
+                {%- if b.button_arrow -%}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                {%- endif -%}
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- else -%}
+        <div class="rb-tiles__tile rb-tiles__tile--empty">
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'rb-tiles__img rb-tiles__img--placeholder' }}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.rb_promo_tiles.name",
+  "tag": "section",
+  "class": "section-rb-promo-tiles",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.rb_promo_tiles.settings.header_heading.content"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:sections.rb_promo_tiles.settings.subheading.label"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.rb_promo_tiles.settings.heading.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_promo_tiles.settings.header_layout.content"
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "t:sections.rb_promo_tiles.settings.columns.label",
+      "info": "t:sections.rb_promo_tiles.settings.columns.info",
+      "options": [
+        { "value": "2", "label": "t:sections.rb_promo_tiles.settings.columns.options__2" },
+        { "value": "3", "label": "t:sections.rb_promo_tiles.settings.columns.options__3" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "tile_height",
+      "label": "t:sections.rb_promo_tiles.settings.tile_height.label",
+      "options": [
+        { "value": "small", "label": "t:sections.rb_promo_tiles.settings.tile_height.options__small" },
+        { "value": "medium", "label": "t:sections.rb_promo_tiles.settings.tile_height.options__medium" },
+        { "value": "large", "label": "t:sections.rb_promo_tiles.settings.tile_height.options__large" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "t:sections.rb_promo_tiles.settings.gap.label",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "t:sections.rb_promo_tiles.settings.image_radius.label",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "select",
+      "id": "content_vertical",
+      "label": "t:sections.rb_promo_tiles.settings.content_vertical.label",
+      "options": [
+        { "value": "top", "label": "t:sections.rb_promo_tiles.settings.content_vertical.options__top" },
+        { "value": "center", "label": "t:sections.rb_promo_tiles.settings.content_vertical.options__center" },
+        { "value": "bottom", "label": "t:sections.rb_promo_tiles.settings.content_vertical.options__bottom" }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "t:sections.rb_promo_tiles.settings.text_align.label",
+      "options": [
+        { "value": "left", "label": "t:sections.rb_promo_tiles.settings.text_align.options__left" },
+        { "value": "center", "label": "t:sections.rb_promo_tiles.settings.text_align.options__center" },
+        { "value": "right", "label": "t:sections.rb_promo_tiles.settings.text_align.options__right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_promo_tiles.settings.header_colors.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-4"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.rb_promo_tiles.settings.color_overrides_info.content"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "t:sections.rb_promo_tiles.settings.heading_color.label"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.rb_promo_tiles.settings.text_color.label"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "t:sections.rb_promo_tiles.settings.button_bg.label"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "t:sections.rb_promo_tiles.settings.button_text_color.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_promo_tiles.settings.header_overlay.content"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "t:sections.rb_promo_tiles.settings.overlay_color.label",
+      "default": "#121315"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "t:sections.rb_promo_tiles.settings.overlay_opacity.label",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "gradient_opacity",
+      "label": "t:sections.rb_promo_tiles.settings.gradient_opacity.label",
+      "info": "t:sections.rb_promo_tiles.settings.gradient_opacity.info",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 55
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "t:sections.rb_promo_tiles.blocks.tile.name",
+      "settings": [
+        {
+          "type": "header",
+          "content": "t:sections.rb_promo_tiles.blocks.tile.settings.header_image.content"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.rb_promo_tiles.blocks.tile.settings.image.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "t:sections.rb_promo_tiles.blocks.tile.settings.image_mobile.label"
+        },
+        {
+          "type": "select",
+          "id": "focal_point",
+          "label": "t:sections.rb_promo_tiles.blocks.tile.settings.focal_point.label",
+          "options": [
+            { "value": "center", "label": "t:sections.rb_promo_tiles.blocks.tile.settings.focal_point.options__center" },
+            { "value": "top", "label": "t:sections.rb_promo_tiles.blocks.tile.settings.focal_point.options__top" },
+            { "value": "bottom", "label": "t:sections.rb_promo_tiles.blocks.tile.settings.focal_point.options__bottom" },
+            { "value": "left", "label": "t:sections.rb_promo_tiles.blocks.tile.settings.focal_point.options__left" },
+            { "value": "right", "label": "t:sections.rb_promo_tiles.blocks.tile.settings.focal_point.options__right" }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.rb_promo_tiles.blocks.tile.settings.header_link.content"
+        },
+        {
+          "type": "url",
+          "id": "tile_link",
+          "label": "t:sections.rb_promo_tiles.blocks.tile.settings.tile_link.label",
+          "info": "t:sections.rb_promo_tiles.blocks.tile.settings.tile_link.info"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.rb_promo_tiles.blocks.tile.settings.header_text.content"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "t:sections.rb_promo_tiles.blocks.tile.settings.eyebrow.label"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.rb_promo_tiles.blocks.tile.settings.heading.label"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:sections.rb_promo_tiles.blocks.tile.settings.text.label"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.rb_promo_tiles.blocks.tile.settings.header_button.content"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "t:sections.rb_promo_tiles.blocks.tile.settings.button_label.label",
+          "info": "t:sections.rb_promo_tiles.blocks.tile.settings.button_label.info"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:sections.rb_promo_tiles.blocks.tile.settings.button_link.label"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "t:sections.rb_promo_tiles.blocks.tile.settings.button_style.label",
+          "options": [
+            { "value": "solid", "label": "t:sections.rb_promo_tiles.blocks.tile.settings.button_style.options__solid" },
+            { "value": "outline", "label": "t:sections.rb_promo_tiles.blocks.tile.settings.button_style.options__outline" }
+          ],
+          "default": "solid"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_arrow",
+          "label": "t:sections.rb_promo_tiles.blocks.tile.settings.button_arrow.label",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.rb_promo_tiles.presets.name",
+      "blocks": [
+        {
+          "type": "tile",
+          "settings": {
+            "eyebrow": "Stories from the road",
+            "heading": "Read the Blog",
+            "button_label": "Read more"
+          }
+        },
+        {
+          "type": "tile",
+          "settings": {
+            "eyebrow": "Shop the gear",
+            "heading": "Browse Collections",
+            "button_label": "Shop now"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

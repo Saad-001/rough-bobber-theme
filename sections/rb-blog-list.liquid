@@ -1,0 +1,493 @@
+{%- comment -%}
+  Blog list — Rough Bobber ("Stories from the Road")
+  A custom, brand-first replacement for Dawn's main-blog on the blog template.
+
+  - Branded header (eyebrow + display title + intro), pulled from the blog or
+    overridable per section.
+  - Optional large FEATURED first post (image + copy), then a responsive card grid.
+  - Each card: image with zoom-on-hover, optional tag chip, date · read time meta,
+    title, excerpt and a "read more" affordance. Whole card is one link (the
+    "read more" is a styled span, never a nested anchor).
+  - Estimated read time computed from the article content.
+
+  Conventions (conventions.md): static CSS in assets/rb-blog-list.css; only
+  Liquid-driven values in the {% style %} block; color_scheme (+ optional
+  per-element overrides per §3.4); Dawn .section-{id}-padding; .page-width;
+  brand fonts. All customer-facing strings are translatable.
+{%- endcomment -%}
+
+{{ 'rb-blog-list.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign s = section.settings
+  assign uid = 'rb-blog-list-' | append: section.id
+
+  assign cols = s.columns | plus: 0
+  assign card_vw = 100 | divided_by: cols
+
+  case s.image_ratio
+    when 'portrait'
+      assign ratio = '3 / 4'
+    when 'square'
+      assign ratio = '1 / 1'
+    else
+      assign ratio = '4 / 3'
+  endcase
+
+  case s.featured_ratio
+    when 'landscape'
+      assign feat_ratio = '16 / 10'
+    when 'square'
+      assign feat_ratio = '1 / 1'
+    else
+      assign feat_ratio = '4 / 3'
+  endcase
+
+  assign heading = s.heading | default: blog.title
+
+  assign overlay_alpha = s.overlay_opacity | divided_by: 100.0
+  assign overlay_rgba = s.overlay_color | color_modify: 'alpha', overlay_alpha
+-%}
+
+{%- style -%}
+  #{{ uid }} {
+    --rb-blog-cols: {{ cols }};
+    --rb-blog-gap: {{ s.gap }}px;
+    --rb-blog-radius: {{ s.image_radius }}px;
+    --rb-blog-ratio: {{ ratio }};
+    --rb-blog-feat-ratio: {{ feat_ratio }};
+    --rb-blog-overlay: {{ overlay_rgba }};
+    --rb-blog-accent: {{ s.accent_color }};
+    {%- if s.heading_color != blank %}--rb-blog-heading: {{ s.heading_color }};{% endif -%}
+    {%- if s.text_color != blank %}--rb-blog-text: {{ s.text_color }};{% endif -%}
+  }
+
+  .section-{{ section.id }}-padding {
+    padding-top: {{ s.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ s.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ s.padding_top }}px;
+      padding-bottom: {{ s.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- paginate blog.articles by s.posts_per_page -%}
+  <div
+    id="{{ uid }}"
+    class="rb-blog color-{{ s.color_scheme }} gradient"
+    data-align="{{ s.header_align }}"
+  >
+    <div class="rb-blog__inner page-width section-{{ section.id }}-padding">
+      {%- if heading != blank or s.eyebrow != blank or s.intro != blank -%}
+        <header class="rb-blog__head">
+          {%- if s.eyebrow != blank -%}
+            <p class="rb-blog__eyebrow">{{ s.eyebrow }}</p>
+          {%- endif -%}
+          {%- if heading != blank -%}
+            <h1 class="rb-blog__title">{{ heading | escape }}</h1>
+          {%- endif -%}
+          {%- if s.intro != blank -%}
+            <div class="rb-blog__intro">{{ s.intro }}</div>
+          {%- endif -%}
+        </header>
+      {%- endif -%}
+
+      {%- if blog.articles_count == 0 -%}
+        <p class="rb-blog__empty">{{ 'sections.rb_blog_list.empty' | t }}</p>
+      {%- endif -%}
+
+      {%- for article in blog.articles -%}
+        {%- liquid
+          assign is_featured = false
+          if s.featured_first and forloop.first and paginate.current_page == 1
+            assign is_featured = true
+          endif
+
+          assign words = article.content | strip_html | split: ' ' | size
+          assign read_time = words | divided_by: s.words_per_minute | at_least: 1
+
+          assign excerpt = article.excerpt | default: article.content | strip_html | strip
+          assign tag = article.tags | first
+        -%}
+
+        {%- if is_featured -%}
+          {%- comment -%} ---- Featured post ---- {%- endcomment -%}
+          <a class="rb-blog__featured" href="{{ article.url }}">
+            <div class="rb-blog__featured-media">
+              {%- if article.image -%}
+                <img
+                  class="rb-blog__img"
+                  src="{{ article.image | image_url: width: 1200 }}"
+                  srcset="
+                    {{ article.image | image_url: width: 600 }} 600w,
+                    {{ article.image | image_url: width: 900 }} 900w,
+                    {{ article.image | image_url: width: 1200 }} 1200w,
+                    {{ article.image | image_url: width: 1600 }} 1600w"
+                  sizes="(min-width: 990px) 55vw, 100vw"
+                  width="{{ article.image.width }}"
+                  height="{{ article.image.height }}"
+                  alt="{{ article.image.alt | escape }}"
+                  loading="lazy"
+                >
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'rb-blog__img rb-blog__img--placeholder' }}
+              {%- endif -%}
+            </div>
+            <div class="rb-blog__featured-body">
+              <p class="rb-blog__feat-label">{{ 'sections.rb_blog_list.featured' | t }}</p>
+              <h2 class="rb-blog__feat-title">{{ article.title | escape }}</h2>
+              {%- render 'rb-blog-meta',
+                article: article,
+                tag: tag,
+                read_time: read_time,
+                show_date: s.show_date,
+                show_author: s.show_author,
+                show_read_time: s.show_read_time,
+                show_tag: s.show_tag
+              -%}
+              {%- if s.show_excerpt and excerpt != blank -%}
+                <p class="rb-blog__feat-excerpt">{{ excerpt | truncatewords: s.excerpt_words }}</p>
+              {%- endif -%}
+              <span class="rb-blog__more">
+                {{ s.read_more_label | default: 'Read story' }}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </span>
+            </div>
+          </a>
+
+          <div class="rb-blog__grid">
+        {%- else -%}
+          {%- comment -%} Open the grid when there is no featured post {%- endcomment -%}
+          {%- if forloop.first -%}<div class="rb-blog__grid">{%- endif -%}
+
+          {%- comment -%} ---- Standard card ---- {%- endcomment -%}
+          <a class="rb-blog__card" href="{{ article.url }}">
+            <div class="rb-blog__card-media">
+              {%- if s.show_image and article.image -%}
+                <img
+                  class="rb-blog__img"
+                  src="{{ article.image | image_url: width: 600 }}"
+                  srcset="
+                    {{ article.image | image_url: width: 400 }} 400w,
+                    {{ article.image | image_url: width: 600 }} 600w,
+                    {{ article.image | image_url: width: 900 }} 900w"
+                  sizes="(min-width: 990px) {{ card_vw }}vw, (min-width: 750px) 50vw, 100vw"
+                  width="{{ article.image.width }}"
+                  height="{{ article.image.height }}"
+                  alt="{{ article.image.alt | escape }}"
+                  loading="lazy"
+                >
+              {%- elsif s.show_image -%}
+                {{ 'image' | placeholder_svg_tag: 'rb-blog__img rb-blog__img--placeholder' }}
+              {%- endif -%}
+              {%- if s.show_tag and tag != blank -%}
+                <span class="rb-blog__chip">{{ tag }}</span>
+              {%- endif -%}
+            </div>
+            <div class="rb-blog__card-body">
+              {%- render 'rb-blog-meta',
+                article: article,
+                tag: tag,
+                read_time: read_time,
+                show_date: s.show_date,
+                show_author: s.show_author,
+                show_read_time: s.show_read_time,
+                show_tag: false
+              -%}
+              <h3 class="rb-blog__card-title">{{ article.title | escape }}</h3>
+              {%- if s.show_excerpt and excerpt != blank -%}
+                <p class="rb-blog__card-excerpt">{{ excerpt | truncatewords: s.excerpt_words }}</p>
+              {%- endif -%}
+              <span class="rb-blog__more">
+                {{ s.read_more_label | default: 'Read story' }}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </span>
+            </div>
+          </a>
+
+          {%- if forloop.last -%}</div>{%- endif -%}
+        {%- endif -%}
+
+        {%- if is_featured and forloop.last -%}</div>{%- endif -%}
+      {%- endfor -%}
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="rb-blog__pagination" role="navigation" aria-label="{{ 'general.pagination.label' | t }}">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}" class="rb-blog__page rb-blog__page--nav">{{ paginate.previous.title }}</a>
+          {%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}" class="rb-blog__page">{{ part.title }}</a>
+            {%- elsif part.title == paginate.current_page -%}
+              <span class="rb-blog__page rb-blog__page--current" aria-current="page">{{ part.title }}</span>
+            {%- else -%}
+              <span class="rb-blog__page rb-blog__page--gap">{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}" class="rb-blog__page rb-blog__page--nav">{{ paginate.next.title }}</a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "t:sections.rb_blog_list.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.rb_blog_list.settings.header_header.content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:sections.rb_blog_list.settings.eyebrow.label",
+      "default": "Stories from the road"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.rb_blog_list.settings.heading.label",
+      "info": "t:sections.rb_blog_list.settings.heading.info"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "t:sections.rb_blog_list.settings.intro.label"
+    },
+    {
+      "type": "select",
+      "id": "header_align",
+      "label": "t:sections.rb_blog_list.settings.header_align.label",
+      "options": [
+        { "value": "left", "label": "t:sections.rb_blog_list.settings.header_align.options__left" },
+        { "value": "center", "label": "t:sections.rb_blog_list.settings.header_align.options__center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_blog_list.settings.header_layout.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "featured_first",
+      "label": "t:sections.rb_blog_list.settings.featured_first.label",
+      "info": "t:sections.rb_blog_list.settings.featured_first.info",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "t:sections.rb_blog_list.settings.columns.label",
+      "options": [
+        { "value": "2", "label": "t:sections.rb_blog_list.settings.columns.options__2" },
+        { "value": "3", "label": "t:sections.rb_blog_list.settings.columns.options__3" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "range",
+      "id": "posts_per_page",
+      "label": "t:sections.rb_blog_list.settings.posts_per_page.label",
+      "min": 3,
+      "max": 24,
+      "step": 1,
+      "default": 9
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "t:sections.rb_blog_list.settings.image_ratio.label",
+      "options": [
+        { "value": "landscape", "label": "t:sections.rb_blog_list.settings.image_ratio.options__landscape" },
+        { "value": "square", "label": "t:sections.rb_blog_list.settings.image_ratio.options__square" },
+        { "value": "portrait", "label": "t:sections.rb_blog_list.settings.image_ratio.options__portrait" }
+      ],
+      "default": "landscape"
+    },
+    {
+      "type": "select",
+      "id": "featured_ratio",
+      "label": "t:sections.rb_blog_list.settings.featured_ratio.label",
+      "options": [
+        { "value": "landscape", "label": "t:sections.rb_blog_list.settings.featured_ratio.options__landscape" },
+        { "value": "wide", "label": "t:sections.rb_blog_list.settings.featured_ratio.options__wide" },
+        { "value": "square", "label": "t:sections.rb_blog_list.settings.featured_ratio.options__square" }
+      ],
+      "default": "wide"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "t:sections.rb_blog_list.settings.gap.label",
+      "min": 8,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "t:sections.rb_blog_list.settings.image_radius.label",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_blog_list.settings.header_card.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "t:sections.rb_blog_list.settings.show_image.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "label": "t:sections.rb_blog_list.settings.show_excerpt.label",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "excerpt_words",
+      "label": "t:sections.rb_blog_list.settings.excerpt_words.label",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 25
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "t:sections.rb_blog_list.settings.show_date.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "t:sections.rb_blog_list.settings.show_author.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_read_time",
+      "label": "t:sections.rb_blog_list.settings.show_read_time.label",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "words_per_minute",
+      "label": "t:sections.rb_blog_list.settings.words_per_minute.label",
+      "info": "t:sections.rb_blog_list.settings.words_per_minute.info",
+      "min": 150,
+      "max": 300,
+      "step": 10,
+      "default": 200
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tag",
+      "label": "t:sections.rb_blog_list.settings.show_tag.label",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "read_more_label",
+      "label": "t:sections.rb_blog_list.settings.read_more_label.label",
+      "default": "Read story"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.rb_blog_list.settings.header_colors.content"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "t:sections.rb_blog_list.settings.accent_color.label",
+      "default": "#b3916b"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.rb_blog_list.settings.color_overrides_info.content"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "t:sections.rb_blog_list.settings.heading_color.label"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.rb_blog_list.settings.text_color.label"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "t:sections.rb_blog_list.settings.overlay_color.label",
+      "default": "#121315"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "t:sections.rb_blog_list.settings.overlay_opacity.label",
+      "info": "t:sections.rb_blog_list.settings.overlay_opacity.info",
+      "min": 0,
+      "max": 70,
+      "step": 5,
+      "unit": "%",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 52
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.rb_blog_list.presets.name"
+    }
+  ]
+}
+{% endschema %}

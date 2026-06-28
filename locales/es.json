@@ -363,6 +363,30 @@
       "carousel": "Carrusel",
       "slide": "Diapositiva"
     },
+    "rb_promo_tiles": {
+      "tile": "Mosaico promocional"
+    },
+    "rb_blog_list": {
+      "featured": "Destacado",
+      "read_time": "{{ count }} min de lectura",
+      "by_author": "Por {{ author }}",
+      "empty": "Aún no hay historias — vuelve pronto."
+    },
+    "rb_article": {
+      "read_time": "{{ count }} min de lectura",
+      "by_author": "Por {{ author }}",
+      "tagged": "Etiquetado",
+      "share": "Comparte esta historia",
+      "share_x": "Compartir en X",
+      "share_facebook": "Compartir en Facebook",
+      "share_pinterest": "Compartir en Pinterest",
+      "copy_link": "Copiar enlace",
+      "copied": "¡Copiado!",
+      "written_by": "Escrito por",
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "nav_label": "Más historias"
+    },
     "page": {
       "title": "Título de la página"
     },

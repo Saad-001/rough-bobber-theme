@@ -634,6 +634,366 @@
         }
       }
     },
+    "rb_promo_tiles": {
+      "name": "Promo tiles",
+      "presets": {
+        "name": "Promo tiles"
+      },
+      "settings": {
+        "header_heading": {
+          "content": "Section heading (optional)"
+        },
+        "subheading": {
+          "label": "Eyebrow"
+        },
+        "heading": {
+          "label": "Heading"
+        },
+        "header_layout": {
+          "content": "Layout"
+        },
+        "columns": {
+          "label": "Tiles per row (desktop)",
+          "info": "Tiles always stack to one column on mobile.",
+          "options__2": "2",
+          "options__3": "3"
+        },
+        "tile_height": {
+          "label": "Tile height",
+          "options__small": "Small",
+          "options__medium": "Medium",
+          "options__large": "Large"
+        },
+        "gap": {
+          "label": "Gap between tiles"
+        },
+        "image_radius": {
+          "label": "Corner radius"
+        },
+        "content_vertical": {
+          "label": "Vertical placement",
+          "options__top": "Top",
+          "options__center": "Center",
+          "options__bottom": "Bottom"
+        },
+        "text_align": {
+          "label": "Alignment",
+          "options__left": "Left",
+          "options__center": "Center",
+          "options__right": "Right"
+        },
+        "header_colors": {
+          "content": "Colors"
+        },
+        "color_overrides_info": {
+          "content": "Text and button colors come from the color scheme above. Use the optional overrides below to fine-tune contrast over the images."
+        },
+        "heading_color": {
+          "label": "Heading override (optional)"
+        },
+        "text_color": {
+          "label": "Text override (optional)"
+        },
+        "button_bg": {
+          "label": "Button background override (optional)"
+        },
+        "button_text_color": {
+          "label": "Button text override (optional)"
+        },
+        "header_overlay": {
+          "content": "Image overlay"
+        },
+        "overlay_color": {
+          "label": "Overlay color"
+        },
+        "overlay_opacity": {
+          "label": "Overlay strength (whole image)"
+        },
+        "gradient_opacity": {
+          "label": "Overlay gradient (toward text)",
+          "info": "Darkens the bottom behind the text for better legibility."
+        }
+      },
+      "blocks": {
+        "tile": {
+          "name": "Tile",
+          "settings": {
+            "header_image": {
+              "content": "Image"
+            },
+            "image": {
+              "label": "Image – desktop"
+            },
+            "image_mobile": {
+              "label": "Image – mobile (optional)"
+            },
+            "focal_point": {
+              "label": "Image focus",
+              "options__center": "Center",
+              "options__top": "Top",
+              "options__bottom": "Bottom",
+              "options__left": "Left",
+              "options__right": "Right"
+            },
+            "header_link": {
+              "content": "Link"
+            },
+            "tile_link": {
+              "label": "Link for the whole tile",
+              "info": "e.g. the blog for one tile, a collection for the other. The button below still works separately."
+            },
+            "header_text": {
+              "content": "Text"
+            },
+            "eyebrow": {
+              "label": "Eyebrow"
+            },
+            "heading": {
+              "label": "Heading"
+            },
+            "text": {
+              "label": "Text"
+            },
+            "header_button": {
+              "content": "Button"
+            },
+            "button_label": {
+              "label": "Button label",
+              "info": "Leave empty to hide the button (the whole tile can still be clickable)."
+            },
+            "button_link": {
+              "label": "Button link"
+            },
+            "button_style": {
+              "label": "Button style",
+              "options__solid": "Solid",
+              "options__outline": "Outline"
+            },
+            "button_arrow": {
+              "label": "Show arrow on button"
+            }
+          }
+        }
+      }
+    },
+    "rb_blog_list": {
+      "name": "Blog posts (custom)",
+      "presets": {
+        "name": "Blog posts (custom)"
+      },
+      "settings": {
+        "header_header": {
+          "content": "Header"
+        },
+        "eyebrow": {
+          "label": "Eyebrow"
+        },
+        "heading": {
+          "label": "Heading",
+          "info": "Leave empty to use the blog's own title."
+        },
+        "intro": {
+          "label": "Intro text"
+        },
+        "header_align": {
+          "label": "Header alignment",
+          "options__left": "Left",
+          "options__center": "Center"
+        },
+        "header_layout": {
+          "content": "Layout"
+        },
+        "featured_first": {
+          "label": "Feature the first post",
+          "info": "Shows the newest post large on the first page."
+        },
+        "columns": {
+          "label": "Cards per row (desktop)",
+          "options__2": "2",
+          "options__3": "3"
+        },
+        "posts_per_page": {
+          "label": "Posts per page"
+        },
+        "image_ratio": {
+          "label": "Card image ratio",
+          "options__landscape": "Landscape (4:3)",
+          "options__square": "Square (1:1)",
+          "options__portrait": "Portrait (3:4)"
+        },
+        "featured_ratio": {
+          "label": "Featured image ratio",
+          "options__landscape": "Landscape (4:3)",
+          "options__wide": "Wide (16:10)",
+          "options__square": "Square (1:1)"
+        },
+        "gap": {
+          "label": "Gap between cards"
+        },
+        "image_radius": {
+          "label": "Corner radius"
+        },
+        "header_card": {
+          "content": "Card content"
+        },
+        "show_image": {
+          "label": "Show image"
+        },
+        "show_excerpt": {
+          "label": "Show excerpt"
+        },
+        "excerpt_words": {
+          "label": "Excerpt length (words)"
+        },
+        "show_date": {
+          "label": "Show date"
+        },
+        "show_author": {
+          "label": "Show author"
+        },
+        "show_read_time": {
+          "label": "Show read time"
+        },
+        "words_per_minute": {
+          "label": "Reading speed",
+          "info": "Words per minute used to estimate read time."
+        },
+        "show_tag": {
+          "label": "Show first tag",
+          "info": "Shows the article's first tag as a chip / category."
+        },
+        "read_more_label": {
+          "label": "\"Read more\" label"
+        },
+        "header_colors": {
+          "content": "Colors"
+        },
+        "accent_color": {
+          "label": "Accent color"
+        },
+        "color_overrides_info": {
+          "content": "Text colors come from the color scheme above. Use the optional overrides below to fine-tune contrast."
+        },
+        "heading_color": {
+          "label": "Heading override (optional)"
+        },
+        "text_color": {
+          "label": "Text override (optional)"
+        },
+        "overlay_color": {
+          "label": "Image overlay color"
+        },
+        "overlay_opacity": {
+          "label": "Image overlay strength",
+          "info": "Tints card images so light artwork stays on-brand."
+        }
+      }
+    },
+    "rb_article": {
+      "name": "Article (custom)",
+      "settings": {
+        "header_hero": {
+          "content": "Hero"
+        },
+        "hero_style": {
+          "label": "Hero layout",
+          "options__overlay": "Overlay (image background)",
+          "options__stacked": "Stacked (title above image)",
+          "options__minimal": "Minimal (no image)"
+        },
+        "hero_height": {
+          "label": "Hero height",
+          "info": "Only used by the overlay layout."
+        },
+        "show_eyebrow": {
+          "label": "Show blog link above title"
+        },
+        "eyebrow": {
+          "label": "Eyebrow text",
+          "info": "Leave empty to use the blog's title."
+        },
+        "hero_overlay_color": {
+          "label": "Hero overlay color"
+        },
+        "hero_overlay_opacity": {
+          "label": "Hero overlay strength",
+          "info": "Darkens the hero image so the title stays readable."
+        },
+        "header_meta": {
+          "content": "Meta"
+        },
+        "show_date": {
+          "label": "Show date"
+        },
+        "show_author": {
+          "label": "Show author"
+        },
+        "show_read_time": {
+          "label": "Show read time"
+        },
+        "words_per_minute": {
+          "label": "Reading speed",
+          "info": "Words per minute used to estimate read time."
+        },
+        "header_body": {
+          "content": "Body"
+        },
+        "enable_drop_cap": {
+          "label": "Drop cap on first paragraph"
+        },
+        "show_progress_bar": {
+          "label": "Show reading progress bar",
+          "info": "A thin bar that fills as the reader scrolls the article."
+        },
+        "show_share": {
+          "label": "Show share buttons"
+        },
+        "show_tags": {
+          "label": "Show tags"
+        },
+        "image_radius": {
+          "label": "Corner radius"
+        },
+        "header_author": {
+          "content": "Author card"
+        },
+        "show_author_card": {
+          "label": "Show author card"
+        },
+        "author_bio": {
+          "label": "Author bio",
+          "info": "Optional short bio shown in the author card."
+        },
+        "header_nav": {
+          "content": "Navigation"
+        },
+        "show_prev_next": {
+          "label": "Show previous / next links"
+        },
+        "show_back_link": {
+          "label": "Show \"back to blog\" link"
+        },
+        "show_comments": {
+          "label": "Show comments",
+          "info": "Comments must also be enabled for the blog in Shopify admin."
+        },
+        "header_colors": {
+          "content": "Colors"
+        },
+        "accent_color": {
+          "label": "Accent color"
+        },
+        "color_overrides_info": {
+          "content": "Text colors come from the color scheme above. Use the optional overrides below to fine-tune contrast."
+        },
+        "heading_color": {
+          "label": "Heading override (optional)"
+        },
+        "text_color": {
+          "label": "Text override (optional)"
+        }
+      }
+    },
     "rb_product_carousel": {
       "name": "Product carousel",
       "presets": {

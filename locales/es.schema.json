@@ -634,6 +634,366 @@
         }
       }
     },
+    "rb_promo_tiles": {
+      "name": "Mosaicos promocionales",
+      "presets": {
+        "name": "Mosaicos promocionales"
+      },
+      "settings": {
+        "header_heading": {
+          "content": "Título de la sección (opcional)"
+        },
+        "subheading": {
+          "label": "Antetítulo"
+        },
+        "heading": {
+          "label": "Título"
+        },
+        "header_layout": {
+          "content": "Diseño"
+        },
+        "columns": {
+          "label": "Mosaicos por fila (escritorio)",
+          "info": "Los mosaicos siempre se apilan en una columna en móvil.",
+          "options__2": "2",
+          "options__3": "3"
+        },
+        "tile_height": {
+          "label": "Altura del mosaico",
+          "options__small": "Pequeña",
+          "options__medium": "Mediana",
+          "options__large": "Grande"
+        },
+        "gap": {
+          "label": "Separación entre mosaicos"
+        },
+        "image_radius": {
+          "label": "Radio de las esquinas"
+        },
+        "content_vertical": {
+          "label": "Ubicación vertical",
+          "options__top": "Arriba",
+          "options__center": "Centro",
+          "options__bottom": "Abajo"
+        },
+        "text_align": {
+          "label": "Alineación",
+          "options__left": "Izquierda",
+          "options__center": "Centro",
+          "options__right": "Derecha"
+        },
+        "header_colors": {
+          "content": "Colores"
+        },
+        "color_overrides_info": {
+          "content": "Los colores de texto y botón provienen del esquema de color de arriba. Usa las anulaciones opcionales de abajo para ajustar el contraste sobre las imágenes."
+        },
+        "heading_color": {
+          "label": "Anulación del título (opcional)"
+        },
+        "text_color": {
+          "label": "Anulación del texto (opcional)"
+        },
+        "button_bg": {
+          "label": "Anulación del fondo del botón (opcional)"
+        },
+        "button_text_color": {
+          "label": "Anulación del texto del botón (opcional)"
+        },
+        "header_overlay": {
+          "content": "Superposición de imagen"
+        },
+        "overlay_color": {
+          "label": "Color de superposición"
+        },
+        "overlay_opacity": {
+          "label": "Intensidad de superposición (toda la imagen)"
+        },
+        "gradient_opacity": {
+          "label": "Gradiente de superposición (hacia el texto)",
+          "info": "Oscurece la parte inferior detrás del texto para mejorar la legibilidad."
+        }
+      },
+      "blocks": {
+        "tile": {
+          "name": "Mosaico",
+          "settings": {
+            "header_image": {
+              "content": "Imagen"
+            },
+            "image": {
+              "label": "Imagen – escritorio"
+            },
+            "image_mobile": {
+              "label": "Imagen – móvil (opcional)"
+            },
+            "focal_point": {
+              "label": "Enfoque de la imagen",
+              "options__center": "Centro",
+              "options__top": "Arriba",
+              "options__bottom": "Abajo",
+              "options__left": "Izquierda",
+              "options__right": "Derecha"
+            },
+            "header_link": {
+              "content": "Enlace"
+            },
+            "tile_link": {
+              "label": "Enlace de todo el mosaico",
+              "info": "p. ej. el blog para un mosaico y una colección para el otro. El botón de abajo sigue funcionando por separado."
+            },
+            "header_text": {
+              "content": "Texto"
+            },
+            "eyebrow": {
+              "label": "Antetítulo"
+            },
+            "heading": {
+              "label": "Título"
+            },
+            "text": {
+              "label": "Texto"
+            },
+            "header_button": {
+              "content": "Botón"
+            },
+            "button_label": {
+              "label": "Texto del botón",
+              "info": "Déjalo vacío para ocultar el botón (todo el mosaico puede seguir siendo clicable)."
+            },
+            "button_link": {
+              "label": "Enlace del botón"
+            },
+            "button_style": {
+              "label": "Estilo del botón",
+              "options__solid": "Relleno",
+              "options__outline": "Contorno"
+            },
+            "button_arrow": {
+              "label": "Mostrar flecha en el botón"
+            }
+          }
+        }
+      }
+    },
+    "rb_blog_list": {
+      "name": "Entradas del blog (personalizado)",
+      "presets": {
+        "name": "Entradas del blog (personalizado)"
+      },
+      "settings": {
+        "header_header": {
+          "content": "Encabezado"
+        },
+        "eyebrow": {
+          "label": "Antetítulo"
+        },
+        "heading": {
+          "label": "Título",
+          "info": "Déjalo vacío para usar el título propio del blog."
+        },
+        "intro": {
+          "label": "Texto de introducción"
+        },
+        "header_align": {
+          "label": "Alineación del encabezado",
+          "options__left": "Izquierda",
+          "options__center": "Centro"
+        },
+        "header_layout": {
+          "content": "Diseño"
+        },
+        "featured_first": {
+          "label": "Destacar la primera entrada",
+          "info": "Muestra la entrada más reciente en grande en la primera página."
+        },
+        "columns": {
+          "label": "Tarjetas por fila (escritorio)",
+          "options__2": "2",
+          "options__3": "3"
+        },
+        "posts_per_page": {
+          "label": "Entradas por página"
+        },
+        "image_ratio": {
+          "label": "Proporción de imagen de tarjeta",
+          "options__landscape": "Horizontal (4:3)",
+          "options__square": "Cuadrada (1:1)",
+          "options__portrait": "Vertical (3:4)"
+        },
+        "featured_ratio": {
+          "label": "Proporción de imagen destacada",
+          "options__landscape": "Horizontal (4:3)",
+          "options__wide": "Ancha (16:10)",
+          "options__square": "Cuadrada (1:1)"
+        },
+        "gap": {
+          "label": "Separación entre tarjetas"
+        },
+        "image_radius": {
+          "label": "Radio de las esquinas"
+        },
+        "header_card": {
+          "content": "Contenido de la tarjeta"
+        },
+        "show_image": {
+          "label": "Mostrar imagen"
+        },
+        "show_excerpt": {
+          "label": "Mostrar extracto"
+        },
+        "excerpt_words": {
+          "label": "Longitud del extracto (palabras)"
+        },
+        "show_date": {
+          "label": "Mostrar fecha"
+        },
+        "show_author": {
+          "label": "Mostrar autor"
+        },
+        "show_read_time": {
+          "label": "Mostrar tiempo de lectura"
+        },
+        "words_per_minute": {
+          "label": "Velocidad de lectura",
+          "info": "Palabras por minuto usadas para estimar el tiempo de lectura."
+        },
+        "show_tag": {
+          "label": "Mostrar primera etiqueta",
+          "info": "Muestra la primera etiqueta del artículo como una insignia / categoría."
+        },
+        "read_more_label": {
+          "label": "Texto de \"Leer más\""
+        },
+        "header_colors": {
+          "content": "Colores"
+        },
+        "accent_color": {
+          "label": "Color de acento"
+        },
+        "color_overrides_info": {
+          "content": "Los colores de texto provienen del esquema de color de arriba. Usa las anulaciones opcionales de abajo para ajustar el contraste."
+        },
+        "heading_color": {
+          "label": "Anulación del título (opcional)"
+        },
+        "text_color": {
+          "label": "Anulación del texto (opcional)"
+        },
+        "overlay_color": {
+          "label": "Color de superposición de imagen"
+        },
+        "overlay_opacity": {
+          "label": "Intensidad de superposición de imagen",
+          "info": "Tiñe las imágenes de las tarjetas para que las imágenes claras se mantengan acordes a la marca."
+        }
+      }
+    },
+    "rb_article": {
+      "name": "Artículo (personalizado)",
+      "settings": {
+        "header_hero": {
+          "content": "Hero"
+        },
+        "hero_style": {
+          "label": "Diseño del hero",
+          "options__overlay": "Superpuesto (imagen de fondo)",
+          "options__stacked": "Apilado (título sobre la imagen)",
+          "options__minimal": "Minimalista (sin imagen)"
+        },
+        "hero_height": {
+          "label": "Altura del hero",
+          "info": "Solo se usa en el diseño superpuesto."
+        },
+        "show_eyebrow": {
+          "label": "Mostrar enlace al blog sobre el título"
+        },
+        "eyebrow": {
+          "label": "Texto del antetítulo",
+          "info": "Déjalo vacío para usar el título del blog."
+        },
+        "hero_overlay_color": {
+          "label": "Color de superposición del hero"
+        },
+        "hero_overlay_opacity": {
+          "label": "Intensidad de superposición del hero",
+          "info": "Oscurece la imagen del hero para que el título sea legible."
+        },
+        "header_meta": {
+          "content": "Metadatos"
+        },
+        "show_date": {
+          "label": "Mostrar fecha"
+        },
+        "show_author": {
+          "label": "Mostrar autor"
+        },
+        "show_read_time": {
+          "label": "Mostrar tiempo de lectura"
+        },
+        "words_per_minute": {
+          "label": "Velocidad de lectura",
+          "info": "Palabras por minuto usadas para estimar el tiempo de lectura."
+        },
+        "header_body": {
+          "content": "Cuerpo"
+        },
+        "enable_drop_cap": {
+          "label": "Capitular en el primer párrafo"
+        },
+        "show_progress_bar": {
+          "label": "Mostrar barra de progreso de lectura",
+          "info": "Una barra fina que se llena a medida que se desplaza el artículo."
+        },
+        "show_share": {
+          "label": "Mostrar botones para compartir"
+        },
+        "show_tags": {
+          "label": "Mostrar etiquetas"
+        },
+        "image_radius": {
+          "label": "Radio de las esquinas"
+        },
+        "header_author": {
+          "content": "Tarjeta del autor"
+        },
+        "show_author_card": {
+          "label": "Mostrar tarjeta del autor"
+        },
+        "author_bio": {
+          "label": "Biografía del autor",
+          "info": "Biografía breve opcional que se muestra en la tarjeta del autor."
+        },
+        "header_nav": {
+          "content": "Navegación"
+        },
+        "show_prev_next": {
+          "label": "Mostrar enlaces anterior / siguiente"
+        },
+        "show_back_link": {
+          "label": "Mostrar enlace \"volver al blog\""
+        },
+        "show_comments": {
+          "label": "Mostrar comentarios",
+          "info": "Los comentarios también deben estar activados para el blog en el panel de Shopify."
+        },
+        "header_colors": {
+          "content": "Colores"
+        },
+        "accent_color": {
+          "label": "Color de acento"
+        },
+        "color_overrides_info": {
+          "content": "Los colores del texto provienen del esquema de color de arriba. Usa las anulaciones opcionales de abajo para ajustar el contraste."
+        },
+        "heading_color": {
+          "label": "Anulación del encabezado (opcional)"
+        },
+        "text_color": {
+          "label": "Anulación del texto (opcional)"
+        }
+      }
+    },
     "rb_product_carousel": {
       "name": "Carrusel de productos",
       "presets": {

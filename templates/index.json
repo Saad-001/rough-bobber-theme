@@ -278,6 +278,66 @@
         "padding_bottom": 40
       }
     },
+    "rb_promo_tiles_GMP4Rp": {
+      "type": "rb-promo-tiles",
+      "blocks": {
+        "tile_gHUiLD": {
+          "type": "tile",
+          "settings": {
+            "image": "shopify://shop_images/SnakeClasicTeeBlack_Back_01.webp",
+            "focal_point": "center",
+            "tile_link": "shopify://collections/t-shirts",
+            "eyebrow": "Shop the gear",
+            "heading": "Browse Collections",
+            "text": "",
+            "button_label": "Shop now",
+            "button_link": "shopify://collections/t-shirts",
+            "button_style": "solid",
+            "button_arrow": true
+          }
+        },
+        "tile_JFKgYT": {
+          "type": "tile",
+          "settings": {
+            "image": "shopify://shop_images/Rough_Bobber_Featured_For_The_Ones_Who_Ride.png",
+            "focal_point": "center",
+            "tile_link": "shopify://blogs/stories-from-the-road",
+            "eyebrow": "Stories from the road",
+            "heading": "Read the Blog",
+            "text": "<p>You don't ride to arrive — you ride because the road is the reason. The first story in Stories From The Road. Dirt. Speed. Glory.</p>",
+            "button_label": "Read more",
+            "button_link": "shopify://blogs/stories-from-the-road",
+            "button_style": "solid",
+            "button_arrow": true
+          }
+        }
+      },
+      "block_order": [
+        "tile_gHUiLD",
+        "tile_JFKgYT"
+      ],
+      "name": "t:sections.rb_promo_tiles.presets.name",
+      "settings": {
+        "subheading": "",
+        "heading": "",
+        "columns": "2",
+        "tile_height": "medium",
+        "gap": 16,
+        "image_radius": 10,
+        "content_vertical": "bottom",
+        "text_align": "left",
+        "color_scheme": "scheme-2",
+        "heading_color": "#FFFFFF",
+        "text_color": "#FFFFFF",
+        "button_bg": "#C5A572",
+        "button_text_color": "",
+        "overlay_color": "#121315",
+        "overlay_opacity": 20,
+        "gradient_opacity": 50,
+        "padding_top": 68,
+        "padding_bottom": 0
+      }
+    },
     "rb_about": {
       "type": "rb-about",
       "settings": {
@@ -312,6 +372,7 @@
     "rb_promo_banner",
     "rb_product_carousel_AkpdAT",
     "rb_promo_banner_jtJnLd",
+    "rb_promo_tiles_GMP4Rp",
     "rb_about",
     "178208004365a1dd36"
   ]

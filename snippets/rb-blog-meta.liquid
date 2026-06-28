@@ -1,0 +1,36 @@
+{%- comment -%}
+  Rough Bobber — blog card meta row (date · read time · author · tag chip).
+  Used by sections/rb-blog-list.liquid for both featured and grid cards.
+
+  Accepts:
+  - article: {Object} Article
+  - tag: {String} first tag (optional)
+  - read_time: {Number} estimated minutes
+  - show_date / show_author / show_read_time / show_tag: {Boolean}
+{%- endcomment -%}
+
+{%- liquid
+  assign show_any = false
+  if show_date or show_author or show_read_time or show_tag
+    assign show_any = true
+  endif
+-%}
+
+{%- if show_any -%}
+  <div class="rb-blog__meta">
+    {%- if show_tag and tag != blank -%}
+      <span class="rb-blog__meta-tag">{{ tag }}</span>
+    {%- endif -%}
+    {%- if show_date -%}
+      <time class="rb-blog__meta-item" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+        {{ article.published_at | date: format: 'date' }}
+      </time>
+    {%- endif -%}
+    {%- if show_read_time -%}
+      <span class="rb-blog__meta-item">{{ 'sections.rb_blog_list.read_time' | t: count: read_time }}</span>
+    {%- endif -%}
+    {%- if show_author -%}
+      <span class="rb-blog__meta-item">{{ 'sections.rb_blog_list.by_author' | t: author: article.author }}</span>
+    {%- endif -%}
+  </div>
+{%- endif -%}

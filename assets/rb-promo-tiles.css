@@ -1,0 +1,230 @@
+/* ============================================================
+   Rough Bobber — Promo tiles (sections/rb-promo-tiles.liquid)
+   A row of clickable image tiles (blocks) in the promo-banner family.
+   Static styles only; per-section values come from the {% style %} block
+   scoped to #rb-promo-tiles-{id}.
+   ============================================================ */
+
+.rb-tiles {
+  /* Override vars default to the active colour scheme; the scoped
+     {% style %} block only sets them when the merchant fills an override. */
+  --rb-tiles-heading: rgb(var(--color-foreground));
+  --rb-tiles-text: rgb(var(--color-foreground));
+  --rb-tiles-btn-bg: rgb(var(--color-button));
+  --rb-tiles-btn-text: rgb(var(--color-button-text));
+  --rb-tiles-overlay: rgba(0, 0, 0, 0.3);
+  --rb-tiles-gradient: rgba(0, 0, 0, 0.55);
+  --rb-tiles-cols: 2;
+  --rb-tiles-h: 420px;
+  --rb-tiles-gap: 16px;
+  --rb-tiles-radius: 10px;
+}
+
+/* ---- Section heading (optional) ---- */
+.rb-tiles__head {
+  margin: 0 0 1.75rem;
+  text-align: center;
+}
+.rb-tiles__eyebrow {
+  margin: 0 0 0.5rem;
+  font-family: var(--rb-font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgb(var(--color-foreground));
+  opacity: 0.7;
+}
+.rb-tiles__title {
+  margin: 0;
+  font-family: var(--rb-font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  color: rgb(var(--color-foreground));
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+}
+
+/* ---- Grid ---- */
+.rb-tiles__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--rb-tiles-gap);
+}
+
+/* ---- Tile ---- */
+.rb-tiles__tile {
+  position: relative;
+  display: flex;
+  min-height: var(--rb-tiles-h);
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: var(--rb-tiles-radius);
+}
+
+.rb-tiles__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.rb-tiles__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.rb-tiles__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, var(--rb-tiles-gradient) 0%, rgba(0, 0, 0, 0) 65%),
+    var(--rb-tiles-overlay);
+  z-index: 1;
+}
+
+/* Whole-tile clickable layer — a sibling of the button, never its parent,
+   so we avoid invalid nested anchors. */
+.rb-tiles__overlay-link {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+}
+.rb-tiles__tile:hover .rb-tiles__img {
+  transform: scale(1.04);
+}
+
+/* ---- Content ---- */
+.rb-tiles__content {
+  position: relative;
+  z-index: 3; /* sits above the overlay link so the button stays clickable */
+  pointer-events: none; /* let clicks fall through to the overlay link... */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+}
+.rb-tiles__content > * {
+  pointer-events: auto; /* ...except the actual text/button */
+}
+
+.rb-tiles[data-valign='top'] .rb-tiles__content {
+  justify-content: flex-start;
+}
+.rb-tiles[data-valign='center'] .rb-tiles__content {
+  justify-content: center;
+}
+.rb-tiles[data-valign='bottom'] .rb-tiles__content {
+  justify-content: flex-end;
+}
+
+.rb-tiles[data-align='left'] .rb-tiles__content {
+  align-items: flex-start;
+  text-align: left;
+}
+.rb-tiles[data-align='center'] .rb-tiles__content {
+  align-items: center;
+  text-align: center;
+}
+.rb-tiles[data-align='right'] .rb-tiles__content {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.rb-tiles__tile-eyebrow {
+  margin: 0 0 0.5rem;
+  font-family: var(--rb-font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rb-tiles-text);
+  opacity: 0.9;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+}
+.rb-tiles__tile-heading {
+  margin: 0;
+  font-family: var(--rb-font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--rb-tiles-heading);
+  font-size: clamp(1.6rem, 2.6vw, 2.5rem);
+  line-height: 1.06;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.35);
+}
+.rb-tiles__tile-text {
+  margin: 0.75rem 0 0;
+  font-family: var(--rb-font-body);
+  color: var(--rb-tiles-text);
+  font-size: clamp(1rem, 1.3vw, 1.1rem);
+  line-height: 1.55;
+  max-width: 42ch;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+}
+
+.rb-tiles__cta {
+  --rb-cta-bg: var(--rb-tiles-btn-bg);
+  --rb-cta-text: var(--rb-tiles-btn-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 1.5rem;
+  font-family: var(--rb-font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.85rem 1.9rem;
+  background: var(--rb-cta-bg);
+  color: var(--rb-cta-text);
+  border: 1.5px solid var(--rb-cta-bg);
+  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.5);
+}
+.rb-tiles__cta svg {
+  width: 1.05em;
+  height: 1.05em;
+  transition: transform 0.25s ease;
+}
+.rb-tiles__tile:hover .rb-tiles__cta {
+  transform: translateY(-2px);
+}
+.rb-tiles__tile:hover .rb-tiles__cta svg {
+  transform: translateX(4px);
+}
+.rb-tiles__cta--outline {
+  background: transparent;
+  color: var(--rb-cta-text);
+  border-color: var(--rb-cta-text);
+}
+.rb-tiles__cta--outline:hover {
+  background: var(--rb-cta-text);
+  color: var(--rb-cta-bg);
+}
+
+/* Empty / placeholder state in the editor */
+.rb-tiles__tile--empty .rb-tiles__img--placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---- Tablet / desktop: lay tiles out in the chosen number of columns ---- */
+@media screen and (min-width: 750px) {
+  .rb-tiles__grid {
+    grid-template-columns: repeat(var(--rb-tiles-cols), 1fr);
+  }
+}
+
+/* ---- Mobile: stacked, slightly shorter tiles ---- */
+@media screen and (max-width: 749px) {
+  .rb-tiles__tile {
+    min-height: calc(var(--rb-tiles-h) * 0.78);
+  }
+}

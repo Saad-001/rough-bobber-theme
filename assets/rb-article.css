@@ -1,0 +1,605 @@
+/* ============================================================
+   Rough Bobber — Article details (sections/rb-article.liquid)
+   Brand-first blog post page: immersive hero, reading progress,
+   styled RTE body, share row, prev/next nav, restyled comments.
+   Static styles only; per-section values come from the {% style %}
+   block scoped to #rb-article-{id}.
+   ============================================================ */
+
+.rb-article {
+  --rb-art-heading: rgb(var(--color-foreground));
+  --rb-art-text: rgb(var(--color-foreground));
+  --rb-art-accent: var(--rb-gold, #b3916b);
+  --rb-art-hero-overlay: rgba(18, 19, 21, 0.55);
+  --rb-art-hero-height: 65vh;
+  --rb-art-radius: 10px;
+  --rb-art-line: rgba(var(--color-foreground), 0.12);
+
+  position: relative;
+  color: var(--rb-art-text);
+}
+
+/* ---- Reading progress ---- */
+.rb-article__progress {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  height: 3px;
+  width: 100%;
+  background: rgba(var(--color-foreground), 0.08);
+}
+.rb-article__progress-bar {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: var(--rb-art-accent);
+  will-change: transform;
+}
+
+/* ---- Shared hero image behaviour ---- */
+.rb-article__hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* ---- Eyebrow / blog link ---- */
+.rb-article__eyebrow {
+  display: inline-block;
+  margin: 0 0 1rem;
+  font-family: var(--rb-font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--rb-art-accent);
+  transition: opacity 0.2s ease;
+}
+.rb-article__eyebrow:hover {
+  opacity: 0.75;
+}
+
+/* ---- Title ---- */
+.rb-article__title {
+  margin: 0;
+  font-family: var(--rb-font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--rb-art-heading);
+  font-size: clamp(2.1rem, 5.5vw, 4.25rem);
+  line-height: 1.02;
+  letter-spacing: 0.01em;
+}
+
+/* ---- Meta row ---- */
+.rb-article__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  margin-top: 1.15rem;
+  font-family: var(--rb-font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--rb-art-text);
+  opacity: 0.8;
+}
+.rb-article__meta-item {
+  position: relative;
+}
+.rb-article__meta-item ~ .rb-article__meta-item::before {
+  content: '';
+  position: absolute;
+  left: -0.5rem;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  transform: translateY(-50%);
+  opacity: 0.7;
+}
+
+/* ---- Hero: overlay ---- */
+.rb-article__hero--overlay {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: var(--rb-art-hero-height);
+  overflow: hidden;
+}
+.rb-article__hero-media {
+  position: absolute;
+  inset: 0;
+}
+.rb-article__hero-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.05) 0%,
+    var(--rb-art-hero-overlay) 60%,
+    color-mix(in srgb, var(--rb-art-hero-overlay) 100%, #000 25%) 100%
+  );
+}
+.rb-article__hero-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding-top: clamp(2.5rem, 6vw, 5rem);
+  padding-bottom: clamp(2rem, 5vw, 4rem);
+}
+.rb-article__hero-copy {
+  max-width: 60rem;
+}
+.rb-article__hero--overlay .rb-article__title {
+  color: #fff;
+}
+.rb-article__hero--overlay .rb-article__meta {
+  color: rgba(255, 255, 255, 0.92);
+  opacity: 1;
+}
+
+/* ---- Hero: stacked / minimal ---- */
+.rb-article__hero--stacked,
+.rb-article__hero--minimal {
+  text-align: center;
+  padding-top: clamp(2.5rem, 6vw, 4.5rem);
+}
+.rb-article__hero--stacked .rb-article__meta,
+.rb-article__hero--minimal .rb-article__meta {
+  justify-content: center;
+}
+.rb-article__hero-figure {
+  margin-top: clamp(1.75rem, 4vw, 2.75rem);
+  border-radius: var(--rb-art-radius);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: rgba(var(--color-foreground), 0.05);
+}
+
+/* ============================================================
+   Body
+   ============================================================ */
+.rb-article__inner {
+  /* padding (top/bottom) comes from the scoped section padding class */
+}
+.rb-article__content {
+  margin: 0 auto;
+  font-family: var(--rb-font-body);
+  color: var(--rb-art-text);
+  font-size: 1.12rem;
+  line-height: 1.75;
+}
+.rb-article__content > * {
+  margin-top: 0;
+  margin-bottom: 1.4em;
+}
+.rb-article__content > *:last-child {
+  margin-bottom: 0;
+}
+.rb-article__content h2,
+.rb-article__content h3,
+.rb-article__content h4 {
+  font-family: var(--rb-font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.12;
+  color: var(--rb-art-heading);
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+}
+.rb-article__content h2 {
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+}
+.rb-article__content h3 {
+  font-size: clamp(1.35rem, 2vw, 1.6rem);
+}
+.rb-article__content a {
+  color: var(--rb-art-accent);
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+.rb-article__content img,
+.rb-article__content iframe,
+.rb-article__content video {
+  border-radius: var(--rb-art-radius);
+  max-width: 100%;
+  height: auto;
+}
+.rb-article__content blockquote {
+  margin: 1.8em 0;
+  padding: 0.4em 0 0.4em 1.5rem;
+  border-left: 3px solid var(--rb-art-accent);
+  font-family: var(--rb-font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: clamp(1.3rem, 2.4vw, 1.75rem);
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  color: var(--rb-art-heading);
+}
+.rb-article__content ul,
+.rb-article__content ol {
+  padding-left: 1.4rem;
+}
+.rb-article__content li {
+  margin-bottom: 0.5em;
+}
+.rb-article__content hr {
+  border: 0;
+  border-top: 1px solid var(--rb-art-line);
+  margin: 2.5em 0;
+}
+
+/* Drop cap */
+.rb-article__content[data-dropcap='true'] > p:first-of-type::first-letter {
+  float: left;
+  font-family: var(--rb-font-display);
+  font-weight: 400;
+  font-size: 3.6em;
+  line-height: 0.7;
+  padding: 0.08em 0.12em 0 0;
+  color: var(--rb-art-accent);
+}
+
+/* ---- Tags ---- */
+.rb-article__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 2.75rem auto 0;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--rb-art-line);
+}
+.rb-article__tags-label {
+  font-family: var(--rb-font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rb-art-text);
+  opacity: 0.6;
+  margin-right: 0.25rem;
+}
+.rb-article__tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.rb-article__tag {
+  display: inline-block;
+  font-family: var(--rb-font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--rb-art-text);
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--rb-art-line);
+  border-radius: 999px;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.rb-article__tag:hover {
+  border-color: var(--rb-art-accent);
+  color: var(--rb-art-accent);
+}
+
+/* ---- Share ---- */
+.rb-article__share {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin: 1.75rem auto 0;
+}
+.rb-article__share-label {
+  font-family: var(--rb-font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rb-art-text);
+  opacity: 0.6;
+}
+.rb-article__share-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.rb-article__share-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  border: 1px solid var(--rb-art-line);
+  background: transparent;
+  color: var(--rb-art-text);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+.rb-article__share-btn:hover {
+  border-color: var(--rb-art-accent);
+  color: var(--rb-art-accent);
+  transform: translateY(-2px);
+}
+.rb-article__share-btn svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+.rb-article__copied {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--rb-font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--rb-art-accent);
+  padding: 0.25rem 0.55rem;
+  border-radius: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.rb-article__share-copy.is-copied .rb-article__copied {
+  opacity: 1;
+}
+
+/* ---- Author card ---- */
+.rb-article__author {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.1rem;
+  margin: 2.75rem auto 0;
+  padding: 1.5rem;
+  border: 1px solid var(--rb-art-line);
+  border-radius: var(--rb-art-radius);
+  background: rgba(var(--color-foreground), 0.025);
+}
+.rb-article__author-avatar {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+  font-family: var(--rb-font-display);
+  font-size: 1.4rem;
+  color: #fff;
+  background: var(--rb-art-accent);
+}
+.rb-article__author-eyebrow {
+  display: block;
+  font-family: var(--rb-font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rb-art-accent);
+  margin-bottom: 0.2rem;
+}
+.rb-article__author-name {
+  display: block;
+  font-family: var(--rb-font-display);
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  color: var(--rb-art-heading);
+}
+.rb-article__author-bio {
+  margin-top: 0.5rem;
+  font-family: var(--rb-font-body);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+
+/* ---- Back link ---- */
+.rb-article__back {
+  margin: 2.75rem auto 0;
+}
+.rb-article__back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--rb-font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--rb-art-accent);
+}
+.rb-article__back-link svg {
+  width: 1.05em;
+  height: 1.05em;
+  transition: transform 0.25s ease;
+}
+.rb-article__back-link:hover svg {
+  transform: translateX(-4px);
+}
+
+/* ============================================================
+   Prev / next navigation
+   ============================================================ */
+.rb-article__nav {
+  border-top: 1px solid var(--rb-art-line);
+  border-bottom: 1px solid var(--rb-art-line);
+}
+.rb-article__nav-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+.rb-article__nav-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 0;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s ease;
+}
+a.rb-article__nav-item:hover {
+  background: rgba(var(--color-foreground), 0.03);
+}
+.rb-article__nav-item--empty {
+  display: none;
+}
+.rb-article__nav-item--next {
+  text-align: right;
+  justify-content: flex-end;
+}
+.rb-article__nav-thumb {
+  flex: 0 0 auto;
+  width: 4rem;
+  height: 4rem;
+  border-radius: var(--rb-art-radius);
+  overflow: hidden;
+  background: rgba(var(--color-foreground), 0.05);
+}
+.rb-article__nav-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.rb-article__nav-dir {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--rb-font-body);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rb-art-accent);
+}
+.rb-article__nav-item--next .rb-article__nav-dir {
+  justify-content: flex-end;
+}
+.rb-article__nav-dir svg {
+  width: 1em;
+  height: 1em;
+}
+.rb-article__nav-title {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--rb-font-display);
+  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+  text-transform: uppercase;
+  line-height: 1.15;
+  color: var(--rb-art-heading);
+}
+
+/* ============================================================
+   Comments
+   ============================================================ */
+.rb-article__comments {
+  background: rgba(var(--color-foreground), 0.03);
+  margin-top: 0;
+  padding: clamp(2.5rem, 6vw, 4.5rem) 0;
+}
+.rb-article__comments-title {
+  font-family: var(--rb-font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--rb-art-heading);
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  margin: 0 0 1.5rem;
+}
+.rb-article__comment-list {
+  list-style: none;
+  margin: 0 0 3rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.rb-article__comment {
+  padding: 1.4rem 1.5rem;
+  border: 1px solid var(--rb-art-line);
+  border-radius: var(--rb-art-radius);
+  background: rgb(var(--color-background));
+}
+.rb-article__comment-body {
+  font-family: var(--rb-font-body);
+  line-height: 1.65;
+}
+.rb-article__comment-author {
+  margin: 0.85rem 0 0;
+  font-family: var(--rb-font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rb-art-accent);
+}
+.rb-article__comment-author time {
+  font-weight: 400;
+  color: var(--rb-art-text);
+  opacity: 0.6;
+  margin-left: 0.6rem;
+}
+.rb-article__comment-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.rb-article__comment-fields-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+.rb-article__comment-warning {
+  margin: 0 0 1.25rem;
+  opacity: 0.7;
+}
+.rb-article__comment-submit {
+  font-family: var(--rb-font-body);
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media screen and (min-width: 750px) {
+  .rb-article__content {
+    font-size: 1.18rem;
+  }
+  .rb-article__nav-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+  .rb-article__nav-item--prev {
+    padding-right: 1.5rem;
+    border-right: 1px solid var(--rb-art-line);
+  }
+  .rb-article__nav-item--next {
+    padding-left: 1.5rem;
+  }
+  .rb-article__comment-fields-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}

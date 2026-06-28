@@ -1,0 +1,32 @@
+{%- comment -%}
+  Rough Bobber — article hero meta row (date · author · read time).
+  Used by sections/rb-article.liquid in the hero header.
+
+  Accepts:
+  - article: {Object} Article
+  - read_time: {Number} estimated minutes
+  - show_date / show_author / show_read_time: {Boolean}
+{%- endcomment -%}
+
+{%- liquid
+  assign show_any = false
+  if show_date or show_author or show_read_time
+    assign show_any = true
+  endif
+-%}
+
+{%- if show_any -%}
+  <div class="rb-article__meta">
+    {%- if show_date -%}
+      <time class="rb-article__meta-item" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+        {{ article.published_at | date: format: 'date' }}
+      </time>
+    {%- endif -%}
+    {%- if show_author -%}
+      <span class="rb-article__meta-item">{{ 'sections.rb_article.by_author' | t: author: article.author }}</span>
+    {%- endif -%}
+    {%- if show_read_time -%}
+      <span class="rb-article__meta-item">{{ 'sections.rb_article.read_time' | t: count: read_time }}</span>
+    {%- endif -%}
+  </div>
+{%- endif -%}

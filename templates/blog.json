@@ -10,15 +10,36 @@
 {
   "sections": {
     "main": {
-      "type": "main-blog",
+      "type": "rb-blog-list",
       "settings": {
-        "layout": "collage",
+        "eyebrow": "Stories from the road",
+        "heading": "",
+        "intro": "",
+        "header_align": "left",
+        "featured_first": true,
+        "columns": "3",
+        "posts_per_page": 9,
+        "image_ratio": "landscape",
+        "featured_ratio": "wide",
+        "gap": 24,
+        "image_radius": 10,
         "show_image": true,
-        "image_height": "medium",
+        "show_excerpt": true,
+        "excerpt_words": 25,
         "show_date": true,
         "show_author": false,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "show_read_time": true,
+        "words_per_minute": 200,
+        "show_tag": true,
+        "read_more_label": "Read story",
+        "color_scheme": "scheme-2",
+        "accent_color": "#b3916b",
+        "heading_color": "",
+        "text_color": "",
+        "overlay_color": "#121315",
+        "overlay_opacity": 0,
+        "padding_top": 52,
+        "padding_bottom": 48
       }
     }
   },

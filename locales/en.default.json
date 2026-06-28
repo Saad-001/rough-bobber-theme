@@ -360,6 +360,30 @@
       "carousel": "Carousel",
       "slide": "Slide"
     },
+    "rb_promo_tiles": {
+      "tile": "Promotional tile"
+    },
+    "rb_blog_list": {
+      "featured": "Featured",
+      "read_time": "{{ count }} min read",
+      "by_author": "By {{ author }}",
+      "empty": "No stories yet — check back soon."
+    },
+    "rb_article": {
+      "read_time": "{{ count }} min read",
+      "by_author": "By {{ author }}",
+      "tagged": "Tagged",
+      "share": "Share this story",
+      "share_x": "Share on X",
+      "share_facebook": "Share on Facebook",
+      "share_pinterest": "Share on Pinterest",
+      "copy_link": "Copy link",
+      "copied": "Copied!",
+      "written_by": "Written by",
+      "previous": "Previous",
+      "next": "Next",
+      "nav_label": "More stories"
+    },
     "page": {
       "title": "Page title"
     },
